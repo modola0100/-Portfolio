@@ -1,0 +1,81 @@
+/* Swiper Carousel & Project Card Styles */
+.swiper-container {
+    width: 100%;
+    padding-top: 20px;
+    padding-bottom: 50px;
+}
+.swiper-slide {
+    background-color: transparent;
+    height: auto; /* Let the card define its height */
+    display: flex; /* Helps with card height consistency */
+}
+
+.project-card {
+    background-color: #161b22;
+    border-radius: 16px;
+    border: 1px solid #30363d;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    width: 100%; /* Make card take full width of slide */
+    display: flex;
+    flex-direction: column;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px -15px rgba(1, 181, 248, 0.2);
+}
+
+.project-card__top {
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    border-bottom: 1px solid #30363d;
+}
+
+.project-card__content {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.project-card__title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #f0f6fc;
+    margin-bottom: 8px;
+}
+
+.project-card__description {
+    color: #8b949e;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 24px;
+    flex-grow: 1;
+}
+
+.project-card__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+}
+
+.project-card__tech {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.875rem;
+    color: #8b949e;
+}
+
+.project-card__links a {
+    color: #8b949e;
+    transition: color 0.3s ease;
+}
+
+.project-card__links a:hover {
+    color: #01b5f8;
+}

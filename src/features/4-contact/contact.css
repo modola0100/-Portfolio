@@ -1,0 +1,39 @@
+/* Floating Label Form Styles */
+.form-group {
+    position: relative;
+}
+
+.form-input {
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    color: #c9d1d9;
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #01b5f8;
+    box-shadow: 0 0 0 3px rgba(1, 181, 248, 0.3);
+}
+
+.form-label {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    background: #161b22; /* Must match form-input background */
+    padding: 0 4px;
+    color: #9ca3af; /* Gray color for label */
+    transition: all 0.2s ease-in-out;
+    pointer-events: none; /* Allows clicking through the label to the input */
+}
+
+.form-input:focus + .form-label,
+.form-input:not(:placeholder-shown) + .form-label {
+    top: 0;
+    font-size: 0.875rem; /* 14px */
+    color: #01b5f8; /* Flutter blue color on focus */
+}
