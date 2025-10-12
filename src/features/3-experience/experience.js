@@ -1,16 +1,11 @@
 const experiences = [
     {
-        company: 'Tech Solutions Inc.',
-        role: 'Lead Flutter Developer',
-        period: 'May 2022 - Present',
-        tasks: [ 'Lead the development of major new features for our flagship mobile applications.', 'Write modern, performant, and maintainable code for a diverse array of client and internal projects.', 'Work with a team of designers, product managers, and other engineers to bring ideas to life.', 'Mentor junior developers and contribute to improving our internal coding standards.' ]
+        company: 'National Telecommunication Institute (NTI)',
+        role: 'Flutter Trainee / Scholarship Program',
+        period: 'Jul 2025 - Aug 2025',
+        tasks: [ 'Completed an intensive one-month Flutter training program focused on mobile app development.', 'Learned Dart programming language and mastered Flutter framework fundamentals.', 'Built practical apps integrating RESTful APIs and managing state with BLoC and Cubit.', 'Gained experience in UI/UX design, responsive layouts, and clean project structure.', 'Applied best practices for app architecture and performance optimization' ]
     },
-    {
-        company: 'Creative Apps LLC',
-        role: 'Junior Flutter Developer',
-        period: 'Jan 2021 - Apr 2022',
-        tasks: [ 'Developed and shipped multiple Flutter applications for iOS and Android.', 'Collaborated with senior developers on complex features and bug fixes.', 'Integrated third-party APIs and services to extend app functionality.', 'Participated in code reviews and agile development ceremonies.' ]
-    }
+    
 ];
 
 export function initExperienceFeature() {

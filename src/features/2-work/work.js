@@ -1,34 +1,25 @@
 const projects = [
+   
     {
         id: 1,
-        title: 'JobFul',
-        shortDescription: 'Hire the best talent or find work from anywhere in the world. Download today to get things done!',
-        coverImage: 'https://placehold.co/800x450/0d1117/1e293b?text=Create+Your+Own+Cover',
-        detailImages: ['https://placehold.co/800x600/02569B/FFFFFF?text=Detail+1'],
-        tags: ['Flutter', 'Firebase', 'BLoC'],
-        githubUrl: '#',
-        liveUrl: '#'
+title: 'Tasketi',
+shortDescription: 'A clean and modern Flutter notes app with offline storage, image support, and elegant UI design.',
+
+longDescription: 'Tasketi is a beautifully crafted Flutter application designed for creating and organizing notes effortlessly. Built with clean architecture principles, it leverages the Hive database for fast and secure offline storage. The app features both Light and Dark themes, allows users to attach images to their notes, and integrates Lottie animations for a smooth and engaging experience. With support for date selection, internationalization (Intl), and the Poppins font family, Tasketi delivers a refined, user-friendly interface focused on productivity and simplicity.',
+
+coverImage: 'src/assets/images/3.png',
+detailImages: ['src/assets/images/2.png'],
+tags: ['Flutter', 'Hive', 'Clean Architecture', 'Lottie', 'Image Picker', 'Intl', 'Date Picker Timeline', 'Dark Mode'],
+
+githubUrl: 'https://github.com/modola0100/taskati',
+liveUrl: 'https://appetize.io/app/b_ymghlex5c44ec3haxusngxr5t4'
+
+
     },
-    {
-        id: 2,
-        title: 'Taskati',
-        shortDescription: 'Have you ever forgotten some important things to do? Have you forgotten important moments or anniversaries...',
-        coverImage: 'https://placehold.co/800x450/0d1117/1e293b?text=Create+Your+Own+Cover',
-        detailImages: ['https://placehold.co/800x600/0175C2/FFFFFF?text=Detail+1'],
-        tags: ['Flutter', 'REST API', 'Provider'],
-        githubUrl: '#',
-        liveUrl: '#'
-    },
-    {
-        id: 3,
-        title: 'Task Management Web App',
-        shortDescription: 'A responsive web application for managing tasks and projects, showcasing Flutter for Web.',
-        coverImage: 'https://placehold.co/800x450/0d1117/1e293b?text=Create+Your+Own+Cover',
-        detailImages: ['https://placehold.co/800x600/161b22/FFFFFF?text=Detail+1'],
-        tags: ['Flutter Web', 'Firebase'],
-        githubUrl: '#',
-        liveUrl: '#'
-    },
+  
+
+
+
 ];
 
 const modal = document.getElementById('project-modal');
