@@ -16,6 +16,21 @@ liveUrl: 'https://appetize.io/app/b_ymghlex5c44ec3haxusngxr5t4'
 
 
     },
+     {
+  id: 2,
+  title: 'BMI Calculator',
+  shortDescription: 'A simple and intuitive Flutter app to calculate your Body Mass Index (BMI) and track your health.',
+
+  longDescription: 'BMI Calculator is a user-friendly application built with Flutter, designed to help you monitor your Body Mass Index effortlessly. By simply inputting your height and weight, the app instantly computes your BMI and categorizes the result (e.g., Underweight, Normal, Overweight), providing you with essential insights into your health. The app features a clean interface and smooth performance, making health tracking simple and accessible for everyone.',
+
+  coverImage: 'src/assets/images/bmi.jpg',
+  detailImages: ['src/assets/images/bm2.webp'],
+  "tags": ["Flutter", "Dart", "Material Design", "Responsive UI", "BMI Calculator", "Health & Fitness"],
+
+  githubUrl: 'https://github.com/modola0100/bmi_app',
+  liveUrl: 'https://appetize.io/app/b_l2hd46lgyp2oysxidsubrb2wtu'
+}
+
   
 
 
