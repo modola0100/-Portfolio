@@ -29,12 +29,7 @@ liveUrl: 'https://appetize.io/app/b_ymghlex5c44ec3haxusngxr5t4'
 
   githubUrl: 'https://github.com/modola0100/bmi_app',
   liveUrl: 'https://appetize.io/app/b_l2hd46lgyp2oysxidsubrb2wtu'
-}
-
-  
-
-
-
+},
 ];
 
 const modal = document.getElementById('project-modal');
