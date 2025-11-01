@@ -8,7 +8,7 @@
 .contact-card {
     position: relative;
     width: 100%;
-    height: 400px;
+    height: 480px; /* === 🎨 زيادة الارتفاع === */
     transition: transform 0.8s;
     transform-style: preserve-3d;
     cursor: pointer;
@@ -72,17 +72,20 @@
     transform: rotateY(-180deg);
 }
 
-/* Form Styles */
+/* === 🎨 بداية الـ CSS الجديد للفورم === */
+
+/* Form Styles (NEW - Animated Line Effect) */
 .form-group {
     position: relative;
+    margin-bottom: 2rem; /* إضافة مسافة بين الحقول */
 }
 
 .form-input {
     width: 100%;
     background: transparent;
     border: none;
-    border-bottom: 1px solid #4a5568;
-    padding: 8px 0;
+    border-bottom: 2px solid #4a5568; /* الخط في وضع الخمول */
+    padding: 10px 0;
     color: #f0f6fc;
     font-size: 1rem;
     transition: border-color 0.3s;
@@ -90,7 +93,7 @@
 
 .form-input:focus {
     outline: none;
-    border-bottom-color: #01b5f8;
+    border-bottom-color: transparent; /* إخفاء الخط الأساسي عند التركيز */
 }
 
 .form-label {
@@ -102,6 +105,7 @@
     transition: all 0.3s ease;
 }
 
+/* حركة الـ Label */
 .form-input:focus ~ .form-label,
 .form-input:not(:placeholder-shown) ~ .form-label {
     top: -16px;
@@ -109,11 +113,58 @@
     color: #01b5f8;
 }
 
+/* الخط المتحرك الجديد */
+.focus-line {
+    position: absolute;
+    bottom: 0;
+    left: 50%; /* يبدأ من المنتصف */
+    transform: translateX(-50%);
+    width: 0; /* يبدأ بعرض صفر */
+    height: 2px;
+    background: #01b5f8; /* لون فلاتر الأزرق */
+    transition: width 0.4s ease-out; /* أنيميشن الحركة */
+}
+
+.form-input:focus ~ .focus-line {
+    width: 100%; /* يمتلئ عند التركيز */
+}
+
+/* توحيد شكل حقل الرسالة */
+textarea.form-input {
+    min-height: 80px;
+    resize: vertical;
+    border: none; /* إزالة أي إطارات سابقة */
+    border-bottom: 2px solid #4a5568; /* الخط في وضع الخمول */
+}
+
+textarea.form-input:focus {
+    border-bottom-color: transparent; /* إخفاء الخط عند التركيز */
+}
+    
+/* تعديل بسيط لـ Label الخاص بحقل الرسالة */
+textarea.form-input:focus ~ .form-label,
+textarea.form-input:not(:placeholder-shown) ~ .form-label {
+    background-color: transparent;
+    padding: 0;
+}
+
 /* RTL Support */
 :lang(ar) .form-label {
     left: auto;
     right: 0;
 }
+:lang(ar) .focus-line {
+    left: auto;
+    right: 50%;
+    transform: translateX(50%);
+}
+:lang(ar) textarea.form-input:focus ~ .form-label,
+:lang(ar) textarea.form-input:not(:placeholder-shown) ~ .form-label {
+    left: auto;
+    right: 0;
+}
+
+/* === 🎨 نهاية الـ CSS الجديد للفورم === */
 
 .submit-btn {
     width: 100%;
@@ -140,4 +191,3 @@
 .submit-btn .btn-text, .submit-btn .btn-icon {
     display: inline-block;
 }
-

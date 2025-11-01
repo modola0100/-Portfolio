@@ -71,4 +71,12 @@ body {
 ::-webkit-scrollbar-thumb:hover { background: #01b5f8; }
 
 
-
+/* === إضافة جديدة === */
+/* Experience Tab Hover Effect */
+.experience-tab-btn {
+    border-radius: 4px 4px 0 0; /* Add slight rounding */
+}
+.experience-tab-btn:not(.text-blue-400):hover {
+    background-color: rgba(1, 181, 248, 0.08); /* Faint blue background */
+    color: #f0f6fc; /* Lighter text */
+}
