@@ -1,6 +1,6 @@
 # Flutter Developer Portfolio
 
-[![Portfolio Screenshot](https://i.imgur.com/your-screenshot-link.png)](https://modola0100.github.io/portfolio/)
+[![Portfolio Screenshot](src/assets/images/screencapture-modola0100-github-io-Portfolio-2025-11-01-12_53_19.png)
 
 **[🚀 View Live Demo](https://modola0100.github.io/-Portfolio/)**
 *(Note: Replace the URL with your actual GitHub Pages link)*
