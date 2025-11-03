@@ -25,7 +25,7 @@
         <svg class="w-24 h-24 animate-pulse" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M78.042 128 32.22 82.178 12.012 102.388 0 90.375 32.22 58.155 12.012 37.945 32.22 17.735 78.042 63.558l17.735-17.735L128 14.265 90.375 0 32.22 58.155 78.042 104 90.375 116.333l-12.333 11.667z" fill="#0175C2"/><path d="m78.042 104 37.625-37.625L90.375 41.083 78.042 53.417 32.22 9.625 19.833 22.012l58.209 58.21 17.735-17.735L128 90.375 90.375 128 78.042 115.667v-11.667z" fill="#02569B"/></svg>
     </div>
 
-    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-30F00">
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#home" class="text-2xl font-bold text-white flex items-center gap-2 transform hover:scale-105 transition-transform">
                 <svg class="w-8 h-8 flutter-blue" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M78.042 128 32.22 82.178 12.012 102.388 0 90.375 32.22 58.155 12.012 37.945 32.22 17.735 78.042 63.558l17.735-17.735L128 14.265 90.375 0 32.22 58.155 78.042 104 90.375 116.333l-12.333 11.667z" fill="#01b5f8"/><path d="m78.042 104 37.625-37.625L90.375 41.083 78.042 53.417 32.22 9.625 19.833 22.012l58.209 58.21 17.735-17.735L128 90.375 90.375 128 78.042 115.667v-11.667z" fill="#02569B"/></svg>
@@ -39,8 +39,9 @@
                 <a href="#contact" class="nav-item text-gray-300 hover:text-flutter-blue transition duration-300">Contact</a>
                 <a href="src/assets/resume/Mohamed_Adel_Resume.pdf" target="_blank" rel="noopener noreferrer" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 animate-pulse-resume">Resume</a>
             </nav>
-            <button id="mobile-menu-btn" class="md:hidden text-white">
+            <button id="mobile-menu-btn" class="md:hidden text-white" title="Open mobile menu" aria-label="Open mobile menu">
                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+                 <span class="sr-only">Open mobile menu</span>
             </button>
         </div>
         <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 bg-gray-900/80 backdrop-blur-sm">
@@ -143,7 +144,7 @@
                             <p data-translate-key="contactCardDescription">Click here to send me a message</p>
                         </div>
                         <div class="contact-card-back">
-                             <form id="contact-form" action="https://formspree.io/f/xnngvvwn" method="POST" class="p-8">
+<form id="contact-form" action="https://formspree.io/f/xnngvvwn" method="POST" class="p-8">
                                 <div class="form-group">
                                     <input type="text" id="name" name="name" class="form-input peer" placeholder=" " required>
                                     <label for="name" class="form-label" data-translate-key="formName">Your Name</label>
@@ -180,9 +181,11 @@
     
     </footer>
 
-    <button id="scrollToTopBtn" class="fixed bottom-8 right-8 w-12 h-12 bg-blue-600/80 backdrop-blur-sm text-white rounded-full hidden justify-center items-center shadow-lg hover:bg-blue-500 transition-all duration-300 translate-y-20">
+    <button id="scrollToTopBtn" class="fixed bottom-8 right-8 w-12 h-12 bg-blue-600/80 backdrop-blur-sm text-white rounded-full hidden justify-center items-center shadow-lg hover:bg-blue-500 transition-all duration-300 translate-y-20" title="Scroll to top" aria-label="Scroll to top">
+        <span class="sr-only">Scroll to top</span>
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" /></svg>
     </button>
+
     <div id="project-modal" class="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none">
         <div id="project-modal-content" class="bg-[#0d1117] rounded-lg shadow-2xl w-11/12 max-w-4xl max-h-[90vh] overflow-y-auto transform scale-95"></div>
     </div>
