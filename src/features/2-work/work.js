@@ -30,6 +30,26 @@ liveUrl: 'https://appetize.io/app/b_ymghlex5c44ec3haxusngxr5t4'
   githubUrl: 'https://github.com/modola0100/bmi_app',
   liveUrl: 'https://appetize.io/app/b_l2hd46lgyp2oysxidsubrb2wtu'
 },
+{
+    id: 3, 
+    title: 'Bookia App',
+    shortDescription: 'A complete Flutter bookstore app with live APIs, Cubit state management, and a clean, modern UI.',
+
+    longDescription: 'Bookia is a comprehensive bookstore application built from scratch using Flutter. It connects to real-world APIs to allow users to explore, buy, and save their favorite books. The app features a secure login/signup system, a full shopping cart and wishlist functionality, and a smart search optimized with a Debouncer. State management is handled efficiently using Cubit, and SharedPreferences is used for local data persistence, all wrapped in a clean, user-friendly interface.',
+
+    coverImage: 'src/assets/images/welcome.png', 
+    detailImages: [ 'src/assets/images/welcome.png'], 
+
+    tags: ['Flutter', 'Cubit', 'REST API', 'State Management', 'SharedPreferences', 'Search (Debouncer)', 'Authentication', 'E-commerce'],
+
+    githubUrl: 'https://github.com/modola0100/bookiaaaaa',
+     liveUrl: 'https://appetize.io/apps/android/com.example.bookiaaa',
+
+
+    
+    
+}
+
 ];
 
 const modal = document.getElementById('project-modal');
