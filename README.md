@@ -1,6 +1,6 @@
 # Flutter Developer Portfolio
 
-[![Portfolio Screenshot](src/assets/images/screencapture-modola0100-github-io-Portfolio-2025-11-01-12_53_19.png)
+[![Portfolio Screenshot](src/assets/images/screencapture-127-0-0-1-5500-index-html-2025-11-11-01_04_32.png)
 
 **[🚀 View Live Demo](https://modola0100.github.io/-Portfolio/)**
 *(Note: Replace the URL with your actual GitHub Pages link)*
@@ -54,9 +54,8 @@ The project uses a modular, feature-based directory structure to keep the code o
     │   ├── css/
     │   │   └── global.css
     │   ├── images/
-    │   │   ├── 2.png
-    │   │   ├── 3.png
-    │   │   └── ...
+    │   │   ├── 4.png
+    │   │   └── 100.jpg
     │   └── resume/
     │       └── Mohamed_Adel_Resume.pdf
     │
