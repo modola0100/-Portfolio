@@ -16,4 +16,7 @@ export function initAnimations() {
     sr.reveal('.reveal-left', { origin: 'left', interval: 100 });
     sr.reveal('.reveal-right', { origin: 'right', delay: 400 });
     sr.reveal('.nav-item', { origin: 'top', distance: '20px', interval: 100, delay: 800 });
+    sr.reveal('.project-card', { interval: 100 });
+    sr.reveal('.hero-image-container-new', { origin: 'right', distance: '80px', delay: 500 });
+    sr.reveal('.about-initials-container', { origin: 'right', distance: '80px', delay: 500 });
 }

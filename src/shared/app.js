@@ -1,21 +1,32 @@
-import { initGeneralUI, initPreloader } from './ui/ui.js';
+import { initPreloader } from './ui/preloader.js';
+import { initHeader } from './ui/header.js';
+import { initMobileMenu } from './ui/mobile-menu.js';
+import { initScrollToTop } from './ui/scroll-to-top.js';
 import { initParticles } from './ui/particles.js';
 import { initAnimations } from './ui/animations.js';
 import { initHeroFeature } from '../features/1-hero/hero.js';
+import { initHeroAnimation } from '../features/1-hero/hero-animation.js';
 import { initWorkFeature } from '../features/2-work/work.js';
 import { initExperienceFeature } from '../features/3-experience/experience.js';
-import { initContactForm } from '../features/4-contact/contact.js'; // <-- إضافة جديدة
+import { initContactForm } from '../features/4-contact/contact.js';
 
-// Initialize preloader as soon as possible
-initPreloader();
+function initializeApp() {
+    initPreloader();
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        initHeader();
+        initMobileMenu();
+        initScrollToTop();
+        initParticles();
+        initAnimations();
+        initHeroFeature();
+        initHeroAnimation();
+        initWorkFeature();
+        initExperienceFeature();
+        initContactForm();
+    });
+}
 
-// Initialize the rest of the app after the DOM is fully loaded
-document.addEventListener('DOMContentLoaded', () => {
-    initGeneralUI();
-    initParticles();
-    initAnimations();
-    initHeroFeature();
-    initWorkFeature();
-    initExperienceFeature();
-    initContactForm(); // <-- إضافة جديدة
-});
+initializeApp();
+
+

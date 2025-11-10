@@ -1,6 +1,8 @@
+import { $ } from '../../shared/utils/dom.js';
+
 export function initContactForm() {
-    const form = document.getElementById('contact-form');
-    const statusEl = document.getElementById('form-status');
+    const form = $('#contact-form');
+    const statusEl = $('#form-status');
     if (!form || !statusEl) return;
 
     async function handleSubmit(event) {

@@ -1,0 +1,143 @@
+/* Experience Section Styles */
+.experience-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.experience-nav {
+    display: flex;
+    gap: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #30363d;
+    justify-content: center;
+}
+
+.experience-nav-btn {
+    background: none;
+    border: none;
+    color: #8b949e;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    padding: 0.5rem;
+}
+
+.experience-nav-btn:hover {
+    color: #58a6ff;
+}
+
+.experience-nav-btn.active {
+    color: #58a6ff;
+    font-weight: bold;
+}
+
+.experience-content {
+    min-height: 350px; /* To prevent layout shifts */
+}
+
+.experience-panel {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.exp-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.exp-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Courier New', Courier, monospace;
+    color: #8b949e;
+}
+
+.exp-header-main {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.exp-logo {
+    width: 80px;
+    height: 80px;
+    background-color: #161b22;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+}
+
+.exp-logo img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 0.25rem;
+}
+
+.exp-company {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #c9d1d9;
+}
+
+.exp-role {
+    font-size: 1.125rem;
+    color: #8b949e;
+}
+
+.exp-location {
+    font-size: 1rem;
+    color: #8b949e;
+}
+
+.exp-tasks {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.exp-tasks li {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    color: #8b949e;
+    line-height: 1.6;
+}
+
+.exp-tasks li::before {
+    content: '▹';
+    color: #58a6ff;
+    font-weight: bold;
+}
+
+@media (min-width: 768px) {
+    .experience-container {
+        flex-direction: row;
+    }
+    .experience-nav {
+        flex-direction: column;
+        border-bottom: none;
+        border-right: 1px solid #30363d;
+        padding-right: 1.5rem;
+        padding-bottom: 0;
+        justify-content: flex-start;
+    }
+    .exp-header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+}

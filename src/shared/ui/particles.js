@@ -1,5 +1,7 @@
+import { $ } from '../utils/dom.js';
+
 export function initParticles() {
-    const canvas = document.getElementById('particle-canvas');
+    const canvas = $('#particle-canvas');
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
