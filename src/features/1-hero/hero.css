@@ -1,15 +1,15 @@
 .hero-image-container {
     position: relative;
-    width: 350px;
-    height: 350px;
+    width: min(80vw, 350px);
+    height: min(80vw, 350px);
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .image-wrapper {
-    width: 250px;
-    height: 250px;
+    width: min(60vw, 250px);
+    height: min(60vw, 250px);
     border-radius: 50%;
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(2, 117, 194, 0.3), 0 0 0 4px rgba(10, 15, 24, 0.5);
@@ -179,8 +179,8 @@
 /* Hero Section Image Animation (New Design) */
 .hero-image-container-new {
     position: relative;
-    width: 350px;
-    height: 350px;
+    width: min(80vw, 350px);
+    height: min(80vw, 350px);
     display: flex;
     justify-content: center;
     align-items: center;

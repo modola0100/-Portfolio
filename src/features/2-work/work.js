@@ -65,9 +65,10 @@ export function initWorkFeature() {
         projectCard.className = 'project-card';
         projectCard.dataset.projectId = project.id;
         
+        const isSvg = project.coverImage.endsWith('.svg');
         projectCard.innerHTML = `
             <div class="project-card__image-container">
-                <img src="${project.coverImage}" alt="${project.title}" class="project-card__image">
+                <img src="${project.coverImage}" alt="${project.title}" class="project-card__image ${isSvg ? 'project-card__image--svg' : ''}">
             </div>
             <div class="project-card__content">
                 <h3 class="project-card__title">${project.title}</h3>
