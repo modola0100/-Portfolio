@@ -1,182 +1,4 @@
-.hero-image-container {
-    position: relative;
-    width: min(80vw, 350px);
-    height: min(80vw, 350px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.image-wrapper {
-    width: min(60vw, 250px);
-    height: min(60vw, 250px);
-    border-radius: 50%;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(2, 117, 194, 0.3), 0 0 0 4px rgba(10, 15, 24, 0.5);
-    position: relative;
-    z-index: 2;
-    animation: float 4s ease-in-out infinite;
-}
-
-.hero-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transform: scale(1.1);
-}
-
-.floral-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    animation: rotate-floral 25s linear infinite;
-    z-index: 1;
-}
-
-.petal {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100px;
-    height: 50px;
-    background: radial-gradient(circle at center, rgba(1, 181, 248, 0.3), transparent 60%);
-    border-radius: 50%;
-    transform-origin: 0 50%;
-    filter: blur(2px);
-}
-
-.petal:nth-child(1) { transform: rotate(0deg) translateX(150px) rotate(45deg); }
-.petal:nth-child(2) { transform: rotate(45deg) translateX(150px) rotate(45deg); }
-.petal:nth-child(3) { transform: rotate(90deg) translateX(150px) rotate(45deg); }
-.petal:nth-child(4) { transform: rotate(135deg) translateX(150px) rotate(45deg); }
-.petal:nth-child(5) { transform: rotate(180deg) translateX(150px) rotate(45deg); }
-.petal:nth-child(6) { transform: rotate(225deg) translateX(150px) rotate(45deg); }
-.petal:nth-child(7) { transform: rotate(270deg) translateX(150px) rotate(45deg); }
-.petal:nth-child(8) { transform: rotate(315deg) translateX(150px) rotate(45deg); }
-
-
-.petal::before {
-    content: '';
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    background: #01b5f8;
-    border-radius: 50%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 0 10px #01b5f8, 0 0 20px #01b5f8;
-    animation: pulse-petal 2s infinite;
-}
-
-@keyframes rotate-floral {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
-}
-
-@keyframes pulse-petal {
-    0%, 100% { opacity: 0.7; }
-    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
-}
-
-/* Add a glow effect behind the image */
-.hero-image-container::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 320px;
-    height: 320px;
-    background: radial-gradient(ellipse at center, rgba(2, 86, 155, 0.5) 0%, rgba(10, 15, 24, 0) 70%);
-    border-radius: 50%;
-    z-index: 0;
-    animation: pulse-glow 4s ease-in-out infinite;
-}
-
-@keyframes pulse-glow {
-    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
-    50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.7; }
-}
-
-/* Hero Section Image Animation */
-.hero-image-wrapper {
-    position: relative;
-    width: 350px;
-    height: 350px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto;
-}
-
-.hero-main-image {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-    z-index: 2;
-    box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.1);
-}
-
-.hero-bg-circle {
-    position: absolute;
-    border-radius: 50%;
-    border: 1px solid rgba(1, 181, 248, 0.3);
-    animation: circle-pulse 6s infinite ease-in-out alternate;
-    z-index: 1;
-}
-
-.hero-bg-circle-1 {
-    width: 110%;
-    height: 110%;
-    animation-delay: 0s;
-}
-
-.hero-bg-circle-2 {
-    width: 130%;
-    height: 130%;
-    animation-delay: 2s;
-}
-
-.hero-bg-circle-3 {
-    width: 150%;
-    height: 150%;
-    animation-delay: 4s;
-}
-
-@keyframes circle-pulse {
-    0% { transform: scale(0.9); opacity: 0.7; }
-    100% { transform: scale(1.1); opacity: 0.3; }
-}
-
-.hero-flutter-logo {
-    position: absolute;
-    width: 80px;
-    height: 80px;
-    top: 10%;
-    left: 10%;
-    opacity: 0;
-    animation: flutter-logo-spin 10s infinite linear forwards;
-    z-index: 3;
-}
-
-@keyframes flutter-logo-spin {
-    0% { transform: rotate(0deg) scale(0.5); opacity: 0; }
-    20% { transform: rotate(72deg) scale(1); opacity: 1; }
-    80% { transform: rotate(288deg) scale(1); opacity: 1; }
-    100% { transform: rotate(360deg) scale(0.5); opacity: 0; }
-}
-
-/* Hero Section Image Animation (New Design) */
+/* === كود الـ CSS القديم للصور (كما هو) === */
 .hero-image-container-new {
     position: relative;
     width: min(80vw, 350px);
@@ -263,3 +85,102 @@
     50% { transform: scaleX(1); opacity: 1; }
     100% { transform: scaleX(0); opacity: 0; }
 }
+
+
+/* === ✨ كود الأنيميشن الجديد (الضغط والـ Hover) ✨ === */
+
+/* 1. إضافة حركة transition للكارت عشان الـ Hover يبقى ناعم */
+.stat-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 2. أنيميشن الـ Hover (الجديد) */
+.stat-card:hover {
+    transform: translateY(-8px); /* حركة بسيطة للأعلى */
+    border-color: rgba(56, 189, 248, 0.7);
+    /* ظل "عالمي" بلون الفلاتر */
+    box-shadow: 0 0 25px rgba(1, 181, 248, 0.25);
+}
+
+/* 3. أنيميشن الضغط (القديم) */
+@keyframes click-pop-effect {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        /* لو ضغطت وانت عامل hover، هيعمل scale من الوضع المرتفع */
+        transform: scale(1.08) translateY(-8px); 
+        box-shadow: 0 0 25px rgba(1, 181, 248, 0.5);
+    }
+    100% {
+        transform: scale(1) translateY(-8px);
+    }
+}
+
+/* 4. كلاس أنيميشن الضغط (القديم) */
+.stat-card-clicked {
+    animation: click-pop-effect 0.4s ease-out;
+}
+/* === أنيميشن حروف الاسم (موجود من global.css) === */
+.hero-name span {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(20px) rotate(5deg) scale(0.9);
+    animation: reveal-char 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+@keyframes reveal-char { to { opacity: 1; transform: translateY(0) rotate(0) scale(1); } }
+
+
+/* === ✨ كود المؤشر الجديد ✨ === */
+
+/* 1. تصميم المؤشر (الخط) */
+.hero-cursor {
+    display: inline-block;
+    width: 4px; /* عرض الخط */
+    height: 1.1em; /* ارتفاع الخط (بحجم الخط الحالي) */
+    background-color: #01b5f8; /* لون فلاتر الأزرق */
+    margin-left: 8px; /* مسافة بسيطة من الاسم */
+    border-radius: 2px;
+    
+    /* 2. إخفاؤه في البداية */
+    opacity: 0; 
+    
+    /* 3. تأثير انتقالي ناعم */
+    transition: opacity 0.2s ease-in;
+    
+    /* 4. الأنيميشن (الوميض) سيضاف بالجافاسكريبت */
+}
+
+/* 3. أنيميشن الوميض (Blink) */
+@keyframes blink { 
+    from, to { opacity: 1 } 
+    50% { opacity: 0 } 
+}
+
+
+/* === أنيميشن كروت الإحصائيات (كما هو) === */
+.stat-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stat-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(56, 189, 248, 0.7);
+    box-shadow: 0 0 25px rgba(1, 181, 248, 0.25);
+}
+
+@keyframes click-pop-effect {
+    0% { transform: scale(1); }
+    50% {
+        transform: scale(1.08) translateY(-8px); 
+        box-shadow: 0 0 25px rgba(1, 181, 248, 0.5);
+    }
+    100% { transform: scale(1) translateY(-8px); }
+}
+
+.stat-card-clicked {
+    animation: click-pop-effect 0.4s ease-out;
+}
+
+/* === (باقي أكواد hero.css القديمة ... ) === */
+/* ... .hero-image-container-new ... etc ... */

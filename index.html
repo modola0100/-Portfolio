@@ -36,42 +36,80 @@
     </div>
 </div>
     <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#home" class="text-2xl font-bold text-white flex items-center gap-2 transform hover:scale-105 transition-transform">
-                <svg class="w-8 h-8 flutter-blue" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M78.042 128 32.22 82.178 12.012 102.388 0 90.375 32.22 58.155 12.012 37.945 32.22 17.735 78.042 63.558l17.735-17.735L128 14.265 90.375 0 32.22 58.155 78.042 104 90.375 116.333l-12.333 11.667z" fill="#01b5f8"/><path d="m78.042 104 37.625-37.625L90.375 41.083 78.042 53.417 32.22 9.625 19.833 22.012l58.209 58.21 17.735-17.735L128 90.375 90.375 128 78.042 115.667v-11.667z" fill="#02569B"/></svg>
-                <span>M. Adel</span>
-            </a>
-            <nav class="hidden md:flex items-center space-x-8">
-                <a href="#home" class="nav-item text-gray-300 hover:text-flutter-blue transition duration-300">Home</a>
-                <a href="#about" class="nav-item text-gray-300 hover:text-flutter-blue transition duration-300">About</a>
-                <a href="#work" class="nav-item text-gray-300 hover:text-flutter-blue transition duration-300">Work</a>
-                <a href="#experience" class="nav-item text-gray-300 hover:text-flutter-blue transition duration-300">Experience</a>
-                <a href="#contact" class="nav-item text-gray-300 hover:text-flutter-blue transition duration-300">Contact</a>
-                <a href="src/assets/resume/Mohamed-Adel-Ahmed-FlowCV-Resume-20251110.pdf" target="_blank" rel="noopener noreferrer" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 animate-pulse-resume">Resume</a>
-            </nav>
-            <button id="mobile-menu-btn" class="md:hidden text-white" title="Open mobile menu" aria-label="Open mobile menu">
-                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
-                 <span class="sr-only">Open mobile menu</span>
-            </button>
-        </div>
-        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 bg-gray-900/80 backdrop-blur-sm">
-             <a href="#home" class="block py-2 text-gray-300 hover:text-flutter-blue transition duration-300">Home</a>
-             <a href="#about" class="block py-2 text-gray-300 hover:text-flutter-blue transition duration-300">About</a>
-             <a href="#work" class="block py-2 text-gray-300 hover:text-flutter-blue transition duration-300">Work</a>
-             <a href="#experience" class="block py-2 text-gray-300 hover:text-flutter-blue transition duration-300">Experience</a>
-             <a href="#contact" class="block py-2 text-gray-300 hover:text-flutter-blue transition duration-300">Contact</a>
-             <a href="src/assets/resume/Mohamed-Adel-Ahmed-FlowCV-Resume-20251110.pdf" target="_blank" rel="noopener noreferrer" class="block mt-2 text-center bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg transition duration-300">Resume</a>
-        </div>
-    </header>
+    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <a href="#home" class="text-2xl font-bold text-white flex items-center gap-2 transform hover:scale-105 transition-transform">
+            <svg class="w-8 h-8 flutter-blue" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M78.042 128 32.22 82.178 12.012 102.388 0 90.375 32.22 58.155 12.012 37.945 32.22 17.735 78.042 63.558l17.735-17.735L128 14.265 90.375 0 32.22 58.155 78.042 104 90.375 116.333l-12.333 11.667z" fill="#01b5f8"/><path d="m78.042 104 37.625-37.625L90.375 41.083 78.042 53.417 32.22 9.625 19.833 22.012l58.209 58.21 17.735-17.735L128 90.375 90.375 128 78.042 115.667v-11.667z" fill="#02569B"/></svg>
+            <span>M. Adel</span>
+        </a>
+        
+        <nav class="hidden md:flex items-center space-x-8 text-lg">
+            <a href="#home" class="nav-item text-gray-300 hover:text-flutter-blue transition duration-300">Home</a>
+            <a href="#about" class="nav-item text-gray-300 hover:text-flutter-blue transition duration-300">About </a>
+            <a href="#skills" class="nav-item text-gray-300 hover:text-flutter-blue transition duration-300">Skills</a>
+            <a href="#work" class="nav-item text-gray-300 hover:text-flutter-blue transition duration-300">Projects</a>
+            <a href="#experience" class="nav-item text-gray-300 hover:text-flutter-blue transition duration-300">Experience</a>
+            <a href="#contact" class="nav-item text-gray-300 hover:text-flutter-blue transition duration-300">Contact</a>
+            <a href="src/assets/resume/Mohamed-Adel-Ahmed-FlowCV-Resume-20251110.pdf" target="_blank" rel="noopener noreferrer" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 animate-pulse-resume text-base">Resume</a> </nav>
+        
+        <button id="mobile-menu-btn" class="md:hidden text-white" title="Open mobile menu" aria-label="Open mobile menu">
+             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+             <span class="sr-only">Open mobile menu</span>
+        </button>
+    </div>
+    
+    <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 bg-gray-900/80 backdrop-blur-sm text-lg">
+         <a href="#home" class="block py-2 text-gray-300 hover:text-flutter-blue transition duration-300">Home</a>
+         <a href="#about" class="block py-2 text-gray-300 hover:text-flutter-blue transition duration-300">About </a>
+         <a href="#skills" class="block py-2 text-gray-300 hover:text-flutter-blue transition duration-300">Skills</a>
+         <a href="#work" class="block py-2 text-gray-300 hover:text-flutter-blue transition duration-300">Projects  </a>
+         <a href="#experience" class="block py-2 text-gray-300 hover:text-flutter-blue transition duration-300">Experience</a>
+         <a href="#contact" class="block py-2 text-gray-300 hover:text-flutter-blue transition duration-300">Contact</a>
+         <a href="src/assets/resume/Mohamed-Adel-Ahmed-FlowCV-Resume-20251110.pdf" target="_blank" rel="noopener noreferrer" class="block mt-2 text-center bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 text-base">Resume</a> </div>
+</header>
 
     <main class="pt-16">
+        
         <section id="home" class="min-h-screen container mx-auto px-6 flex flex-col md:flex-row items-center justify-center gap-12">
             <div class="md:w-1/2 text-center md:text-left">
                 <p class="text-lg text-blue-400 font-medium reveal-left">Hi, my name is</p>
-                <h1 id="hero-name-h1" class="hero-name text-5xl md:text-7xl font-extrabold text-white mt-2 text-gradient-animated">Mohamed Adel</h1>
-                <h2 class="text-3xl md:text-5xl font-bold text-gray-400 mt-3 reveal-left">I build things with <span id="typing-text" class="flutter-blue"></span></h2>
-                <p class="mt-6 max-w-xl text-gray-300 reveal-left">I'm a passionate Flutter developer specializing in creating beautiful, high-performance, and user-friendly mobile & web applications I turn ideas into reality with clean code and great user experiences</p>
-                <div class="mt-8 flex justify-center md:justify-start items-center gap-4 reveal-left">
+                <h1 id="hero-name-h1" class="hero-name text-5xl md:text-7xl font-extrabold text-white mt-2 text-gradient-animated">Mohamed Adel<span id="hero-name-cursor" class="hero-cursor"></span></h1>
+                
+                <p class="mt-8 text-xl text-gray-400 reveal-left" style="animation-delay: 100ms;">
+                    Flutter Developer | Cross-Platform Mobile Applications
+                </p>
+
+                <div class="flex flex-wrap justify-center md:justify-start gap-4 mt-8">
+                    
+                    <div class="bg-gray-900/70 backdrop-blur-sm border border-white/10 rounded-xl p-5 text-center min-w-[120px] stat-card reveal-up" style="animation-delay: 200ms;">
+                        <span class="text-4xl font-bold text-white">5</span>
+                        <p class="text-sm text-gray-400 mt-1">Projects 🚀</p>
+                    </div>
+                    
+                    <div class="bg-gray-900/70 backdrop-blur-sm border border-white/10 rounded-xl p-5 text-center min-w-[120px] stat-card reveal-up" style="animation-delay: 300ms;">
+                        <span class="text-4xl font-bold text-white">2</span>
+                        <p class="text-sm text-gray-400 mt-1">Years Experience 💼</p>
+                    </div>
+                    
+                    <div class="bg-gray-900/70 backdrop-blur-sm border border-white/10 rounded-xl p-5 text-center min-w-[120px] stat-card reveal-up" style="animation-delay: 400ms;">
+                        <span class="text-4xl font-bold text-white">4</span>
+                        <p class="text-sm text-gray-400 mt-1">Happy Clients 😊</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-center md:justify-start gap-4 mt-8 reveal-left" style="animation-delay: 500ms;">
+                    
+                    <a href="#work" class="bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 text-white font-semibold py-3 px-6 rounded-lg flex items-center gap-2 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-blue-500/30">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                        <span>View Projects</span>
+                    </a>
+
+                    <a href="#contact" class="bg-gray-900/70 backdrop-blur-sm border border-white/20 hover:border-white/50 text-white font-semibold py-3 px-6 rounded-lg flex items-center gap-2 transition-all duration-300 transform hover:scale-105">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                        <span>Contact</span>
+                    </a>
+                </div>
+
+                <div class="mt-12 flex justify-center md:justify-start items-center gap-6 reveal-left" style="animation-delay: 600ms;">
                      <a href="https://github.com/modola0100" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition-transform duration-300 hover:-translate-y-1">
                          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
                      </a>
@@ -89,6 +127,7 @@
                      </a>
                 </div>
             </div>
+            
             <div class="md:w-1/2 flex justify-center items-center reveal-right">
                 <div class="hero-image-container-new">
                     <img src="src\assets\images\100.jpg" alt="Mohamed Adel" class="hero-main-image-new">
@@ -101,51 +140,113 @@
             </div>
         </section>
         
-        <section id="about" class="py-20 bg-gray-900/50">
-            <div class="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-                 <div class="reveal-left">
-                    <h2 class="text-4xl font-bold mb-4">About Me</h2>
-                    <p class="mb-4 text-gray-300">Hello! I'm Mohamed, a Flutter developer based in Egypt. My passion for development started back when I tried to build my first simple app - and I've been hooked ever since!</p>
-                    <p class="mb-4 text-gray-300">I enjoy the entire process of turning a concept into a real, functional product that people can use and enjoy. I specialize in building for both Android and iOS from a single codebase using Flutter.</p>
-                     <p class="text-gray-300">Here are a few technologies I've been working with recently:</p>
-                    <ul class="mt-4 grid grid-cols-2 gap-2 text-gray-400">
-                        <li class="flex items-center gap-2 reveal-up"><span class="flutter-blue">▹</span>Flutter & Dart</li>
-                        <li class="flex items-center gap-2 reveal-up"><span class="flutter-blue">▹</span>Firebase</li>
-                        <li class="flex items-center gap-2 reveal-up"><span class="flutter-blue">▹</span>State Management</li>
-                        <li class="flex items-center gap-2 reveal-up"><span class="flutter-blue">▹</span>REST APIs</li>
-                        <li class="flex items-center gap-2 reveal-up"><span class="flutter-blue">▹</span>Clean Architecture</li>
-                        <li class="flex items-center gap-2 reveal-up"><span class="flutter-blue">▹</span>Git & GitHub</li>
-                    </ul>
+      <section id="about" class="py-20 bg-gray-900/50">
+    <div class="container mx-auto px-6">
+        
+        <div class="flex flex-col items-center mb-16">
+            <div class="flex items-center gap-3 mb-6 reveal-fade">
+                <h2 class="text-4xl font-bold text-gradient-blue">About Me</h2>
+                <svg class="w-8 h-8" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M78.042 128 32.22 82.178 12.012 102.388 0 90.375 32.22 58.155 12.012 37.945 32.22 17.735 78.042 63.558l17.735-17.735L128 14.265 90.375 0 32.22 58.155 78.042 104 90.375 116.333l-12.333 11.667z" fill="#01b5f8"/><path d="m78.042 104 37.625-37.625L90.375 41.083 78.042 53.417 32.22 9.625 19.833 22.012l58.209 58.21 17.735-17.735L128 90.375 90.375 128 78.042 115.667v-11.667z" fill="#02569B"/></svg>
+            </div>
+            
+            <div class="about-me-card reveal-up">
+                <p class="text-gray-300 leading-relaxed">
+                    A Flutter Developer with +2 years of experience building high-performance cross-platform mobile applications. 
+                    Proficient in state management, Firebase integration, and applying clean architecture principles. 
+                    Committed to delivering intuitive user experiences and collaborating effectively to achieve project goals.
+                </p>
+            </div>
+        </div>
+
+        <div id="skills" class="flex flex-col items-center reveal-up pt-16 -mt-16">
+            <h3 class="text-3xl font-bold mb-8 text-center reveal-fade">Technical Skills</h3>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 w-full max-w-3xl">
+                
+                <div class="skill-card reveal-up">
+                    <span class="skill-icon">
+                        <svg class="skill-svg" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M78.042 128 32.22 82.178 12.012 102.388 0 90.375 32.22 58.155 12.012 37.945 32.22 17.735 78.042 63.558l17.735-17.735L128 14.265 90.375 0 32.22 58.155 78.042 104 90.375 116.333l-12.333 11.667z" fill="#01b5f8"/><path d="m78.042 104 37.625-37.625L90.375 41.083 78.042 53.417 32.22 9.625 19.833 22.012l58.209 58.21 17.735-17.735L128 90.375 90.375 128 78.042 115.667v-11.667z" fill="#02569B"/></svg>
+                    </span>
+                    <span class="skill-name">Flutter & Dart</span>
                 </div>
-                <div class="flex justify-center items-center reveal-right">
-                    <div class="about-initials-container">
-                        <span class="about-initials">M.A</span>
-                    </div>
+                
+                <div class="skill-card reveal-up" style="animation-delay: 100ms;">
+                    <span class="skill-icon">
+                        <svg class="skill-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#FFCA28" d="M11.52 3.12l-7.7 15.42a.5.5 0 0 0 .66.66l15.42-7.7a.5.5 0 0 0 .1-.86l-7.62-7.62a.5.5 0 0 0-.86.1z"/><path fill="#FFA000" d="M2.08 18.04l7.56-14.8a.5.5 0 0 1 .86-.1l-7.6 7.6a.5.5 0 0 0-.1.72l-.72.58z"/><path fill="#F57C00" d="M11.6 3.17L3.08 20.94a.5.5 0 0 0 .84.34l15.42-7.7a.5.5 0 0 0 .1-.86L12.46 3.27a.5.5 0 0 0-.86-.1z"/></svg>
+                    </span>
+                    <span class="skill-name">Firebase</span>
+                </div>
+
+                <div class="skill-card reveal-up" style="animation-delay: 200ms;">
+                    <span class="skill-icon">
+                        <svg class="skill-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </span>
+                    <span class="skill-name">State Management</span>
+                </div>
+
+                <div class="skill-card reveal-up" style="animation-delay: 300ms;">
+                    <span class="skill-icon">
+                        <svg class="skill-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-7"/><path d="M12 12V3m-4 6l4-4 4 4"/></svg>
+                    </span>
+                    <span class="skill-name">REST APIs</span>
+                </div>
+
+                <div class="skill-card reveal-up" style="animation-delay: 400ms;">
+                    <span class="skill-icon">
+                        <svg class="skill-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17E12 22 22 17"/><path d="M2 12E12 17 22 12"/><path d="M12 2v10l-10-5L12 2l10 5L12 7V2z"/></svg>
+                    </span>
+                    <span class="skill-name">Clean Architecture</span>
+                </div>
+
+                <div class="skill-card reveal-up" style="animation-delay: 500ms;">
+                    <span class="skill-icon">
+                         <svg class="skill-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                    </span>
+                    <span class="skill-name">Git & GitHub</span>
+                </div>
+
+                <div class="skill-card reveal-up" style="animation-delay: 600ms;">
+                    <span class="skill-icon">
+                         <svg class="skill-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v1"></path><path d="M17 12h5a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-1"></path></svg>
+                    </span>
+                    <span class="skill-name">Responsive Design</span>
+                </div>
+
+                <div class="skill-card reveal-up" style="animation-delay: 700ms;">
+                    <span class="skill-icon">
+                         <svg class="skill-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                    </span>
+                    <span class="skill-name">Localization (i18n)</span>
+                </div>
+
+                <div class="skill-card reveal-up" style="animation-delay: 800ms;">
+                    <span class="skill-icon">
+                         <svg class="skill-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg>
+                    </span>
+                    <span class="skill-name">Testing</span>
                 </div>
             </div>
-        </section>
+            
+            <div class="animated-skills-divider reveal-grow-x mt-12 w-full max-w-3xl"></div>
+        </div>
+    </div>
+</section>
 
         <section id="work" class="py-20 container mx-auto px-6">
             <h2 class="text-4xl font-bold text-center mb-12 reveal-fade">My Recent Work</h2>
             <div id="projects-grid" class="projects-grid">
-                <!-- Projects will be injected here by JavaScript -->
-            </div>
+                </div>
         </section>
 
 
         <section id="experience" class="py-20 container mx-auto px-6">
-            <h2 class="text-4xl font-bold text-center mb-12 reveal-fade">Where I've Worked</h2>
-            <div class="max-w-4xl mx-auto reveal-up">
-                <div class="experience-container">
-                    <div id="experience-nav" class="experience-nav">
-                        <!-- Navigation buttons will be injected here -->
-                    </div>
-                    <div id="experience-content" class="experience-content flex-grow">
-                        <!-- Experience panel will be injected here -->
-                    </div>
-                </div>
+    <h2 class="text-4xl font-bold text-center mb-16 reveal-fade">Where I've Worked</h2>
+    
+    <div class="max-w-4xl mx-auto reveal-up">
+        <div id="experience-timeline" class="experience-timeline">
             </div>
-        </section>
+    </div>
+</section>
 
         <section id="contact" class="py-28 lg:py-32">
              <div class="container mx-auto px-6 text-center">

@@ -1,143 +1,151 @@
-/* Experience Section Styles */
-.experience-container {
+/* === Experience Section New Timeline Styles === */
+
+.experience-timeline {
+    position: relative;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 2.5rem; /* 40px */
 }
 
-.experience-nav {
+/* الخط العمودي للـ Timeline */
+.experience-timeline::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    left: 10px; /* يتوسط النقطة */
+    width: 2px;
+    /* تدرج لوني أزرق فلاتر */
+    background: linear-gradient(transparent, rgba(1, 181, 248, 0.7), transparent);
+    opacity: 0.5;
+    z-index: 1;
+}
+
+.experience-item {
+    position: relative;
     display: flex;
-    gap: 1.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #30363d;
-    justify-content: center;
+    gap: 1.5rem; /* 24px */
+    padding-left: 2.5rem; /* 40px, لإعطاء مساحة للنقطة */
 }
 
-.experience-nav-btn {
-    background: none;
-    border: none;
-    color: #8b949e;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: color 0.3s ease;
-    padding: 0.5rem;
+/* النقطة على الخط */
+.timeline-dot {
+    position: absolute;
+    left: 0;
+    top: 6px; /* ليحاذي أول سطر من النص */
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #0a0f18; /* نفس لون خلفية الصفحة ليقطع الخط */
+    border: 3px solid #01b5f8;
+    z-index: 2;
+    
+    /* توهج للنقطة */
+    box-shadow: 0 0 15px rgba(1, 181, 248, 0.5);
+    animation: pulse-glow-dot 2s infinite alternate;
 }
 
-.experience-nav-btn:hover {
-    color: #58a6ff;
+@keyframes pulse-glow-dot {
+    from { box-shadow: 0 0 10px rgba(1, 181, 248, 0.3); }
+    to   { box-shadow: 0 0 20px rgba(1, 181, 248, 0.7); }
 }
 
-.experience-nav-btn.active {
-    color: #58a6ff;
-    font-weight: bold;
+/* كارت الخبرة */
+.experience-card {
+    width: 100%;
+    background-color: rgba(23, 30, 46, 0.7);
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    border-radius: 0.75rem; /* 12px */
+    padding: 1.5rem; /* 24px */
+    transition: all 0.3s ease;
+    
+    /* توهج خفيف مثل الصورة */
+    box-shadow: 0 0 20px rgba(1, 181, 248, 0.1);
 }
 
-.experience-content {
-    min-height: 350px; /* To prevent layout shifts */
+.experience-card:hover {
+    border-color: rgba(56, 189, 248, 0.7);
+    box-shadow: 0 0 30px rgba(1, 181, 248, 0.3); /* توهج أقوى عند الـ Hover */
+    transform: translateY(-5px);
 }
 
-.experience-panel {
-    animation: fadeIn 0.5s ease-in-out;
+.experience-role {
+    font-size: 1.25rem; /* 20px */
+    font-weight: 700;
+    color: #f0f6fc; /* أبيض */
+    margin-bottom: 0.25rem;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+.experience-meta {
+    font-size: 0.9rem; /* 14px */
+    color: #8b949e; /* رمادي */
+    margin-bottom: 1rem;
 }
 
-.exp-header {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-}
-
-.exp-header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-family: 'Courier New', Courier, monospace;
-    color: #8b949e;
-}
-
-.exp-header-main {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-.exp-logo {
-    width: 80px;
-    height: 80px;
-    background-color: #161b22;
-    border-radius: 0.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem;
-}
-
-.exp-logo img {
-    max-width: 100%;
-    max-height: 100%;
-    border-radius: 0.25rem;
-}
-
-.exp-company {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #c9d1d9;
-}
-
-.exp-role {
-    font-size: 1.125rem;
-    color: #8b949e;
-}
-
-.exp-location {
-    font-size: 1rem;
-    color: #8b949e;
-}
-
-.exp-tasks {
+.experience-tasks {
     list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.75rem; /* 12px */
 }
 
-.exp-tasks li {
+.task-item {
+    position: relative; /* مهم لخاصية الـ hover */
     display: flex;
     align-items: flex-start;
-    gap: 1rem;
-    color: #8b949e;
+    gap: 0.75rem; /* 12px */
+    color: #c9d1d9; /* رمادي فاتح */
     line-height: 1.6;
 }
 
-.exp-tasks li::before {
-    content: '▹';
-    color: #58a6ff;
-    font-weight: bold;
+/* النقطة (•) قبل كل مهمة */
+.task-item::before {
+    content: '•';
+    color: #01b5f8;
+    font-size: 1.2rem;
+    line-height: 1.6;
 }
 
-@media (min-width: 768px) {
-    .experience-container {
-        flex-direction: row;
+
+/* === 📱 جزء الـ Responsive (طلبك الخاص) === */
+
+.task-item > span {
+    display: inline; /* الحالة الطبيعية على الديسكتوب */
+}
+
+/* على الشاشات الصغيرة (الموبايل) */
+@media (max-width: 640px) {
+    .task-item > span {
+        /* 1. إخفاء باقي السطر وعرض 3 نقط (...) */
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        
+        transition: all 0.3s ease;
     }
-    .experience-nav {
-        flex-direction: column;
-        border-bottom: none;
-        border-right: 1px solid #30363d;
-        padding-right: 1.5rem;
-        padding-bottom: 0;
-        justify-content: flex-start;
-    }
-    .exp-header {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: flex-start;
+    
+    /* 2. عند الـ hover (أو اللمس على الموبايل) */
+    .task-item:hover > span {
+        /* 3. إظهار النص كاملاً */
+        white-space: normal;
+        overflow: visible;
+        
+        /* 4. إظهاره في "كارت" منبثق لسهولة القراءة */
+        position: absolute;
+        left: -1rem; /* لضبط المحاذاة */
+        right: -1rem;
+        top: -0.25rem;
+        background: #1e293b; /* لون خلفية أغمق قليلاً */
+        padding: 0.75rem 1rem;
+        border-radius: 6px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        z-index: 10;
+        
+        /* التأكد من أن النص يقرأ من اليسار لليمين */
+        direction: ltr; 
     }
 }

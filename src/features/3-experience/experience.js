@@ -1,62 +1,54 @@
+// 1. استيراد البيانات من الملف بتاعك
 import { experiences } from '../../shared/data/experience-data.js';
-import { $, $$ } from '../../shared/utils/dom.js';
+// 2. استيراد الأداة المساعدة (selector)
+import { $ } from '../../shared/utils/dom.js';
 
-function renderExperiencePanel(exp) {
+/**
+ * دالة لإنشاء كود HTML لكل عنصر خبرة
+ * @param {object} exp - عنصر الخبرة من ملف experience-data.js
+ * @returns {string} - كود HTML
+ */
+function createExperienceHTML(exp) {
+    // 3. تجميع بيانات الشركة والمكان والوقت في سطر واحد
+    const meta = `${exp.company} • ${exp.location} • ${exp.period}`;
+    
+    // 4. إنشاء قائمة المهام (Tasks)
+    const tasksHTML = exp.tasks.map(task => `
+        <li class="task-item">
+            <span>${task}</span>
+        </li>
+    `).join('');
+
+    // 5. إرجاع كود HTML الكامل للعنصر
     return `
-        <div class="experience-panel">
-            <div class="exp-header">
-                <div class="exp-header-main">
-                    <div class="exp-logo">
-                        <img src="${exp.logo}" alt="${exp.company} Logo">
-                    </div>
-                    <div>
-                        <h3 class="exp-company">${exp.company}</h3>
-                        <p class="exp-role">${exp.role}</p>
-                        <p class="exp-location">${exp.location}</p>
-                    </div>
-                </div>
-                <div class="exp-header-top">
-                    <span>${exp.period}</span>
-                </div>
+        <div class="experience-item">
+            <div class="timeline-dot"></div>
+            <div class="experience-card">
+                <h3 class="experience-role">${exp.role}</h3>
+                <p class="experience-meta">${meta}</p>
+                <ul class="experience-tasks">
+                    ${tasksHTML}
+                </ul>
             </div>
-            <ul class="exp-tasks">
-                ${exp.tasks.map(task => `<li>${task}</li>`).join('')}
-            </ul>
         </div>
     `;
 }
 
+// 6. الدالة الرئيسية لتشغيل القسم
 export function initExperienceFeature() {
-    const navContainer = $('#experience-nav');
-    const contentContainer = $('#experience-content');
+    const timelineContainer = $('#experience-timeline');
+    if (!timelineContainer) {
+        console.error('Experience timeline container not found!');
+        return;
+    }
 
-    if (!navContainer || !contentContainer) return;
+    // 7. تفريغ الحاوية (احتياطي)
+    timelineContainer.innerHTML = '';
 
-    experiences.forEach((exp, index) => {
-        const navBtn = document.createElement('button');
-        navBtn.className = 'experience-nav-btn';
-        navBtn.dataset.index = index;
-        navBtn.textContent = `/0${index + 1}`;
-        if (index === 0) {
-            navBtn.classList.add('active');
-        }
-        navContainer.appendChild(navBtn);
-    });
+    // 8. إنشاء كود HTML لكل الخبرات الموجودة في الملف
+    // (ملاحظة: يتم عكس "reverse" المصفوفة عشان أحدث خبرة تظهر في الأول)
+    const allExperiencesHTML = experiences.reverse().map(createExperienceHTML).join('');
 
-    const renderContent = (index) => {
-        contentContainer.innerHTML = renderExperiencePanel(experiences[index]);
-    };
-
-    navContainer.addEventListener('click', (e) => {
-        if (e.target.matches('.experience-nav-btn')) {
-            const index = parseInt(e.target.dataset.index, 10);
-            $$('.experience-nav-btn').forEach(btn => btn.classList.remove('active'));
-            e.target.classList.add('active');
-            renderContent(index);
-        }
-    });
-
-    // Initial render
-    renderContent(0);
+    // 9. إضافة الكود النهائي في الحاوية في الـ HTML
+    timelineContainer.innerHTML = allExperiencesHTML;
 }
-
