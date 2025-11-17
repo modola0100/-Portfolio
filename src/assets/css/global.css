@@ -264,3 +264,18 @@ main.loaded {
     opacity: 1;
     transform: translateY(0); /* ارجع للمكان الأصلي */
 }
+/* === 🎯 حل مشكلة الـ Fixed Header === */
+/* ده بيضيف "هامش" وهمي فوق كل سكشن من السكاشن دي
+  عشان لما اللينك ينط عليه، ميبدأش من أول الشاشة بالظبط ويختفي تحت الناف بار
+*/
+#home, #about, #skills, #work, #experience, #contact {
+    /* 6rem = 96px. ممكن تقلل أو تزود الرقم ده حسب ارتفاع الناف بار عندك */
+    scroll-margin-top: 6rem; 
+}
+
+/* للموبايل، ممكن نقلل المسافة شوية */
+@media (max-width: 768px) {
+     #home, #about, #skills, #work, #experience, #contact {
+        scroll-margin-top: 5rem; /* 80px */
+    }
+}

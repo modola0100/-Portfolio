@@ -1,14 +1,76 @@
-/* New Contact Section Design - 3D Flipping Card */
+/* === 1. ستايلات كروت الاتصال (العمود الشمال) === */
+
+.contact-info-icon-large {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    background-color: #01b5f8;
+    color: white;
+}
+
+.contact-info-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background-color: rgba(23, 30, 46, 0.7);
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    transition: all 0.3s ease;
+}
+
+.contact-info-item:hover {
+    border-color: rgba(56, 189, 248, 0.7);
+    box-shadow: 0 0 25px rgba(1, 181, 248, 0.25);
+    transform: translateY(-5px);
+}
+
+.contact-info-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    border-radius: 0.5rem;
+    background-color: #01b5f8;
+    color: white;
+}
+
+.contact-info-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #f0f6fc;
+}
+
+.contact-info-text {
+    color: #8b949e;
+}
+
+/* === 2. ستايلات كارت الفورم (العمود اليمين - 3D Flip) === */
+/* (دي الستايلات الأصلية بتاعتك مع تعديل المحاذاة) */
+
 .contact-card-container {
     perspective: 1500px;
-    max-width: min(90vw, 450px); /* Controls the size of the card */
-    margin: 0 auto;
+    max-width: min(90vw, 450px);
+    
+    /* === تم التعديل هنا === */
+    margin: 0 auto; /* يتوسط في عموده على الموبايل */
 }
+
+@media (min-width: 768px) {
+    .contact-card-container {
+        /* إلغاء التوسيط، ليأخذ المحاذاة الافتراضية (لليسار) */
+        margin: 0; 
+    }
+}
+/* === نهاية التعديل === */
 
 .contact-card {
     position: relative;
     width: 100%;
-    height: auto; /* === 🎨 زيادة الارتفاع === */
     min-height: 480px;
     transition: transform 0.8s;
     transform-style: preserve-3d;
@@ -22,7 +84,6 @@
 :lang(ar) .contact-card-container:hover .contact-card {
     transform: rotateY(-180deg);
 }
-
 
 .contact-card-front,
 .contact-card-back {
@@ -63,7 +124,6 @@
     color: #c9d1d9;
 }
 
-
 .contact-card-back {
     background-color: #161b22;
     transform: rotateY(180deg);
@@ -73,19 +133,17 @@
     transform: rotateY(-180deg);
 }
 
-/* === 🎨 بداية الـ CSS الجديد للفورم === */
-
-/* Form Styles (NEW - Animated Line Effect) */
+/* === 3. ستايلات حقول الفورم (زي ما هي) === */
 .form-group {
     position: relative;
-    margin-bottom: 2rem; /* إضافة مسافة بين الحقول */
+    margin-bottom: 2rem;
 }
 
 .form-input {
     width: 100%;
     background: transparent;
     border: none;
-    border-bottom: 2px solid #4a5568; /* الخط في وضع الخمول */
+    border-bottom: 2px solid #4a5568;
     padding: 10px 0;
     color: #f0f6fc;
     font-size: 1rem;
@@ -94,7 +152,7 @@
 
 .form-input:focus {
     outline: none;
-    border-bottom-color: transparent; /* إخفاء الخط الأساسي عند التركيز */
+    border-bottom-color: transparent;
 }
 
 .form-label {
@@ -106,7 +164,6 @@
     transition: all 0.3s ease;
 }
 
-/* حركة الـ Label */
 .form-input:focus ~ .form-label,
 .form-input:not(:placeholder-shown) ~ .form-label {
     top: -16px;
@@ -114,42 +171,38 @@
     color: #01b5f8;
 }
 
-/* الخط المتحرك الجديد */
 .focus-line {
     position: absolute;
     bottom: 0;
-    left: 50%; /* يبدأ من المنتصف */
+    left: 50%;
     transform: translateX(-50%);
-    width: 0; /* يبدأ بعرض صفر */
+    width: 0;
     height: 2px;
-    background: #01b5f8; /* لون فلاتر الأزرق */
-    transition: width 0.4s ease-out; /* أنيميشن الحركة */
+    background: #01b5f8;
+    transition: width 0.4s ease-out;
 }
 
 .form-input:focus ~ .focus-line {
-    width: 100%; /* يمتلئ عند التركيز */
+    width: 100%;
 }
 
-/* توحيد شكل حقل الرسالة */
 textarea.form-input {
     min-height: 80px;
     resize: vertical;
-    border: none; /* إزالة أي إطارات سابقة */
-    border-bottom: 2px solid #4a5568; /* الخط في وضع الخمول */
+    border: none;
+    border-bottom: 2px solid #4a5568;
 }
 
 textarea.form-input:focus {
-    border-bottom-color: transparent; /* إخفاء الخط عند التركيز */
+    border-bottom-color: transparent;
 }
     
-/* تعديل بسيط لـ Label الخاص بحقل الرسالة */
 textarea.form-input:focus ~ .form-label,
 textarea.form-input:not(:placeholder-shown) ~ .form-label {
     background-color: transparent;
     padding: 0;
 }
 
-/* RTL Support */
 :lang(ar) .form-label {
     left: auto;
     right: 0;
@@ -165,8 +218,7 @@ textarea.form-input:not(:placeholder-shown) ~ .form-label {
     right: 0;
 }
 
-/* === 🎨 نهاية الـ CSS الجديد للفورم === */
-
+/* === 4. ستايل زرار الإرسال (الأصلي) === */
 .submit-btn {
     width: 100%;
     display: inline-flex;
