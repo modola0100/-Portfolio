@@ -54,7 +54,7 @@
 
 .contact-card-container {
     perspective: 1500px;
-    max-width: min(90vw,370px);
+    max-width: min(90vw,480px);
     
     /* === تم التعديل هنا === */
     margin: 0 auto; /* يتوسط في عموده على الموبايل */

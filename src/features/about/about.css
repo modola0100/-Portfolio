@@ -11,7 +11,8 @@
 
 /* === About Me Card (Top) === */
 .about-me-card {
-    max-width: 768px; /* max-w-3xl, ليكون مريحاً في القراءة */
+    /* === تم إلغاء هذا السطر ليأخذ العرض الكامل === */
+    /* max-width: 768px; */ 
     width: 100%;
     
     background-color: rgba(23, 30, 46, 0.7);
