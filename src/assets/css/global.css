@@ -57,24 +57,31 @@ body {
     }
 }
 
-/* Nav item hover animation */
+/* Nav Items Styling */
 .nav-item {
     position: relative;
-    padding-bottom: 5px;
+    transition: all 0.3s ease;
 }
-.nav-item::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 2px;
-    background-color: #01b5f8;
-    transition: width 0.3s ease-in-out;
-}
-.nav-item:hover::after { width: 100%; }
 
+/* حذف الخط القديم */
+.nav-item::after {
+    display: none !important;
+}
+
+/* Active State: زر أزرق كامل */
+.nav-item.active {
+    background-color: #01b5f8; /* Flutter Blue */
+    color: #ffffff !important;
+    box-shadow: 0 2px 10px rgba(1, 181, 248, 0.4);
+    font-weight: 600;
+    transform: scale(1.05);
+}
+
+/* Hover Effect للزر غير النشط */
+.nav-item:hover:not(.active) {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
 /* Project Modal Styles */
 #project-modal { transition: opacity 0.3s ease-in-out; }
 #project-modal-content { transition: transform 0.3s ease-in-out; }

@@ -7,13 +7,17 @@ export function initPreloader() {
     const progressBar = document.querySelector('.progress-bar');
     const maCircle = document.querySelector('.preloader-ma-circle');
     
-    // --- *** الإضافة الأولى هنا *** ---
-    const main = document.querySelector('main'); // الإمساك بالمحتوى الرئيسي
+    const main = document.querySelector('main');
+    // === ✨ الإضافة الجديدة: نمسك الناف بار ===
+    const header = document.getElementById('header'); 
 
     // Safety check
     if (!preloader || !loadingText || !readyText || !progressBar || !spinner || !maCircle) {
         console.error("One or more preloader elements are missing!");
         if (preloader) preloader.style.display = 'none';
+        // في حالة حدوث خطأ، أظهر الناف بار والمحتوى فوراً
+        if (header) header.classList.add('visible');
+        if (main) main.classList.add('loaded');
         return;
     }
 
@@ -41,22 +45,26 @@ export function initPreloader() {
             // 1. ابدأ إخفاء الـ preloader
             preloader.style.opacity = '0';
             
-            // --- *** الإضافة الثانية هنا *** ---
-            // 2. ابدأ إظهار المحتوى بالأنيميشن
+            // 2. ابدأ إظهار المحتوى
             if (main) {
                 main.classList.add('loaded');
             }
 
-            // 3. احذف الـ preloader من الشاشة بعد انتهاء التلاشي
+            // === ✨ الإضافة الجديدة: أظهر الناف بار الآن فقط ===
+            if (header) {
+                header.classList.add('visible');
+            }
+
+            // 3. احذف الـ preloader من الشاشة
             setTimeout(() => {
                 preloader.style.display = 'none';
-            }, 500); // مدة التلاشي
+            }, 500); 
             
-        }, 2000); // مدة الانتظار عند "Ready!"
+        }, 2000); 
     };
 
     // --- 4. Start the loading simulation ---
-    const intervalDuration = 75; // 1.5 ثانية
+    const intervalDuration = 75; 
     const progressStep = 5;
 
     const interval = setInterval(() => {
