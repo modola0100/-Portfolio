@@ -89,6 +89,21 @@
     font-size: 0.875rem; /* 14px (text-sm) */
     color: #cbd5e1; /* text-slate-300 */
 }
+/* تنسيق صور المهارات */
+.skill-img {
+    width: 45px;       /* عرض الصورة */
+    height: 45px;      /* ارتفاع الصورة */
+    object-fit: contain; /* يحافظ على أبعاد الصورة ولا يجعلها تبدو ممطوطة */
+    display: block;
+}
+
+/* في حالة الشاشات الصغيرة جداً يمكن تصغيرها قليلاً */
+@media (max-width: 640px) {
+    .skill-img {
+        width: 35px;
+        height: 35px;
+    }
+}
 
 /* تعديل بسيط لأسماء المهارات على الشاشات الأكبر */
 @media (min-width: 768px) {
@@ -116,4 +131,27 @@
         opacity: 1;
         transform: scaleX(1); /* يكبر حتى يأخذ عرضه الكامل */
     }
+}
+/* كلاس للأيقونات المخصصة الملونة */
+.custom-colored-icon {
+    width: 40px;
+    height: 40px;
+    
+    /* هذا هو الجزء السحري: نستخدم الصورة كقناع (Mask) */
+    -webkit-mask-image: var(--img-url);
+    mask-image: var(--img-url);
+    
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    
+    -webkit-mask-position: center;
+    mask-position: center;
+    
+    /* هنا نحدد اللون اللي إنت عايزه للأيقونة */
+    /* يمكنك جعله لون واحد مثل background-color: #01b5f8; */
+    /* أو تدرج لوني مثل القديم كما يلي: */
+    background: linear-gradient(135deg, #01b5f8 0%, #02569B 100%);
 }
