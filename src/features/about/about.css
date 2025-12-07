@@ -155,3 +155,21 @@
     /* أو تدرج لوني مثل القديم كما يلي: */
     background: linear-gradient(135deg, #01b5f8 0%, #02569B 100%);
 }
+  .skill-svg {
+    font-size: 2.4rem;
+    display: inline-block;
+    background: linear-gradient(135deg, #01b5f8, #02569B);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .skill-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+ .skill-img {
+    width: 42px;
+    filter: brightness(0) saturate(100%) invert(57%) sepia(93%) saturate(3100%) hue-rotate(178deg) brightness(97%) contrast(102%);
+  }

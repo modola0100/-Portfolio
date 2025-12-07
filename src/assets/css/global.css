@@ -151,14 +151,21 @@ body {
 .text-gradient-animated {
     background: linear-gradient(90deg, #01b5f8, #58a6ff, #c9d1d9, #01b5f8);
     background-size: 200% auto;
-    background-clip: text;
     -webkit-background-clip: text;
-    color: transparent;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
     animation: text-flow 5s linear infinite;
+    background-position: 0% center;
 }
 
 @keyframes text-flow {
-    to {
+    0% {
+        background-position: 0% center;
+    }
+    50% {
+        background-position: 100% center;
+    }
+    100% {
         background-position: 200% center;
     }
 }

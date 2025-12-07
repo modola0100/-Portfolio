@@ -5,10 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mohamed Adel - Flutter Developer</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <svg style="width:0;height:0;position:absolute;">
+  <defs>
+    <linearGradient id="blue-gradient" x2="1" y2="1">
+      <stop offset="0%" stop-color="#01b5f8"/>
+      <stop offset="100%" stop-color="#02569B"/>
+    </linearGradient>
+  </defs>
+</svg>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/scrollreveal@4.0.0/dist/scrollreveal.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
@@ -80,7 +92,7 @@
     <main class="pt-24"> <section id="home" class="min-h-screen container mx-auto px-6 flex flex-col md:flex-row items-center justify-center gap-12">
             <div class="md:w-1/2 text-center md:text-left">
                 <h2 class="text-lg text-blue-400 font-medium reveal-left">Hi, my name is</h2>
-                <h1 id="hero-name-h1" class="hero-name text-5xl md:text-7xl font-extrabold text-white mt-2 text-gradient-animated">Mohamed Adel<span id="hero-name-cursor" class="hero-cursor"></span></h1>
+                <h1 id="hero-name-h1" class="hero-name text-5xl md:text-7xl font-extrabold mt-2">Mohamed Adel<span id="hero-name-cursor" class="hero-cursor"></span></h1>
                 
                 <p class="mt-8 text-xl text-gray-400 reveal-left" style="animation-delay: 100ms;">
                     Flutter Developer | Cross-Platform Mobile Applications
@@ -151,116 +163,101 @@
         </section>
 
        <section id="skills" class="py-20">
-    <div class="container mx-auto px-6">
-        <div class="flex flex-col items-center md:items-start reveal-up">
-            
-            <svg style="width:0;height:0;position:absolute;" aria-hidden="true" focusable="false">
-                <linearGradient id="blue-gradient" x2="1" y2="1">
-                    <stop offset="0%" stop-color="#01b5f8" />
-                    <stop offset="100%" stop-color="#02569B" />
-                </linearGradient>
-            </svg>
+  <div class="container mx-auto px-6">
+    <div class="flex flex-col items-center md:items-start">
 
-            <div class="flex items-center mb-8 section-header-container reveal-fade">
-                <span class="section-icon-box">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 002.25-2.25V6.75a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 6.75v10.5a2.25 2.25 0 002.25 2.25z" /></svg>
-                </span>
-                <h3 class="section-title-custom">Technical Skills</h3>
-            </div>
-            
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-5 w-full">
+      <!-- العنوان + الآيقونة اللي كانت ناصية -->
+      <div class="flex items-center mb-8 section-header-container reveal-fade">
+        <span class="section-icon-box">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+               viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 21" />
+          </svg>
+        </span>
+        <h3 class="section-title-custom">Technical Skills</h3>
+      </div>
 
-                <div class="skill-card reveal-up">
-                    <span class="skill-icon">
-                        <svg class="skill-svg" viewBox="0 0 166 202" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="url(#blue-gradient)" d="M100.5 26.5L66.5 60.5L100.5 94.5L166.5 26.5H100.5Z"/>
-                            <path fill="url(#blue-gradient)" d="M66.5 140.5L83.5 123.5L117.5 157.5L83.5 191.5L33.5 141.5L66.5 140.5Z"/>
-                            <path fill="url(#blue-gradient)" d="M133.5 107.5L100.5 141.5L133.5 175.5L166.5 141.5L133.5 107.5Z"/>
-                            <path fill="url(#blue-gradient)" d="M83.5 123.5L116.5 90.5L150.5 124.5L117.5 157.5L83.5 123.5Z"/>
-                        </svg>
-                    </span>
-                    <span class="skill-name">Flutter & Dart</span>
-                </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-5 w-full">
 
-                <div class="skill-card reveal-up" style="animation-delay: 100ms;">
-                    <span class="skill-icon">
-                        <svg class="skill-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="url(#blue-gradient)" d="M3.89 15.672L6.438 3.088a.81.81 0 011.534-.127l3.284 6.962L3.89 15.672z"/>
-                            <path fill="url(#blue-gradient)" d="M13.757 9.553L11.256 4.265a.808.808 0 00-1.46.09L4.58 16.79l9.177-7.237z"/>
-                            <path fill="url(#blue-gradient)" d="M13.775 9.59L17.31 3.103a.814.814 0 011.494.175l.006.044 3.167 14.47-8.202-8.2z"/>
-                        </svg>
-                    </span>
-                    <span class="skill-name">Firebase</span>
-                </div>
-
-                <div class="skill-card reveal-up" style="animation-delay: 200ms;">
-                    <span class="skill-icon">
-                        <svg class="skill-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="url(#blue-gradient)" d="M12 2L2 8l10 6 10-6-10-6z"/> <path fill="url(#blue-gradient)" opacity="0.8" d="M2 8v8l10 6V14L2 8z"/> <path fill="url(#blue-gradient)" opacity="0.6" d="M12 14l10-6v8l-10 6V14z"/> </svg>
-                    </span>
-                    <span class="skill-name">State Management</span>
-                </div>
-
-                <div class="skill-card reveal-up" style="animation-delay: 300ms;">
-                    <span class="skill-icon">
-                        <svg class="skill-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                             <path fill="url(#blue-gradient)" d="M19.36 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.64-4.96z"/>
-                        </svg>
-                    </span>
-                    <span class="skill-name">REST APIs</span>
-                </div>
-
-                <div class="skill-card reveal-up" style="animation-delay: 400ms;">
-                    <span class="skill-icon">
-                        <svg class="skill-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="url(#blue-gradient)" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
-                            <circle cx="12" cy="12" r="5" fill="url(#blue-gradient)" opacity="0.5"/>
-                        </svg>
-                    </span>
-                    <span class="skill-name">Clean Architecture</span>
-                </div>
-
-                <div class="skill-card reveal-up" style="animation-delay: 500ms;">
-                    <span class="skill-icon">
-                        <svg class="skill-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="url(#blue-gradient)" d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                        </svg>
-                    </span>
-                    <span class="skill-name">Git & GitHub</span>
-                </div>
-
-                <div class="skill-card reveal-up" style="animation-delay: 600ms;">
-                    <span class="skill-icon">
-                        <svg class="skill-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                             <path fill="url(#blue-gradient)" d="M4 6h18V4H4c-1.1 0-2 .9-2 2v11H0v3h14v-3H4V6zm19 2h-6c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1zm-1 9h-4v-7h4v7z"/>
-                        </svg>
-                    </span>
-                    <span class="skill-name">Responsive Design</span>
-                </div>
-
-                <div class="skill-card reveal-up" style="animation-delay: 700ms;">
-                    <span class="skill-icon">
-                        <svg class="skill-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="url(#blue-gradient)" d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.91 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2 0 .68.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.9-4.33-3.56zm2.95-8H5.08c.96-1.66 2.49-2.93 4.33-3.56C8.81 5.55 8.35 6.75 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2 0-.68.07-1.35.16-2h4.68c.09.65.16 1.32.16 2 0 .68-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2 0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z"/>
-                        </svg>
-                    </span>
-                    <span class="skill-name">Localization (i18n)</span>
-                </div>
-
-                <div class="skill-card reveal-up" style="animation-delay: 800ms;">
-                    <span class="skill-icon">
-                        <svg class="skill-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="url(#blue-gradient)" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                        </svg>
-                    </span>
-                    <span class="skill-name">Testing</span>
-                </div>
-
-            </div>
-            <div class="animated-skills-divider reveal-grow-x mt-12 w-full"></div>
+        <!-- Flutter -->
+        <div class="skill-card">
+          <span class="skill-icon">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg" class="skill-img">
+          </span>
+          <span class="skill-name">Flutter &amp; Dart</span>
         </div>
+
+        <!-- Firebase -->
+        <div class="skill-card">
+          <span class="skill-icon">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg" class="skill-img">
+          </span>
+          <span class="skill-name">Firebase</span>
+        </div>
+
+        <!-- State Management -->
+        <div class="skill-card">
+          <span class="skill-icon">
+            <img src="src/assets/images/icons/icons8-library-50.png" class="skill-img">
+          </span>
+          <span class="skill-name">State Management</span>
+        </div>
+
+        <!-- REST API -->
+        <div class="skill-card">
+          <span class="skill-icon">
+            <img src="src/assets/images/icons/api.png" class="skill-img">
+          </span>
+          <span class="skill-name">REST APIs</span>
+        </div>
+
+        <!-- Clean Architecture -->
+        <div class="skill-card">
+          <span class="skill-icon">
+            <img src="src/assets/images/icons/clean-code.png" class="skill-img">
+          </span>
+          <span class="skill-name">Clean Architecture</span>
+        </div>
+
+        <!-- Git & GitHub -->
+        <div class="skill-card">
+          <span class="skill-icon">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" class="skill-img">
+          </span>
+          <span class="skill-name">Git &amp; GitHub</span>
+        </div>
+
+        <!-- Responsive Design -->
+        <div class="skill-card">
+          <span class="skill-icon">
+            <img src="src/assets/images/icons/responsive-app.png" class="skill-img">
+          </span>
+          <span class="skill-name">Responsive Design</span>
+        </div>
+
+        <!-- Localization -->
+        <div class="skill-card">
+          <span class="skill-icon">
+            <img src="src/assets/images/icons/translate_5739218.png" class="skill-img">
+          </span>
+          <span class="skill-name">Localization (i18n)</span>
+        </div>
+
+        <!-- Testing -->
+        <div class="skill-card">
+          <span class="skill-icon">
+            <img src="src/assets/images/icons/testing.png" class="skill-img">
+          </span>
+          <span class="skill-name">Testing</span>
+        </div>
+
+      </div>
     </div>
+  </div>
 </section>
+
+
 
         <section id="work" class="py-20 container mx-auto px-6">
           <div class="flex items-center mb-10 section-header-container reveal-fade">
