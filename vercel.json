@@ -3,72 +3,48 @@
     "outputDirectory": ".",
     "rewrites": [
         {
-            "source": "/api/auth/login",
-            "destination": "/api/auth/login.js"
-        },
-        {
-            "source": "/api/auth/register",
-            "destination": "/api/auth/register.js"
-        },
-        {
-            "source": "/api/auth/verify",
-            "destination": "/api/auth/verify.js"
-        },
-        {
-            "source": "/api/auth/forgot-password",
-            "destination": "/api/auth/forgot-password.js"
-        },
-        {
-            "source": "/api/auth/reset-password",
-            "destination": "/api/auth/reset-password.js"
-        },
-        {
-            "source": "/api/auth/refresh",
-            "destination": "/api/auth/refresh.js"
-        },
-        {
-            "source": "/api/auth/me",
-            "destination": "/api/auth/me.js"
+            "source": "/api/auth/:action",
+            "destination": "/api/auth.js?action=:action"
         },
         {
             "source": "/api/projects/:id",
-            "destination": "/api/projects/[id].js?id=:id"
+            "destination": "/api/projects.js?id=:id"
         },
         {
             "source": "/api/projects",
-            "destination": "/api/projects/index.js"
+            "destination": "/api/projects.js"
         },
         {
             "source": "/api/skills/:id",
-            "destination": "/api/skills/[id].js?id=:id"
+            "destination": "/api/skills.js?id=:id"
         },
         {
             "source": "/api/skills",
-            "destination": "/api/skills/index.js"
+            "destination": "/api/skills.js"
         },
         {
             "source": "/api/experiences/:id",
-            "destination": "/api/experiences/[id].js?id=:id"
+            "destination": "/api/experiences.js?id=:id"
         },
         {
             "source": "/api/experiences",
-            "destination": "/api/experiences/index.js"
+            "destination": "/api/experiences.js"
         },
         {
             "source": "/api/general",
-            "destination": "/api/general/index.js"
+            "destination": "/api/general.js"
         },
         {
             "source": "/api/messages/:id",
-            "destination": "/api/messages/[id].js?id=:id"
+            "destination": "/api/messages.js?id=:id"
         },
         {
             "source": "/api/messages",
-            "destination": "/api/messages/index.js"
+            "destination": "/api/messages.js"
         },
         {
             "source": "/api/upload",
-            "destination": "/api/upload/index.js"
+            "destination": "/api/upload.js"
         }
     ],
     "headers": [
