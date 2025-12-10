@@ -3,7 +3,6 @@
     "installCommand": "npm install",
     "outputDirectory": ".",
     "framework": null,
-    "public": ".",
     "routes": [
         {
             "src": "/api/auth/(.*)",
