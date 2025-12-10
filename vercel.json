@@ -1,69 +1,79 @@
 {
-    "buildCommand": null,
-    "outputDirectory": ".",
-    "rewrites": [
+    "version": 2,
+    "builds": [
         {
-            "source": "/api/auth/:action",
-            "destination": "/api/auth.js?action=:action"
+            "src": "api/*.js",
+            "use": "@vercel/node"
         },
         {
-            "source": "/api/projects/:id",
-            "destination": "/api/projects.js?id=:id"
+            "src": "*.html",
+            "use": "@vercel/static"
         },
         {
-            "source": "/api/projects",
-            "destination": "/api/projects.js"
+            "src": "admin/**",
+            "use": "@vercel/static"
         },
         {
-            "source": "/api/skills/:id",
-            "destination": "/api/skills.js?id=:id"
+            "src": "src/**",
+            "use": "@vercel/static"
         },
         {
-            "source": "/api/skills",
-            "destination": "/api/skills.js"
+            "src": "*.svg",
+            "use": "@vercel/static"
         },
         {
-            "source": "/api/experiences/:id",
-            "destination": "/api/experiences.js?id=:id"
-        },
-        {
-            "source": "/api/experiences",
-            "destination": "/api/experiences.js"
-        },
-        {
-            "source": "/api/general",
-            "destination": "/api/general.js"
-        },
-        {
-            "source": "/api/messages/:id",
-            "destination": "/api/messages.js?id=:id"
-        },
-        {
-            "source": "/api/messages",
-            "destination": "/api/messages.js"
-        },
-        {
-            "source": "/api/upload",
-            "destination": "/api/upload.js"
+            "src": "*.ico",
+            "use": "@vercel/static"
         }
     ],
-    "headers": [
+    "routes": [
         {
-            "source": "/api/(.*)",
-            "headers": [
-                {
-                    "key": "Access-Control-Allow-Origin",
-                    "value": "*"
-                },
-                {
-                    "key": "Access-Control-Allow-Methods",
-                    "value": "GET, POST, PUT, DELETE, OPTIONS"
-                },
-                {
-                    "key": "Access-Control-Allow-Headers",
-                    "value": "Content-Type, Authorization"
-                }
-            ]
+            "src": "/api/auth/(.*)",
+            "dest": "/api/auth.js?action=$1"
+        },
+        {
+            "src": "/api/projects/([^/]+)",
+            "dest": "/api/projects.js?id=$1"
+        },
+        {
+            "src": "/api/projects",
+            "dest": "/api/projects.js"
+        },
+        {
+            "src": "/api/skills/([^/]+)",
+            "dest": "/api/skills.js?id=$1"
+        },
+        {
+            "src": "/api/skills",
+            "dest": "/api/skills.js"
+        },
+        {
+            "src": "/api/experiences/([^/]+)",
+            "dest": "/api/experiences.js?id=$1"
+        },
+        {
+            "src": "/api/experiences",
+            "dest": "/api/experiences.js"
+        },
+        {
+            "src": "/api/general",
+            "dest": "/api/general.js"
+        },
+        {
+            "src": "/api/messages/([^/]+)",
+            "dest": "/api/messages.js?id=$1"
+        },
+        {
+            "src": "/api/messages",
+            "dest": "/api/messages.js"
+        },
+        {
+            "src": "/api/upload",
+            "dest": "/api/upload.js"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/$1"
         }
     ]
 }
