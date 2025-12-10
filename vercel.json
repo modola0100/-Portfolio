@@ -22,78 +22,74 @@
             "use": "@vercel/static"
         }
     ],
-    "routes": [
+    "rewrites": [
         {
-            "src": "/api/auth/login",
-            "dest": "/api/auth/login.js"
+            "source": "/api/auth/login",
+            "destination": "/api/auth/login.js"
         },
         {
-            "src": "/api/auth/register",
-            "dest": "/api/auth/register.js"
+            "source": "/api/auth/register",
+            "destination": "/api/auth/register.js"
         },
         {
-            "src": "/api/auth/verify",
-            "dest": "/api/auth/verify.js"
+            "source": "/api/auth/verify",
+            "destination": "/api/auth/verify.js"
         },
         {
-            "src": "/api/auth/forgot-password",
-            "dest": "/api/auth/forgot-password.js"
+            "source": "/api/auth/forgot-password",
+            "destination": "/api/auth/forgot-password.js"
         },
         {
-            "src": "/api/auth/reset-password",
-            "dest": "/api/auth/reset-password.js"
+            "source": "/api/auth/reset-password",
+            "destination": "/api/auth/reset-password.js"
         },
         {
-            "src": "/api/auth/refresh",
-            "dest": "/api/auth/refresh.js"
+            "source": "/api/auth/refresh",
+            "destination": "/api/auth/refresh.js"
         },
         {
-            "src": "/api/auth/me",
-            "dest": "/api/auth/me.js"
+            "source": "/api/auth/me",
+            "destination": "/api/auth/me.js"
         },
         {
-            "src": "/api/projects/([^/]+)",
-            "dest": "/api/projects/[id].js?id=$1"
+            "source": "/api/projects/:id",
+            "destination": "/api/projects/[id].js?id=:id"
         },
         {
-            "src": "/api/projects",
-            "dest": "/api/projects/index.js"
+            "source": "/api/projects",
+            "destination": "/api/projects/index.js"
         },
         {
-            "src": "/api/skills/([^/]+)",
-            "dest": "/api/skills/[id].js?id=$1"
+            "source": "/api/skills/:id",
+            "destination": "/api/skills/[id].js?id=:id"
         },
         {
-            "src": "/api/skills",
-            "dest": "/api/skills/index.js"
+            "source": "/api/skills",
+            "destination": "/api/skills/index.js"
         },
         {
-            "src": "/api/experiences/([^/]+)",
-            "dest": "/api/experiences/[id].js?id=$1"
+            "source": "/api/experiences/:id",
+            "destination": "/api/experiences/[id].js?id=:id"
         },
         {
-            "src": "/api/experiences",
-            "dest": "/api/experiences/index.js"
+            "source": "/api/experiences",
+            "destination": "/api/experiences/index.js"
         },
         {
-            "src": "/api/general",
-            "dest": "/api/general/index.js"
+            "source": "/api/general",
+            "destination": "/api/general/index.js"
         },
         {
-            "src": "/api/messages/([^/]+)",
-            "dest": "/api/messages/[id].js?id=$1"
+            "source": "/api/messages/:id",
+            "destination": "/api/messages/[id].js?id=:id"
         },
         {
-            "src": "/api/messages",
-            "dest": "/api/messages/index.js"
+            "source": "/api/messages",
+            "destination": "/api/messages/index.js"
         },
         {
-            "src": "/api/upload",
-            "dest": "/api/upload/index.js"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "/$1"
+            "source": "/api/upload",
+            "destination": "/api/upload/index.js"
         }
     ],
     "headers": [
@@ -111,18 +107,6 @@
                 {
                     "key": "Access-Control-Allow-Headers",
                     "value": "Content-Type, Authorization"
-                },
-                {
-                    "key": "X-Content-Type-Options",
-                    "value": "nosniff"
-                },
-                {
-                    "key": "X-Frame-Options",
-                    "value": "DENY"
-                },
-                {
-                    "key": "X-XSS-Protection",
-                    "value": "1; mode=block"
                 }
             ]
         }
