@@ -3,8 +3,8 @@
  * Handles: list, get, create, update, delete
  */
 
-import connectDB from '../../server/lib/db.js';
-import Project from '../../server/models/Project.js';
+import connectDB from '../server/lib/db.js';
+import Project from '../server/models/Project.js';
 import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET;

@@ -2,8 +2,8 @@
  * Messages API - All Message Endpoints
  */
 
-import connectDB from '../../server/lib/db.js';
-import Message from '../../server/models/Message.js';
+import connectDB from '../server/lib/db.js';
+import Message from '../server/models/Message.js';
 import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET;

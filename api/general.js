@@ -2,8 +2,8 @@
  * General Settings API
  */
 
-import connectDB from '../../server/lib/db.js';
-import GeneralSettings from '../../server/models/GeneralSettings.js';
+import connectDB from '../server/lib/db.js';
+import GeneralSettings from '../server/models/GeneralSettings.js';
 import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET;

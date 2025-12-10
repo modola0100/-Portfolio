@@ -2,8 +2,8 @@
  * Experiences API - All Experience Endpoints
  */
 
-import connectDB from '../../server/lib/db.js';
-import Experience from '../../server/models/Experience.js';
+import connectDB from '../server/lib/db.js';
+import Experience from '../server/models/Experience.js';
 import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET;

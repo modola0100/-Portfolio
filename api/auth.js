@@ -6,10 +6,10 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
-import connectDB from '../../server/lib/db.js';
-import User from '../../server/models/User.js';
-import { sendVerificationEmail, sendPasswordResetEmail } from '../../server/lib/email.js';
-import { authenticateToken } from '../../server/middleware/auth.js';
+import connectDB from '../server/lib/db.js';
+import User from '../server/models/User.js';
+import { sendVerificationEmail, sendPasswordResetEmail } from '../server/lib/email.js';
+import { authenticateToken } from '../server/middleware/auth.js';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;

@@ -2,8 +2,8 @@
  * Skills API - All Skill Endpoints
  */
 
-import connectDB from '../../server/lib/db.js';
-import Skill from '../../server/models/Skill.js';
+import connectDB from '../server/lib/db.js';
+import Skill from '../server/models/Skill.js';
 import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET;
