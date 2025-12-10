@@ -61,7 +61,15 @@
             "dest": "/admin/register.html"
         },
         {
-            "src": "/admin/(.*)",
+            "src": "/admin/(.*\\.(?:css|js|html))$",
+            "dest": "/admin/$1"
+        },
+        {
+            "src": "/admin/?$",
+            "dest": "/admin/admin.html"
+        },
+        {
+            "src": "/admin/.*",
             "dest": "/admin/admin.html"
         },
         {
@@ -69,7 +77,11 @@
             "dest": "/src/$1"
         },
         {
-            "src": "/(.*\\.(?:css|js|svg|png|jpg|jpeg|gif|ico|woff2?))$",
+            "src": "/admin/(.*)",
+            "dest": "/admin/$1"
+        },
+        {
+            "src": "/(.*\\.(?:css|js|svg|png|jpg|jpeg|gif|ico|woff|woff2))$",
             "dest": "/$1"
         },
         {
