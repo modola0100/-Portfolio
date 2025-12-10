@@ -49,6 +49,14 @@
             "dest": "/api/upload.js"
         },
         {
+            "src": "/admin",
+            "dest": "/admin/admin.html"
+        },
+        {
+            "src": "/admin/(.*)",
+            "dest": "/admin/admin.html"
+        },
+        {
             "handle": "filesystem"
         }
     ]
