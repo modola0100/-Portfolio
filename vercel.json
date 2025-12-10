@@ -1,31 +1,9 @@
 {
-    "version": 2,
-    "builds": [
-        {
-            "src": "api/*.js",
-            "use": "@vercel/node"
-        },
-        {
-            "src": "*.html",
-            "use": "@vercel/static"
-        },
-        {
-            "src": "admin/**",
-            "use": "@vercel/static"
-        },
-        {
-            "src": "src/**",
-            "use": "@vercel/static"
-        },
-        {
-            "src": "*.svg",
-            "use": "@vercel/static"
-        },
-        {
-            "src": "*.ico",
-            "use": "@vercel/static"
+    "functions": {
+        "api/*.js": {
+            "runtime": "@vercel/node@3"
         }
-    ],
+    },
     "routes": [
         {
             "src": "/api/auth/(.*)",
@@ -72,8 +50,12 @@
             "dest": "/api/upload.js"
         },
         {
+            "handle": "filesystem"
+        },
+        {
             "src": "/(.*)",
-            "dest": "/$1"
+            "status": 404,
+            "dest": "/404.html"
         }
     ]
 }
