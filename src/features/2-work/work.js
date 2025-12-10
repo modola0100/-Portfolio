@@ -12,10 +12,13 @@ export function initWorkFeature() {
     const projectsGrid = $('#projects-grid');
     if (!projectsGrid) return;
 
+    const storedProjects = localStorage.getItem('portfolio-projects');
+    const projectsToRender = storedProjects ? JSON.parse(storedProjects) : projects;
+
     projectsGrid.innerHTML = ''; 
     projectsGrid.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6';
 
-    projects.forEach(project => {
+    projectsToRender.forEach(project => {
         const card = document.createElement('div');
         card.className = 'group relative bg-[#1e293b]/50 backdrop-blur-sm rounded-2xl overflow-hidden border border-white/5 hover:border-[#01b5f8]/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-[#01b5f8]/10 cursor-pointer flex flex-col h-full';
         

@@ -42,12 +42,15 @@ export function initExperienceFeature() {
         return;
     }
 
+    const storedExperiences = localStorage.getItem('portfolio-experiences');
+    const experiencesToRender = storedExperiences ? JSON.parse(storedExperiences) : experiences;
+
     // 7. تفريغ الحاوية (احتياطي)
     timelineContainer.innerHTML = '';
 
     // 8. إنشاء كود HTML لكل الخبرات الموجودة في الملف
     // (ملاحظة: يتم عكس "reverse" المصفوفة عشان أحدث خبرة تظهر في الأول)
-    const allExperiencesHTML = experiences.reverse().map(createExperienceHTML).join('');
+    const allExperiencesHTML = experiencesToRender.reverse().map(createExperienceHTML).join('');
 
     // 9. إضافة الكود النهائي في الحاوية في الـ HTML
     timelineContainer.innerHTML = allExperiencesHTML;
