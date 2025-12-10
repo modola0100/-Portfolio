@@ -1,114 +1,199 @@
-# Flutter Developer Portfolio
+# Portfolio Backend System
 
-[![Portfolio Screenshot](src/assets/images/screencapture-127-0-0-1-5500-index-html-2025-11-11-01_04_32.png)
+A complete Node.js backend system for the Mohamed Adel Portfolio website, featuring user authentication, admin panel API, MongoDB database integration, and Vercel serverless deployment.
 
-**[🚀 View Live Demo](https://modola0100.github.io/-Portfolio/)**
-*(Note: Replace the URL with your actual GitHub Pages link)*
+## 🚀 Quick Start
 
----
+### Prerequisites
 
-## 📖 About This Project
+- Node.js 18+
+- MongoDB Atlas account (free tier available)
+- Vercel account (for deployment)
 
-This is my personal developer portfolio, designed to showcase my skills, projects, and experience as a Flutter Developer. It is built as a clean, modern, single-page application (SPA) using **vanilla HTML, Tailwind CSS, and modular JavaScript (ES6)**.
+### Installation
 
-The project emphasizes a clean UI/UX, subtle micro-interactions, and a clear separation of concerns by splitting each logical section into its own self-contained JavaScript module.
+```bash
+# Install dependencies
+npm install
 
----
+# Copy environment template
+copy .env.example .env.local
 
-## ✨ Key Features
-
-This portfolio is packed with modern web features to create an engaging user experience:
-
-* **🎨 Fully Responsive Design:** Looks and works great on all devices, from mobile phones to desktops.
-* **🌌 Interactive Particle Background:** A dynamic `HTML5 Canvas` particle background that subtly animates and interacts with the user's mouse (repulsion effect).
-* **🌟 Scroll Animations:** Elements fade and slide into view as you scroll, powered by the `ScrollReveal.js` library.
-* **✍️ Dynamic Typing Effect:** A "typing" animation in the hero section cycles through key skills.
-* **🎠 Project Carousel:** A touch-friendly, autoplaying project slider built with `Swiper.js`.
-* **🔍 Project Detail Modal:** A clean modal pops up to display detailed information, images, and links for each project.
-* **🗂️ Interactive Experience Tabs:** A tabbing system to cleanly organize and display work history.
-* **🔄 3D Flipping Contact Card:** A 3D card in the contact section that flips on hover to reveal the contact form.
-* **📬 AJAX Contact Form:** The Formspree contact form is submitted via JavaScript's `fetch` API without a page reload, providing instant validation and success messages.
-* **✒️ Animated Form Inputs:** Modern, Material Design-inspired form fields with an animated underline on focus.
-
----
-
-## 🛠️ Tech Stack & Libraries
-
-* **Core:** HTML5, CSS3, JavaScript (ES6 Modules)
-* **Styling:** Tailwind CSS (via CDN)
-* **Animations:** `ScrollReveal.js`, `Swiper.js`
-* **Backend (Contact Form):** [Formspree](https://formspree.io/)
-
----
-
-## 📂 Project Structure
-
-The project uses a modular, feature-based directory structure to keep the code organized and maintainable.
-
-```
-/portfolio-project
-├── index.html
-├── README.md
-└── src/
-    ├── assets/
-    │   ├── css/
-    │   │   └── global.css
-    │   ├── images/
-    │   │   ├── 4.png
-    │   │   └── 100.jpg
-    │   └── resume/
-    │       └── Mohamed_Adel_Resume.pdf
-    │
-    ├── features/
-    │   ├── 1-hero/
-    │   │   └── hero.js
-    │   ├── 2-work/
-    │   │   ├── work.css
-    │   │   └── work.js
-    │   ├── 3-experience/
-    │   │   └── experience.js
-    │   └── 4-contact/
-    │       ├── contact.css
-    │       └── contact.js
-    │
-    └── shared/
-        ├── app.js       (Main JS entry point)
-        └── ui/
-            ├── animations.js
-            ├── particles.js
-            └── ui.js      (General UI elements like header, mobile menu)
+# Start development server
+npm run dev
 ```
 
----
+### Environment Variables
 
-## 🚀 Getting Started
+Create a `.env.local` file with:
 
-To run this project locally:
+```env
+# MongoDB (get from MongoDB Atlas)
+MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/portfolio
 
-1.  **Clone the repository:**
-    ```sh
-    git clone [https://github.com/modola0100/portfolio.git](https://github.com/modola0100/portfolio.git)
-    ```
+# JWT Secrets (generate with: node -e "console.log(require('crypto').randomBytes(64).toString('hex'))")
+JWT_SECRET=your-64-char-secret
+JWT_REFRESH_SECRET=your-other-64-char-secret
 
-2.  **Navigate to the project directory:**
-    ```sh
-    cd portfolio
-    ```
+# Frontend URL
+FRONTEND_URL=http://localhost:3000
 
-3.  **Open `index.html` in your browser.**
-    * For the best experience (to avoid CORS errors with module imports), it's recommended to use a simple local server, like the [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) extension in VS Code.
+# Email (Gmail App Password)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-email@gmail.com
+SMTP_PASS=your-app-password
 
----
+# Cloudinary (optional, for image uploads)
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
+```
 
-## 👨‍💻 Author
+## 📁 Project Structure
 
-* **Mohamed Adel**
-* **GitHub:** [@modola0100](https://github.com/modola0100)
-* **LinkedIn:** [mohamed-adel-051ba4256](https://www.linkedin.com/in/mohamed-adel-051ba4256)
+```
+├── api/                    # Vercel serverless functions
+│   ├── auth/              # Authentication endpoints
+│   ├── projects/          # Projects CRUD
+│   ├── skills/            # Skills CRUD
+│   ├── experiences/       # Experiences CRUD
+│   ├── general/           # General settings
+│   ├── messages/          # Contact messages
+│   └── upload/            # Image upload
+├── server/
+│   ├── lib/               # Utilities (db, email)
+│   ├── middleware/        # Auth, validation
+│   └── models/            # Mongoose models
+├── admin/                 # Admin panel
+│   ├── login.html         # Login page
+│   ├── register.html      # Registration page
+│   ├── forgot-password.html
+│   ├── admin.html         # Main admin panel
+│   ├── admin.js           # Admin logic (API integrated)
+│   └── api-service.js     # API client library
+└── vercel.json            # Vercel configuration
+```
 
----
+## 🔐 Authentication
 
-## 🙏 Acknowledgements
+- **Registration**: First user becomes admin automatically
+- **Email Verification**: Required before login
+- **JWT Tokens**: 15-minute access token + 7-day refresh token
+- **Password Reset**: Email-based recovery
 
-* Design and branding inspired by the **Flutter Framework**.
-* Libraries: [Swiper.js](https://swiperjs.com/) & [ScrollReveal.js](https://scrollrevealjs.org/).
+### API Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/auth/register` | POST | Register new user |
+| `/api/auth/login` | POST | Login |
+| `/api/auth/verify` | GET | Verify email |
+| `/api/auth/forgot-password` | POST | Request reset |
+| `/api/auth/reset-password` | POST | Reset password |
+| `/api/auth/refresh` | POST | Refresh token |
+| `/api/auth/me` | GET | Get current user |
+
+## 📊 CRUD APIs
+
+### Projects
+- `GET /api/projects` - List all (public)
+- `POST /api/projects` - Create (admin)
+- `GET /api/projects/:id` - Get one (public)
+- `PUT /api/projects/:id` - Update (admin)
+- `DELETE /api/projects/:id` - Delete (admin)
+
+### Skills
+- `GET /api/skills` - List all (public)
+- `POST /api/skills` - Create (admin)
+- `PUT /api/skills/:id` - Update (admin)
+- `DELETE /api/skills/:id` - Delete (admin)
+
+### Experiences
+- `GET /api/experiences` - List all (public)
+- `POST /api/experiences` - Create (admin)
+- `PUT /api/experiences/:id` - Update (admin)
+- `DELETE /api/experiences/:id` - Delete (admin)
+
+### General Settings
+- `GET /api/general` - Get settings (public)
+- `PUT /api/general` - Update settings (admin)
+
+### Messages (Contact Form)
+- `GET /api/messages` - List all (admin)
+- `POST /api/messages` - Submit message (public)
+- `PUT /api/messages/:id` - Mark read/replied (admin)
+- `DELETE /api/messages/:id` - Delete (admin)
+
+## 🚀 Deployment
+
+### Deploy to Vercel
+
+```bash
+# Install Vercel CLI
+npm install -g vercel
+
+# Login
+vercel login
+
+# Deploy preview
+vercel
+
+# Deploy production
+vercel --prod
+```
+
+### Add Environment Variables
+
+In Vercel Dashboard → Project Settings → Environment Variables:
+
+1. Add `MONGODB_URI`
+2. Add `JWT_SECRET`
+3. Add `JWT_REFRESH_SECRET`
+4. Add `FRONTEND_URL` (your Vercel URL)
+5. Add email settings if using password reset
+
+## 🔒 Security Features
+
+- Password hashing with bcrypt (12 rounds)
+- JWT token authentication
+- Rate limiting on auth endpoints
+- Input validation and sanitization
+- Security headers (X-Frame-Options, XSS Protection)
+- Email enumeration prevention
+
+## 📧 Email Setup
+
+### Gmail App Password
+
+1. Enable 2-Factor Authentication on your Google Account
+2. Go to Security → App passwords
+3. Generate a new app password for "Mail"
+4. Use this password in `SMTP_PASS`
+
+### Alternative: SendGrid
+
+```env
+SMTP_HOST=smtp.sendgrid.net
+SMTP_PORT=587
+SMTP_USER=apikey
+SMTP_PASS=your-sendgrid-api-key
+```
+
+## 🖼️ Image Upload
+
+Images are uploaded to Cloudinary (optional). Without Cloudinary configured, images are stored as base64.
+
+### Cloudinary Setup
+
+1. Create free account at [cloudinary.com](https://cloudinary.com)
+2. Get cloud name, API key, and secret
+3. Add to environment variables
+
+## 📝 License
+
+MIT License
+
+## 👤 Author
+
+Mohamed Adel - Flutter Developer

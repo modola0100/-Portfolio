@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Admin Panel</title>
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../src/assets/css/global.css">
+    <link rel="stylesheet" href="admin.css">
+    <style>
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .login-card {
+            background: rgba(22, 27, 34, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(1, 181, 248, 0.2);
+            border-radius: 24px;
+            padding: 3rem;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .login-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .login-logo svg {
+            width: 48px;
+            height: 48px;
+        }
+
+        .login-logo span {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #01b5f8, #02569B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .login-title {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #f0f6fc;
+        }
+
+        .login-subtitle {
+            text-align: center;
+            color: #8b949e;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #c9d1d9;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: rgba(13, 17, 23, 0.8);
+            border: 1px solid rgba(48, 54, 61, 0.8);
+            border-radius: 12px;
+            color: #f0f6fc;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #01b5f8;
+            box-shadow: 0 0 0 3px rgba(1, 181, 248, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: #484f58;
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #8b949e;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .password-toggle:hover {
+            color: #01b5f8;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #01b5f8, #02569B);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(1, 181, 248, 0.3);
+        }
+
+        .btn-login:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-login .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .form-footer {
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        .form-footer a {
+            color: #01b5f8;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .form-footer a:hover {
+            color: #58a6ff;
+        }
+
+        .error-message {
+            background: rgba(248, 81, 73, 0.1);
+            border: 1px solid rgba(248, 81, 73, 0.3);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            color: #f85149;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .password-requirements {
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            color: #8b949e;
+        }
+
+        .password-requirements li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.25rem;
+        }
+
+        .password-requirements li.valid {
+            color: #3fb950;
+        }
+
+        .password-requirements li.valid i {
+            color: #3fb950;
+        }
+
+        .password-requirements li i.fa-circle {
+            font-size: 6px;
+        }
+    </style>
+</head>
+
+<body class="overflow-x-hidden bg-[#0a0f18] text-[#c9d1d9]">
+    <canvas id="particle-canvas"></canvas>
+
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-logo">
+                <svg viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M78.042 128 32.22 82.178 12.012 102.388 0 90.375 32.22 58.155 12.012 37.945 32.22 17.735 78.042 63.558l17.735-17.735L128 14.265 90.375 0 32.22 58.155 78.042 104 90.375 116.333l-12.333 11.667z"
+                        fill="#01b5f8"></path>
+                    <path
+                        d="m78.042 104 37.625-37.625L90.375 41.083 78.042 53.417 32.22 9.625 19.833 22.012l58.209 58.21 17.735-17.735L128 90.375 90.375 128 78.042 115.667v-11.667z"
+                        fill="#02569B"></path>
+                </svg>
+                <span>Admin Panel</span>
+            </div>
+
+            <h1 class="login-title">Create Account</h1>
+            <p class="login-subtitle">Register to get started</p>
+
+            <div id="error-message" class="error-message">
+                <i class="fas fa-exclamation-circle"></i>
+                <span id="error-text"></span>
+            </div>
+
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" class="form-input" placeholder="Your Name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" class="form-input" placeholder="your@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="password" class="form-input" placeholder="••••••••" required
+                            minlength="8">
+                        <button type="button" class="password-toggle" id="toggle-password">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <ul class="password-requirements">
+                        <li id="req-length"><i class="fas fa-circle"></i> At least 8 characters</li>
+                        <li id="req-upper"><i class="fas fa-circle"></i> One uppercase letter</li>
+                        <li id="req-lower"><i class="fas fa-circle"></i> One lowercase letter</li>
+                        <li id="req-number"><i class="fas fa-circle"></i> One number</li>
+                    </ul>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm-password">Confirm Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="confirm-password" class="form-input" placeholder="••••••••" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-login" id="register-btn">
+                    <span>Create Account</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+
+                <div class="form-footer">
+                    <span>Already have an account? </span>
+                    <a href="login.html">Sign In</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="../src/shared/ui/particles.js"></script>
+    <script type="module">
+        import { initParticles } from '../src/shared/ui/particles.js';
+
+        // Initialize particles
+        try {
+            initParticles();
+        } catch (e) {
+            console.log('Particles not available');
+        }
+
+        // DOM Elements
+        const registerForm = document.getElementById('register-form');
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirm-password');
+        const registerBtn = document.getElementById('register-btn');
+        const togglePassword = document.getElementById('toggle-password');
+        const errorMessage = document.getElementById('error-message');
+        const errorText = document.getElementById('error-text');
+
+        // Password requirement elements
+        const reqLength = document.getElementById('req-length');
+        const reqUpper = document.getElementById('req-upper');
+        const reqLower = document.getElementById('req-lower');
+        const reqNumber = document.getElementById('req-number');
+
+        // API Base URL
+        const API_URL = window.location.origin + '/api';
+
+        // Toggle password visibility
+        togglePassword.addEventListener('click', () => {
+            const type = passwordInput.type === 'password' ? 'text' : 'password';
+            passwordInput.type = type;
+            confirmPasswordInput.type = type;
+            togglePassword.innerHTML = type === 'password'
+                ? '<i class="fas fa-eye"></i>'
+                : '<i class="fas fa-eye-slash"></i>';
+        });
+
+        // Password validation
+        function updateRequirement(element, valid) {
+            if (valid) {
+                element.classList.add('valid');
+                element.querySelector('i').className = 'fas fa-check';
+            } else {
+                element.classList.remove('valid');
+                element.querySelector('i').className = 'fas fa-circle';
+            }
+        }
+
+        passwordInput.addEventListener('input', () => {
+            const password = passwordInput.value;
+            updateRequirement(reqLength, password.length >= 8);
+            updateRequirement(reqUpper, /[A-Z]/.test(password));
+            updateRequirement(reqLower, /[a-z]/.test(password));
+            updateRequirement(reqNumber, /\d/.test(password));
+        });
+
+        // Show error
+        function showError(message) {
+            errorText.textContent = message;
+            errorMessage.classList.add('show');
+        }
+
+        // Set loading state
+        function setLoading(loading) {
+            registerBtn.disabled = loading;
+            if (loading) {
+                registerBtn.innerHTML = '<div class="spinner"></div><span>Creating account...</span>';
+            } else {
+                registerBtn.innerHTML = '<span>Create Account</span><i class="fas fa-arrow-right"></i>';
+            }
+        }
+
+        // Validate password
+        function isValidPassword(password) {
+            return password.length >= 8
+                && /[A-Z]/.test(password)
+                && /[a-z]/.test(password)
+                && /\d/.test(password);
+        }
+
+        // Handle registration
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const name = nameInput.value.trim();
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+
+            // Validation
+            if (!name || !email || !password) {
+                showError('Please fill in all fields');
+                return;
+            }
+
+            if (!isValidPassword(password)) {
+                showError('Password does not meet requirements');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showError('Passwords do not match');
+                return;
+            }
+
+            setLoading(true);
+            errorMessage.classList.remove('show');
+
+            try {
+                const response = await fetch(`${API_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, email, password })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    if (data.errors) {
+                        throw new Error(data.errors.map(e => e.message).join(', '));
+                    }
+                    throw new Error(data.error || 'Registration failed');
+                }
+
+                // Redirect to login with success message
+                window.location.href = 'login.html?registered=true';
+
+            } catch (error) {
+                showError(error.message || 'Registration failed. Please try again.');
+            } finally {
+                setLoading(false);
+            }
+        });
+    </script>
+</body>
+
+</html>

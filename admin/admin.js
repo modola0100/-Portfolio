@@ -1,24 +1,18 @@
 /**
  * Admin Panel - Main JavaScript
  * Handles all admin functionality for the portfolio
+ * Uses Backend API for data persistence
  */
 
-import { projects } from '../src/shared/data/projects-data.js';
-import { experiences } from '../src/shared/data/experience-data.js';
-import { skills as defaultSkills } from '../src/shared/data/skills-data.js';
-import { generalData, navItems as defaultNavItems } from '../src/shared/data/general-data.js';
 import {
-    getData,
-    saveData,
-    getPortfolioData,
-    saveSection,
-    exportAllData,
-    importData,
-    compressImage,
-    generateId,
-    clearAllData,
-    STORAGE_KEYS
-} from '../src/shared/data/data-service.js';
+    authAPI,
+    projectsAPI,
+    skillsAPI,
+    experiencesAPI,
+    generalAPI,
+    messagesAPI,
+    uploadAPI
+} from './api-service.js';
 import { initParticles } from '../src/shared/ui/particles.js';
 
 // ===== State =====
@@ -27,88 +21,198 @@ let state = {
     skills: [],
     projects: [],
     experiences: [],
+    messages: [],
     currentEditId: null,
-    currentSection: 'dashboard'
+    currentSection: 'dashboard',
+    isLoading: false,
+    isOnline: true // Track API availability
 };
 
 // ===== DOM Elements =====
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
 
+// ===== Check Authentication =====
+function checkAuth() {
+    if (!authAPI.isLoggedIn()) {
+        window.location.href = 'login.html';
+        return false;
+    }
+    return true;
+}
+
 // ===== Path Normalization =====
-// Fix paths that are relative to root when running from /admin/ folder
 function normalizePath(path) {
     if (!path) return path;
-    // If it's a URL or data URI, don't modify
     if (path.startsWith('http') || path.startsWith('data:') || path.startsWith('blob:')) {
         return path;
     }
-    // If path starts with src/, prepend ../ to go up from admin folder
     if (path.startsWith('src/')) {
         return '../' + path;
     }
     return path;
 }
 
+// ===== Generate ID (fallback for offline mode) =====
+function generateId() {
+    return Date.now().toString(36) + Math.random().toString(36).substr(2);
+}
+
 // ===== Initialize =====
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     try {
         console.log('Starting admin initialization...');
+
+        // Check authentication first
+        if (!checkAuth()) return;
+
+        // Initialize particles
         initParticles();
         console.log('Particles initialized');
-        
-        loadAllData();
+
+        // Show loading state
+        showLoading(true);
+
+        // Load data from API
+        await loadAllData();
         console.log('Data loaded');
-        
+
+        // Hide loading
+        showLoading(false);
+
+        // Initialize UI components
         initNavigation();
-        console.log('Navigation initialized');
-        
         initDashboard();
-        console.log('Dashboard initialized');
-        
         initGeneralSettings();
         initSkillsManager();
         initProjectsManager();
         initExperienceManager();
+        initMessagesSection();
         initSettings();
         initModals();
-        
+
+        // Display user info
+        displayUserInfo();
+
         // Ensure dashboard is visible
         const dashboardBtn = $('[data-section="dashboard"]');
-        if (dashboardBtn) {
-            dashboardBtn.classList.add('active');
-            console.log('Dashboard button active set');
-        }
+        if (dashboardBtn) dashboardBtn.classList.add('active');
         const dashboardSection = $('#section-dashboard');
-        if (dashboardSection) {
-            dashboardSection.classList.add('active');
-            console.log('Dashboard section active set');
-        }
+        if (dashboardSection) dashboardSection.classList.add('active');
+
+        console.log('Admin panel initialized successfully');
     } catch (error) {
         console.error('Admin initialization error:', error);
+        showToast('Failed to initialize admin panel: ' + error.message, 'error');
+        showLoading(false);
     }
 });
 
-// ===== Load Data =====
-function loadAllData() {
-    // Load from localStorage or use defaults
-    state.general = getData(STORAGE_KEYS.GENERAL, generalData);
-    state.skills = getData(STORAGE_KEYS.SKILLS, defaultSkills);
-    state.projects = getData(STORAGE_KEYS.PROJECTS, projects);
-    state.experiences = getData(STORAGE_KEYS.EXPERIENCES, experiences);
+// ===== Display User Info =====
+function displayUserInfo() {
+    const user = authAPI.getUser();
+    if (user) {
+        // You can add user info display in the sidebar or top bar
+        console.log('Logged in as:', user.name, '(' + user.email + ')');
+    }
+}
 
-    // Update all displays
-    updateDashboardStats();
-    renderGeneralSettings();
-    renderSkills();
-    renderProjects();
-    renderExperiences();
+// ===== Loading Indicator =====
+function showLoading(show) {
+    state.isLoading = show;
+    let loader = $('#global-loader');
+
+    if (!loader && show) {
+        loader = document.createElement('div');
+        loader.id = 'global-loader';
+        loader.innerHTML = `
+            <div class="loader-backdrop">
+                <div class="loader-content">
+                    <div class="loader-spinner"></div>
+                    <span>Loading...</span>
+                </div>
+            </div>
+        `;
+        loader.style.cssText = `
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(10, 15, 24, 0.9); z-index: 9999;
+            display: flex; align-items: center; justify-content: center;
+        `;
+        loader.querySelector('.loader-content').style.cssText = `
+            display: flex; flex-direction: column; align-items: center; gap: 1rem; color: #01b5f8;
+        `;
+        loader.querySelector('.loader-spinner').style.cssText = `
+            width: 40px; height: 40px; border: 3px solid rgba(1, 181, 248, 0.3);
+            border-top-color: #01b5f8; border-radius: 50%;
+            animation: spin 1s linear infinite;
+        `;
+        document.body.appendChild(loader);
+    }
+
+    if (loader) {
+        loader.style.display = show ? 'flex' : 'none';
+    }
+}
+
+// ===== Load Data from API =====
+async function loadAllData() {
+    try {
+        // Load all data in parallel
+        const [generalData, skillsData, projectsData, experiencesData] = await Promise.all([
+            generalAPI.get().catch(err => {
+                console.warn('Failed to load general settings:', err);
+                return getDefaultGeneral();
+            }),
+            skillsAPI.getAll().catch(err => {
+                console.warn('Failed to load skills:', err);
+                return [];
+            }),
+            projectsAPI.getAll().catch(err => {
+                console.warn('Failed to load projects:', err);
+                return [];
+            }),
+            experiencesAPI.getAll().catch(err => {
+                console.warn('Failed to load experiences:', err);
+                return [];
+            })
+        ]);
+
+        state.general = generalData || getDefaultGeneral();
+        state.skills = skillsData || [];
+        state.projects = projectsData || [];
+        state.experiences = experiencesData || [];
+        state.isOnline = true;
+
+        // Update all displays
+        updateDashboardStats();
+        renderGeneralSettings();
+        renderSkills();
+        renderProjects();
+        renderExperiences();
+
+    } catch (error) {
+        console.error('Error loading data:', error);
+        state.isOnline = false;
+        showToast('Failed to load data from server', 'error');
+    }
+}
+
+function getDefaultGeneral() {
+    return {
+        heroName: 'Mohamed Adel',
+        subtitle: 'Flutter Developer',
+        aboutText: '',
+        contact: {},
+        stats: { projectsCount: 0, yearsExperience: 0, happyClients: 0 }
+    };
 }
 
 // ===== Toast Notification =====
 function showToast(message, type = 'success') {
     const toast = $('#toast');
     const toastMessage = $('#toast-message');
+
+    if (!toast || !toastMessage) return;
 
     toast.classList.remove('hidden', 'show', 'error');
     toastMessage.textContent = message;
@@ -117,8 +221,7 @@ function showToast(message, type = 'success') {
         toast.classList.add('error');
     }
 
-    // Trigger reflow
-    toast.offsetHeight;
+    toast.offsetHeight; // Trigger reflow
     toast.classList.add('show');
 
     setTimeout(() => {
@@ -138,27 +241,22 @@ function initNavigation() {
         btn.addEventListener('click', () => {
             const sectionId = btn.dataset.section;
 
-            // Update active button
             navBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
 
-            // Update active section
             sections.forEach(sec => sec.classList.remove('active'));
-            $(`#section-${sectionId}`).classList.add('active');
+            const targetSection = $(`#section-${sectionId}`);
+            if (targetSection) targetSection.classList.add('active');
 
-            // Update page title
-            pageTitle.textContent = btn.querySelector('span').textContent;
+            if (pageTitle) pageTitle.textContent = btn.querySelector('span').textContent;
 
-            // Close mobile menu
-            sidebar.classList.remove('open');
-
+            sidebar?.classList.remove('open');
             state.currentSection = sectionId;
         });
     });
 
-    // Mobile menu toggle
     mobileMenuToggle?.addEventListener('click', () => {
-        sidebar.classList.toggle('open');
+        sidebar?.classList.toggle('open');
     });
 
     // Quick actions
@@ -166,16 +264,25 @@ function initNavigation() {
         btn.addEventListener('click', () => {
             const action = btn.dataset.action;
             if (action === 'goto-general') {
-                $('[data-section="general"]').click();
+                $('[data-section="general"]')?.click();
             } else if (action === 'goto-projects') {
-                $('[data-section="projects"]').click();
-                setTimeout(() => $('#add-project-btn').click(), 100);
+                $('[data-section="projects"]')?.click();
+                setTimeout(() => $('#add-project-btn')?.click(), 100);
             } else if (action === 'export') {
                 exportAllData();
-                showToast('Data exported successfully!');
             }
         });
     });
+
+    // Add logout button functionality
+    const logoutBtn = $('#logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            showConfirm('Are you sure you want to logout?', () => {
+                authAPI.logout();
+            });
+        });
+    }
 }
 
 // ===== Dashboard =====
@@ -185,6 +292,8 @@ function initDashboard() {
         btn.addEventListener('click', () => {
             const targetId = btn.dataset.target;
             const input = $(`#${targetId}`);
+            if (!input) return;
+
             let value = parseInt(input.value) || 0;
 
             if (btn.classList.contains('plus')) {
@@ -200,32 +309,50 @@ function initDashboard() {
 
     // Counter inputs
     ['projects-count', 'years-count', 'clients-count'].forEach(id => {
-        $(`#${id}`).addEventListener('change', updateStatsFromInputs);
+        const input = $(`#${id}`);
+        if (input) {
+            input.addEventListener('change', updateStatsFromInputs);
+        }
     });
 
     // Save All button
-    $('#save-all-btn').addEventListener('click', saveAllData);
+    const saveAllBtn = $('#save-all-btn');
+    if (saveAllBtn) {
+        saveAllBtn.addEventListener('click', saveAllData);
+    }
 }
 
 function updateStatsFromInputs() {
-    state.general.stats = {
-        projects: parseInt($('#projects-count').value) || 0,
-        yearsExperience: parseInt($('#years-count').value) || 0,
-        happyClients: parseInt($('#clients-count').value) || 0
-    };
+    if (!state.general.stats) state.general.stats = {};
+
+    state.general.stats.projectsCount = parseInt($('#projects-count')?.value) || 0;
+    state.general.stats.yearsExperience = parseInt($('#years-count')?.value) || 0;
+    state.general.stats.happyClients = parseInt($('#clients-count')?.value) || 0;
+
     updateDashboardStats();
 }
 
 function updateDashboardStats() {
-    $('#stat-projects').textContent = state.general.stats?.projects || 0;
-    $('#stat-years').textContent = state.general.stats?.yearsExperience || 0;
-    $('#stat-clients').textContent = state.general.stats?.happyClients || 0;
-    $('#stat-skills').textContent = state.skills.length;
+    const stats = state.general?.stats || {};
+
+    const statProjects = $('#stat-projects');
+    const statYears = $('#stat-years');
+    const statClients = $('#stat-clients');
+    const statSkills = $('#stat-skills');
+
+    if (statProjects) statProjects.textContent = stats.projectsCount || state.projects.length || 0;
+    if (statYears) statYears.textContent = stats.yearsExperience || 0;
+    if (statClients) statClients.textContent = stats.happyClients || 0;
+    if (statSkills) statSkills.textContent = state.skills.length;
 
     // Update counter inputs
-    $('#projects-count').value = state.general.stats?.projects || 0;
-    $('#years-count').value = state.general.stats?.yearsExperience || 0;
-    $('#clients-count').value = state.general.stats?.happyClients || 0;
+    const projectsCount = $('#projects-count');
+    const yearsCount = $('#years-count');
+    const clientsCount = $('#clients-count');
+
+    if (projectsCount) projectsCount.value = stats.projectsCount || 0;
+    if (yearsCount) yearsCount.value = stats.yearsExperience || 0;
+    if (clientsCount) clientsCount.value = stats.happyClients || 0;
 }
 
 // ===== General Settings =====
@@ -235,63 +362,92 @@ function initGeneralSettings() {
     const profileInput = $('#profile-picture');
     const profilePreview = $('#profile-preview');
 
-    profileUpload.addEventListener('click', () => profileInput.click());
-    profileInput.addEventListener('change', async (e) => {
+    profileUpload?.addEventListener('click', () => profileInput?.click());
+    profileInput?.addEventListener('change', async (e) => {
         const file = e.target.files[0];
         if (file) {
             try {
-                const dataUrl = await compressImage(file);
-                profilePreview.src = dataUrl;
+                showLoading(true);
+                const base64 = await uploadAPI.fileToBase64(file);
+
+                // Try to upload to cloud, fallback to base64
+                try {
+                    const result = await uploadAPI.uploadImage(base64, 'profile');
+                    profilePreview.src = result.url;
+                    state.general.profilePicture = result.url;
+                } catch (uploadError) {
+                    // Fallback to base64 for local storage
+                    profilePreview.src = base64;
+                    state.general.profilePicture = base64;
+                }
+
                 profilePreview.classList.remove('hidden');
                 profileUpload.querySelector('.upload-placeholder').style.display = 'none';
-                state.general.profilePicture = dataUrl;
+                showLoading(false);
             } catch (error) {
+                showLoading(false);
                 showToast('Error processing image', 'error');
             }
         }
     });
 
     // Input change handlers
-    $('#hero-name').addEventListener('input', (e) => state.general.heroName = e.target.value);
-    $('#hero-subtitle').addEventListener('input', (e) => state.general.subtitle = e.target.value);
-    $('#about-text').addEventListener('input', (e) => state.general.aboutText = e.target.value);
-    $('#contact-location').addEventListener('input', (e) => {
+    $('#hero-name')?.addEventListener('input', (e) => state.general.heroName = e.target.value);
+    $('#hero-subtitle')?.addEventListener('input', (e) => state.general.subtitle = e.target.value);
+    $('#about-text')?.addEventListener('input', (e) => state.general.aboutText = e.target.value);
+
+    $('#contact-location')?.addEventListener('input', (e) => {
         if (!state.general.contact) state.general.contact = {};
         state.general.contact.location = e.target.value;
     });
-    $('#contact-phone').addEventListener('input', (e) => {
+    $('#contact-phone')?.addEventListener('input', (e) => {
         if (!state.general.contact) state.general.contact = {};
         state.general.contact.phone = e.target.value;
     });
-    $('#contact-email').addEventListener('input', (e) => {
+    $('#contact-email')?.addEventListener('input', (e) => {
         if (!state.general.contact) state.general.contact = {};
         state.general.contact.email = e.target.value;
     });
-    $('#contact-linkedin').addEventListener('input', (e) => {
+    $('#contact-linkedin')?.addEventListener('input', (e) => {
         if (!state.general.contact) state.general.contact = {};
         state.general.contact.linkedin = e.target.value;
     });
 }
 
 function renderGeneralSettings() {
-    const g = state.general;
+    const g = state.general || {};
 
-    $('#hero-name').value = g.heroName || '';
-    $('#hero-subtitle').value = g.subtitle || '';
-    $('#about-text').value = g.aboutText || '';
+    const heroName = $('#hero-name');
+    const heroSubtitle = $('#hero-subtitle');
+    const aboutText = $('#about-text');
+
+    if (heroName) heroName.value = g.heroName || '';
+    if (heroSubtitle) heroSubtitle.value = g.subtitle || '';
+    if (aboutText) aboutText.value = g.aboutText || '';
 
     if (g.contact) {
-        $('#contact-location').value = g.contact.location || '';
-        $('#contact-phone').value = g.contact.phone || '';
-        $('#contact-email').value = g.contact.email || '';
-        $('#contact-linkedin').value = g.contact.linkedin || '';
+        const contactLocation = $('#contact-location');
+        const contactPhone = $('#contact-phone');
+        const contactEmail = $('#contact-email');
+        const contactLinkedin = $('#contact-linkedin');
+
+        if (contactLocation) contactLocation.value = g.contact.location || '';
+        if (contactPhone) contactPhone.value = g.contact.phone || '';
+        if (contactEmail) contactEmail.value = g.contact.email || '';
+        if (contactLinkedin) contactLinkedin.value = g.contact.linkedin || '';
     }
 
     if (g.profilePicture) {
         const preview = $('#profile-preview');
-        preview.src = normalizePath(g.profilePicture);
-        preview.classList.remove('hidden');
-        $('#profile-upload-area .upload-placeholder').style.display = 'none';
+        const uploadArea = $('#profile-upload-area');
+        if (preview) {
+            preview.src = normalizePath(g.profilePicture);
+            preview.classList.remove('hidden');
+        }
+        if (uploadArea) {
+            const placeholder = uploadArea.querySelector('.upload-placeholder');
+            if (placeholder) placeholder.style.display = 'none';
+        }
     }
 }
 
@@ -303,57 +459,67 @@ function initSkillsManager() {
     const iconInput = $('#skill-icon');
     const iconPreview = $('#skill-icon-preview');
 
-    addBtn.addEventListener('click', () => {
+    addBtn?.addEventListener('click', () => {
         state.currentEditId = null;
-        $('#skill-modal-title').textContent = 'Add New Skill';
-        $('#skill-name').value = '';
-        $('#skill-icon').value = '';
-        iconPreview.src = '';
-        modal.classList.remove('hidden');
+        const title = $('#skill-modal-title');
+        if (title) title.textContent = 'Add New Skill';
+
+        const nameInput = $('#skill-name');
+        if (nameInput) nameInput.value = '';
+        if (iconInput) iconInput.value = '';
+        if (iconPreview) iconPreview.src = '';
+
+        modal?.classList.remove('hidden');
     });
 
-    // Preview icon on input change
-    iconInput.addEventListener('input', (e) => {
-        iconPreview.src = e.target.value;
+    iconInput?.addEventListener('input', (e) => {
+        if (iconPreview) iconPreview.src = e.target.value;
     });
 
-    saveBtn.addEventListener('click', () => {
-        const name = $('#skill-name').value.trim();
-        const icon = $('#skill-icon').value.trim();
+    saveBtn?.addEventListener('click', async () => {
+        const name = $('#skill-name')?.value.trim();
+        const icon = $('#skill-icon')?.value.trim();
 
         if (!name || !icon) {
             showToast('Please fill in all fields', 'error');
             return;
         }
 
-        if (state.currentEditId) {
-            // Edit existing
-            const index = state.skills.findIndex(s => s.id === state.currentEditId);
-            if (index !== -1) {
-                state.skills[index].name = name;
-                state.skills[index].icon = icon;
-            }
-        } else {
-            // Add new
-            state.skills.push({
-                id: generateId(),
-                name,
-                icon,
-                type: icon.startsWith('http') ? 'url' : 'local'
-            });
-        }
+        try {
+            showLoading(true);
 
-        renderSkills();
-        updateDashboardStats();
-        modal.classList.add('hidden');
-        showToast('Skill saved!');
+            const skillData = { name, icon };
+
+            if (state.currentEditId) {
+                // Update existing
+                await skillsAPI.update(state.currentEditId, skillData);
+                showToast('Skill updated!');
+            } else {
+                // Create new
+                await skillsAPI.create(skillData);
+                showToast('Skill added!');
+            }
+
+            // Reload skills
+            state.skills = await skillsAPI.getAll();
+            renderSkills();
+            updateDashboardStats();
+
+            modal?.classList.add('hidden');
+            showLoading(false);
+        } catch (error) {
+            showLoading(false);
+            showToast('Failed to save skill: ' + error.message, 'error');
+        }
     });
 }
 
 function renderSkills() {
     const grid = $('#skills-grid');
+    if (!grid) return;
+
     grid.innerHTML = state.skills.map(skill => `
-        <div class="skill-admin-card" data-id="${skill.id}">
+        <div class="skill-admin-card" data-id="${skill._id || skill.id}">
             <img src="${normalizePath(skill.icon)}" alt="${skill.name}" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2248%22 viewBox=%220 0 48 48%22><rect fill=%22%231a1f2e%22 width=%2248%22 height=%2248%22 rx=%228%22/><text x=%2224%22 y=%2230%22 font-size=%2220%22 text-anchor=%22middle%22 fill=%22%236b7280%22>?</text></svg>'">
             <h4>${skill.name}</h4>
             <div class="actions">
@@ -367,24 +533,39 @@ function renderSkills() {
     grid.querySelectorAll('.skill-admin-card').forEach(card => {
         const id = card.dataset.id;
 
-        card.querySelector('.edit').addEventListener('click', () => {
-            const skill = state.skills.find(s => s.id === id);
+        card.querySelector('.edit')?.addEventListener('click', () => {
+            const skill = state.skills.find(s => (s._id || s.id) === id);
             if (skill) {
                 state.currentEditId = id;
-                $('#skill-modal-title').textContent = 'Edit Skill';
-                $('#skill-name').value = skill.name;
-                $('#skill-icon').value = skill.icon;
-                $('#skill-icon-preview').src = skill.icon;
-                $('#skill-modal').classList.remove('hidden');
+                const title = $('#skill-modal-title');
+                if (title) title.textContent = 'Edit Skill';
+
+                const nameInput = $('#skill-name');
+                const iconInput = $('#skill-icon');
+                const iconPreview = $('#skill-icon-preview');
+
+                if (nameInput) nameInput.value = skill.name;
+                if (iconInput) iconInput.value = skill.icon;
+                if (iconPreview) iconPreview.src = skill.icon;
+
+                $('#skill-modal')?.classList.remove('hidden');
             }
         });
 
-        card.querySelector('.delete').addEventListener('click', () => {
-            showConfirm('Delete this skill?', () => {
-                state.skills = state.skills.filter(s => s.id !== id);
-                renderSkills();
-                updateDashboardStats();
-                showToast('Skill deleted');
+        card.querySelector('.delete')?.addEventListener('click', () => {
+            showConfirm('Delete this skill?', async () => {
+                try {
+                    showLoading(true);
+                    await skillsAPI.delete(id);
+                    state.skills = await skillsAPI.getAll();
+                    renderSkills();
+                    updateDashboardStats();
+                    showLoading(false);
+                    showToast('Skill deleted');
+                } catch (error) {
+                    showLoading(false);
+                    showToast('Failed to delete skill: ' + error.message, 'error');
+                }
             });
         });
     });
@@ -398,12 +579,13 @@ function initProjectsManager() {
     const addBtn = $('#add-project-btn');
     const saveBtn = $('#save-project-btn');
 
-    addBtn.addEventListener('click', () => {
+    addBtn?.addEventListener('click', () => {
         state.currentEditId = null;
         projectGalleryImages = [];
         clearProjectForm();
-        $('#project-modal-title').textContent = 'Add New Project';
-        modal.classList.remove('hidden');
+        const title = $('#project-modal-title');
+        if (title) title.textContent = 'Add New Project';
+        modal?.classList.remove('hidden');
     });
 
     // Cover image upload
@@ -411,84 +593,138 @@ function initProjectsManager() {
     const coverInput = $('#project-cover');
     const coverPreview = $('#cover-preview');
 
-    coverUpload.addEventListener('click', () => coverInput.click());
-    coverInput.addEventListener('change', async (e) => {
+    coverUpload?.addEventListener('click', () => coverInput?.click());
+    coverInput?.addEventListener('change', async (e) => {
         const file = e.target.files[0];
         if (file) {
-            const dataUrl = await compressImage(file);
-            coverPreview.src = dataUrl;
-            coverPreview.classList.remove('hidden');
-            coverUpload.querySelector('.upload-placeholder').style.display = 'none';
+            try {
+                const base64 = await uploadAPI.fileToBase64(file);
+                if (coverPreview) {
+                    coverPreview.src = base64;
+                    coverPreview.classList.remove('hidden');
+                }
+                if (coverUpload) {
+                    const placeholder = coverUpload.querySelector('.upload-placeholder');
+                    if (placeholder) placeholder.style.display = 'none';
+                }
+            } catch (error) {
+                showToast('Error processing image', 'error');
+            }
         }
     });
 
     // Gallery images
     const galleryInput = $('#project-gallery');
-    galleryInput.addEventListener('change', async (e) => {
+    galleryInput?.addEventListener('change', async (e) => {
         for (const file of e.target.files) {
-            const dataUrl = await compressImage(file);
-            projectGalleryImages.push(dataUrl);
+            const base64 = await uploadAPI.fileToBase64(file);
+            projectGalleryImages.push(base64);
         }
         renderGalleryPreview();
     });
 
-    saveBtn.addEventListener('click', () => {
-        const title = $('#project-title').value.trim();
-        const shortDesc = $('#project-short-desc').value.trim();
-        const longDesc = $('#project-long-desc').value.trim().split('\n').filter(l => l.trim());
-        const github = $('#project-github').value.trim();
-        const live = $('#project-live').value.trim();
-        const tags = $('#project-tags').value.split(',').map(t => t.trim()).filter(t => t);
-        const cover = $('#cover-preview').src;
+    saveBtn?.addEventListener('click', async () => {
+        const title = $('#project-title')?.value.trim();
+        const shortDesc = $('#project-short-desc')?.value.trim();
+        const longDesc = $('#project-long-desc')?.value.trim();
+        const github = $('#project-github')?.value.trim();
+        const live = $('#project-live')?.value.trim();
+        const tags = ($('#project-tags')?.value || '').split(',').map(t => t.trim()).filter(t => t);
+        const cover = $('#cover-preview')?.src;
 
         if (!title || !shortDesc) {
             showToast('Please fill in required fields', 'error');
             return;
         }
 
-        const projectData = {
-            id: state.currentEditId || generateId(),
-            title,
-            shortDescription: shortDesc,
-            longDescription: longDesc,
-            coverImage: cover || 'src/assets/images/placeholder.jpg',
-            detailImages: projectGalleryImages,
-            tags,
-            githubUrl: github,
-            liveUrl: live
-        };
+        try {
+            showLoading(true);
 
-        if (state.currentEditId) {
-            const index = state.projects.findIndex(p => p.id === state.currentEditId);
-            if (index !== -1) {
-                state.projects[index] = projectData;
+            // Upload cover image to cloud if it's base64
+            let coverUrl = cover;
+            if (cover && cover.startsWith('data:')) {
+                try {
+                    const result = await uploadAPI.uploadImage(cover, 'projects');
+                    coverUrl = result.url;
+                } catch (e) {
+                    // Keep base64 if upload fails
+                }
             }
-        } else {
-            state.projects.push(projectData);
-        }
 
-        renderProjects();
-        modal.classList.add('hidden');
-        showToast('Project saved!');
+            // Upload gallery images
+            const galleryUrls = [];
+            for (const img of projectGalleryImages) {
+                if (img.startsWith('data:')) {
+                    try {
+                        const result = await uploadAPI.uploadImage(img, 'projects/gallery');
+                        galleryUrls.push(result.url);
+                    } catch (e) {
+                        galleryUrls.push(img);
+                    }
+                } else {
+                    galleryUrls.push(img);
+                }
+            }
+
+            const projectData = {
+                title,
+                shortDesc,
+                longDesc,
+                github: github || '',
+                liveDemo: live || '',
+                tags,
+                cover: coverUrl || '',
+                gallery: galleryUrls
+            };
+
+            if (state.currentEditId) {
+                await projectsAPI.update(state.currentEditId, projectData);
+                showToast('Project updated!');
+            } else {
+                await projectsAPI.create(projectData);
+                showToast('Project created!');
+            }
+
+            // Reload projects
+            state.projects = await projectsAPI.getAll();
+            renderProjects();
+
+            modal?.classList.add('hidden');
+            showLoading(false);
+        } catch (error) {
+            showLoading(false);
+            showToast('Failed to save project: ' + error.message, 'error');
+        }
     });
 }
 
 function clearProjectForm() {
-    $('#project-title').value = '';
-    $('#project-short-desc').value = '';
-    $('#project-long-desc').value = '';
-    $('#project-github').value = '';
-    $('#project-live').value = '';
-    $('#project-tags').value = '';
-    $('#cover-preview').src = '';
-    $('#cover-preview').classList.add('hidden');
-    $('#cover-upload-area .upload-placeholder').style.display = 'flex';
-    $('#gallery-preview').innerHTML = '';
+    const fields = ['project-title', 'project-short-desc', 'project-long-desc',
+        'project-github', 'project-live', 'project-tags'];
+    fields.forEach(id => {
+        const el = $(`#${id}`);
+        if (el) el.value = '';
+    });
+
+    const coverPreview = $('#cover-preview');
+    if (coverPreview) {
+        coverPreview.src = '';
+        coverPreview.classList.add('hidden');
+    }
+
+    const uploadPlaceholder = $('#cover-upload-area .upload-placeholder');
+    if (uploadPlaceholder) uploadPlaceholder.style.display = 'flex';
+
+    const galleryPreview = $('#gallery-preview');
+    if (galleryPreview) galleryPreview.innerHTML = '';
+
     projectGalleryImages = [];
 }
 
 function renderGalleryPreview() {
     const container = $('#gallery-preview');
+    if (!container) return;
+
     container.innerHTML = projectGalleryImages.map((img, index) => `
         <div class="gallery-item">
             <img src="${img}" alt="Gallery ${index + 1}">
@@ -508,12 +744,14 @@ function renderGalleryPreview() {
 
 function renderProjects() {
     const grid = $('#projects-admin-grid');
+    if (!grid) return;
+
     grid.innerHTML = state.projects.map(project => `
-        <div class="project-admin-card" data-id="${project.id}">
-            <img class="cover" src="${normalizePath(project.coverImage)}" alt="${project.title}" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22160%22 viewBox=%220 0 300 160%22><rect fill=%22%231a1f2e%22 width=%22300%22 height=%22160%22/><text x=%22150%22 y=%2285%22 font-size=%2214%22 text-anchor=%22middle%22 fill=%22%236b7280%22>No Image</text></svg>'">
+        <div class="project-admin-card" data-id="${project._id || project.id}">
+            <img class="cover" src="${normalizePath(project.cover || project.coverImage)}" alt="${project.title}" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22160%22 viewBox=%220 0 300 160%22><rect fill=%22%231a1f2e%22 width=%22300%22 height=%22160%22/><text x=%22150%22 y=%2285%22 font-size=%2214%22 text-anchor=%22middle%22 fill=%22%236b7280%22>No Image</text></svg>'">
             <div class="content">
                 <h4>${project.title}</h4>
-                <p>${project.shortDescription}</p>
+                <p>${project.shortDesc || project.shortDescription || ''}</p>
                 <div class="tags">
                     ${(project.tags || []).slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join('')}
                 </div>
@@ -528,36 +766,51 @@ function renderProjects() {
     grid.querySelectorAll('.project-admin-card').forEach(card => {
         const id = card.dataset.id;
 
-        card.querySelector('.edit').addEventListener('click', () => {
-            const project = state.projects.find(p => p.id == id);
+        card.querySelector('.edit')?.addEventListener('click', () => {
+            const project = state.projects.find(p => (p._id || p.id) == id);
             if (project) {
-                state.currentEditId = project.id;
-                $('#project-modal-title').textContent = 'Edit Project';
-                $('#project-title').value = project.title;
-                $('#project-short-desc').value = project.shortDescription;
-                $('#project-long-desc').value = (project.longDescription || []).join('\n');
-                $('#project-github').value = project.githubUrl || '';
-                $('#project-live').value = project.liveUrl || '';
+                state.currentEditId = id;
+                const modalTitle = $('#project-modal-title');
+                if (modalTitle) modalTitle.textContent = 'Edit Project';
+
+                $('#project-title').value = project.title || '';
+                $('#project-short-desc').value = project.shortDesc || project.shortDescription || '';
+                $('#project-long-desc').value = project.longDesc || (project.longDescription || []).join('\n') || '';
+                $('#project-github').value = project.github || project.githubUrl || '';
+                $('#project-live').value = project.liveDemo || project.liveUrl || '';
                 $('#project-tags').value = (project.tags || []).join(', ');
 
-                if (project.coverImage) {
-                    $('#cover-preview').src = project.coverImage;
-                    $('#cover-preview').classList.remove('hidden');
-                    $('#cover-upload-area .upload-placeholder').style.display = 'none';
+                const cover = project.cover || project.coverImage;
+                if (cover) {
+                    const coverPreview = $('#cover-preview');
+                    if (coverPreview) {
+                        coverPreview.src = cover;
+                        coverPreview.classList.remove('hidden');
+                    }
+                    const placeholder = $('#cover-upload-area .upload-placeholder');
+                    if (placeholder) placeholder.style.display = 'none';
                 }
 
-                projectGalleryImages = project.detailImages || [];
+                projectGalleryImages = project.gallery || project.detailImages || [];
                 renderGalleryPreview();
 
-                $('#project-modal').classList.remove('hidden');
+                $('#project-modal')?.classList.remove('hidden');
             }
         });
 
-        card.querySelector('.delete').addEventListener('click', () => {
-            showConfirm('Delete this project?', () => {
-                state.projects = state.projects.filter(p => p.id != id);
-                renderProjects();
-                showToast('Project deleted');
+        card.querySelector('.delete')?.addEventListener('click', () => {
+            showConfirm('Delete this project?', async () => {
+                try {
+                    showLoading(true);
+                    await projectsAPI.delete(id);
+                    state.projects = await projectsAPI.getAll();
+                    renderProjects();
+                    showLoading(false);
+                    showToast('Project deleted');
+                } catch (error) {
+                    showLoading(false);
+                    showToast('Failed to delete project: ' + error.message, 'error');
+                }
             });
         });
     });
@@ -572,13 +825,14 @@ function initExperienceManager() {
     const saveBtn = $('#save-experience-btn');
     const addTaskBtn = $('#add-task-btn');
 
-    addBtn.addEventListener('click', () => {
+    addBtn?.addEventListener('click', () => {
         state.currentEditId = null;
         experienceTasks = [''];
         clearExperienceForm();
         renderTaskInputs();
-        $('#experience-modal-title').textContent = 'Add New Experience';
-        modal.classList.remove('hidden');
+        const title = $('#experience-modal-title');
+        if (title) title.textContent = 'Add New Experience';
+        modal?.classList.remove('hidden');
     });
 
     // Logo upload
@@ -586,30 +840,34 @@ function initExperienceManager() {
     const logoInput = $('#exp-logo');
     const logoPreview = $('#exp-logo-preview');
 
-    logoUpload.addEventListener('click', () => logoInput.click());
-    logoInput.addEventListener('change', async (e) => {
+    logoUpload?.addEventListener('click', () => logoInput?.click());
+    logoInput?.addEventListener('change', async (e) => {
         const file = e.target.files[0];
         if (file) {
-            const dataUrl = await compressImage(file, 200);
-            logoPreview.src = dataUrl;
-            logoPreview.classList.remove('hidden');
-            logoUpload.querySelector('.upload-placeholder').style.display = 'none';
+            const base64 = await uploadAPI.fileToBase64(file);
+            if (logoPreview) {
+                logoPreview.src = base64;
+                logoPreview.classList.remove('hidden');
+            }
+            if (logoUpload) {
+                const placeholder = logoUpload.querySelector('.upload-placeholder');
+                if (placeholder) placeholder.style.display = 'none';
+            }
         }
     });
 
-    addTaskBtn.addEventListener('click', () => {
+    addTaskBtn?.addEventListener('click', () => {
         experienceTasks.push('');
         renderTaskInputs();
     });
 
-    saveBtn.addEventListener('click', () => {
-        const company = $('#exp-company').value.trim();
-        const location = $('#exp-location').value.trim();
-        const role = $('#exp-role').value.trim();
-        const period = $('#exp-period').value.trim();
-        const logo = $('#exp-logo-preview').src;
+    saveBtn?.addEventListener('click', async () => {
+        const company = $('#exp-company')?.value.trim();
+        const location = $('#exp-location')?.value.trim();
+        const role = $('#exp-role')?.value.trim();
+        const period = $('#exp-period')?.value.trim();
+        const logo = $('#exp-logo-preview')?.src;
 
-        // Collect tasks from inputs
         const taskInputs = $$('.task-input');
         const tasks = Array.from(taskInputs).map(inp => inp.value.trim()).filter(t => t);
 
@@ -618,43 +876,70 @@ function initExperienceManager() {
             return;
         }
 
-        const expData = {
-            id: state.currentEditId || generateId(),
-            company,
-            location,
-            role,
-            period,
-            logo: logo || 'src/assets/images/logos/default.jpg',
-            tasks
-        };
+        try {
+            showLoading(true);
 
-        if (state.currentEditId) {
-            const index = state.experiences.findIndex(e => e.id === state.currentEditId);
-            if (index !== -1) {
-                state.experiences[index] = expData;
+            // Upload logo if base64
+            let logoUrl = logo;
+            if (logo && logo.startsWith('data:')) {
+                try {
+                    const result = await uploadAPI.uploadImage(logo, 'logos');
+                    logoUrl = result.url;
+                } catch (e) {
+                    // Keep base64
+                }
             }
-        } else {
-            state.experiences.push(expData);
-        }
 
-        renderExperiences();
-        modal.classList.add('hidden');
-        showToast('Experience saved!');
+            const expData = {
+                company,
+                location: location || '',
+                role,
+                period: period || '',
+                logo: logoUrl || '',
+                tasks
+            };
+
+            if (state.currentEditId) {
+                await experiencesAPI.update(state.currentEditId, expData);
+                showToast('Experience updated!');
+            } else {
+                await experiencesAPI.create(expData);
+                showToast('Experience added!');
+            }
+
+            state.experiences = await experiencesAPI.getAll();
+            renderExperiences();
+
+            modal?.classList.add('hidden');
+            showLoading(false);
+        } catch (error) {
+            showLoading(false);
+            showToast('Failed to save experience: ' + error.message, 'error');
+        }
     });
 }
 
 function clearExperienceForm() {
-    $('#exp-company').value = '';
-    $('#exp-location').value = '';
-    $('#exp-role').value = '';
-    $('#exp-period').value = '';
-    $('#exp-logo-preview').src = '';
-    $('#exp-logo-preview').classList.add('hidden');
-    $('#exp-logo-upload-area .upload-placeholder').style.display = 'flex';
+    const fields = ['exp-company', 'exp-location', 'exp-role', 'exp-period'];
+    fields.forEach(id => {
+        const el = $(`#${id}`);
+        if (el) el.value = '';
+    });
+
+    const logoPreview = $('#exp-logo-preview');
+    if (logoPreview) {
+        logoPreview.src = '';
+        logoPreview.classList.add('hidden');
+    }
+
+    const placeholder = $('#exp-logo-upload-area .upload-placeholder');
+    if (placeholder) placeholder.style.display = 'flex';
 }
 
 function renderTaskInputs() {
     const container = $('#exp-tasks-container');
+    if (!container) return;
+
     container.innerHTML = experienceTasks.map((task, index) => `
         <div class="task-input-row">
             <input type="text" class="form-input task-input" value="${task}" placeholder="Task or responsibility">
@@ -680,8 +965,10 @@ function renderTaskInputs() {
 
 function renderExperiences() {
     const grid = $('#experience-admin-grid');
+    if (!grid) return;
+
     grid.innerHTML = state.experiences.map(exp => `
-        <div class="experience-admin-card" data-id="${exp.id}">
+        <div class="experience-admin-card" data-id="${exp._id || exp.id}">
             <img class="logo" src="${normalizePath(exp.logo)}" alt="${exp.company}" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22><rect fill=%22%231a1f2e%22 width=%2260%22 height=%2260%22 rx=%2210%22/><text x=%2230%22 y=%2238%22 font-size=%2212%22 text-anchor=%22middle%22 fill=%22%236b7280%22>Logo</text></svg>'">
             <div class="info">
                 <h4>${exp.company}</h4>
@@ -698,78 +985,206 @@ function renderExperiences() {
     grid.querySelectorAll('.experience-admin-card').forEach(card => {
         const id = card.dataset.id;
 
-        card.querySelector('.edit').addEventListener('click', () => {
-            const exp = state.experiences.find(e => e.id === id);
+        card.querySelector('.edit')?.addEventListener('click', () => {
+            const exp = state.experiences.find(e => (e._id || e.id) === id);
             if (exp) {
                 state.currentEditId = id;
-                $('#experience-modal-title').textContent = 'Edit Experience';
-                $('#exp-company').value = exp.company;
+                const title = $('#experience-modal-title');
+                if (title) title.textContent = 'Edit Experience';
+
+                $('#exp-company').value = exp.company || '';
                 $('#exp-location').value = exp.location || '';
-                $('#exp-role').value = exp.role;
+                $('#exp-role').value = exp.role || '';
                 $('#exp-period').value = exp.period || '';
 
                 if (exp.logo) {
-                    $('#exp-logo-preview').src = exp.logo;
-                    $('#exp-logo-preview').classList.remove('hidden');
-                    $('#exp-logo-upload-area .upload-placeholder').style.display = 'none';
+                    const logoPreview = $('#exp-logo-preview');
+                    if (logoPreview) {
+                        logoPreview.src = exp.logo;
+                        logoPreview.classList.remove('hidden');
+                    }
+                    const placeholder = $('#exp-logo-upload-area .upload-placeholder');
+                    if (placeholder) placeholder.style.display = 'none';
                 }
 
                 experienceTasks = exp.tasks && exp.tasks.length ? [...exp.tasks] : [''];
                 renderTaskInputs();
 
-                $('#experience-modal').classList.remove('hidden');
+                $('#experience-modal')?.classList.remove('hidden');
             }
         });
 
-        card.querySelector('.delete').addEventListener('click', () => {
-            showConfirm('Delete this experience?', () => {
-                state.experiences = state.experiences.filter(e => e.id !== id);
-                renderExperiences();
-                showToast('Experience deleted');
+        card.querySelector('.delete')?.addEventListener('click', () => {
+            showConfirm('Delete this experience?', async () => {
+                try {
+                    showLoading(true);
+                    await experiencesAPI.delete(id);
+                    state.experiences = await experiencesAPI.getAll();
+                    renderExperiences();
+                    showLoading(false);
+                    showToast('Experience deleted');
+                } catch (error) {
+                    showLoading(false);
+                    showToast('Failed to delete experience: ' + error.message, 'error');
+                }
             });
         });
     });
 }
 
+// ===== Messages Section =====
+function initMessagesSection() {
+    // Load messages if we have access
+    loadMessages();
+}
+
+async function loadMessages() {
+    try {
+        state.messages = await messagesAPI.getAll();
+        renderMessages();
+        updateMessagesCount();
+    } catch (error) {
+        console.log('Messages not available:', error.message);
+    }
+}
+
+function updateMessagesCount() {
+    const unreadCount = state.messages.filter(m => !m.read).length;
+    const badge = $('#messages-count');
+    if (badge) {
+        badge.textContent = unreadCount;
+        badge.style.display = unreadCount > 0 ? 'inline-flex' : 'none';
+    }
+}
+
+function renderMessages() {
+    // Messages are displayed in the messages section
+    // This would require adding a messages list to the HTML
+    // For now, we just update the count
+    updateMessagesCount();
+}
+
 // ===== Settings =====
 function initSettings() {
     // Export
-    $('#export-data-btn').addEventListener('click', () => {
+    $('#export-data-btn')?.addEventListener('click', () => {
         exportAllData();
-        showToast('Data exported successfully!');
     });
 
     // Import
     const importBtn = $('#import-data-btn');
     const importInput = $('#import-file');
 
-    importBtn.addEventListener('click', () => importInput.click());
-    importInput.addEventListener('change', async (e) => {
+    importBtn?.addEventListener('click', () => importInput?.click());
+    importInput?.addEventListener('change', async (e) => {
         const file = e.target.files[0];
         if (file) {
             try {
-                await importData(file);
-                loadAllData();
+                const text = await file.text();
+                const data = JSON.parse(text);
+                await importData(data);
                 showToast('Data imported successfully!');
             } catch (error) {
-                showToast(error.message, 'error');
+                showToast('Import failed: ' + error.message, 'error');
             }
         }
     });
 
     // Reset
-    $('#reset-data-btn').addEventListener('click', () => {
-        showConfirm('This will delete ALL your data and reset to defaults. Are you sure?', () => {
-            clearAllData();
-            loadAllData();
-            showToast('Data reset to defaults');
+    $('#reset-data-btn')?.addEventListener('click', () => {
+        showConfirm('This will delete ALL your data. Are you sure?', async () => {
+            showToast('Reset not implemented for API mode', 'error');
         });
     });
 }
 
+// ===== Export Data =====
+async function exportAllData() {
+    try {
+        const data = {
+            general: state.general,
+            skills: state.skills,
+            projects: state.projects,
+            experiences: state.experiences,
+            exportedAt: new Date().toISOString()
+        };
+
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `portfolio-backup-${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+
+        showToast('Data exported successfully!');
+    } catch (error) {
+        showToast('Export failed: ' + error.message, 'error');
+    }
+}
+
+// ===== Import Data =====
+async function importData(data) {
+    showLoading(true);
+
+    try {
+        // Import general settings
+        if (data.general) {
+            await generalAPI.update(data.general);
+        }
+
+        // Import skills
+        if (data.skills && Array.isArray(data.skills)) {
+            for (const skill of data.skills) {
+                await skillsAPI.create({
+                    name: skill.name,
+                    icon: skill.icon
+                });
+            }
+        }
+
+        // Import projects
+        if (data.projects && Array.isArray(data.projects)) {
+            for (const project of data.projects) {
+                await projectsAPI.create({
+                    title: project.title,
+                    shortDesc: project.shortDesc || project.shortDescription,
+                    longDesc: project.longDesc || (project.longDescription || []).join('\n'),
+                    github: project.github || project.githubUrl,
+                    liveDemo: project.liveDemo || project.liveUrl,
+                    tags: project.tags,
+                    cover: project.cover || project.coverImage,
+                    gallery: project.gallery || project.detailImages
+                });
+            }
+        }
+
+        // Import experiences
+        if (data.experiences && Array.isArray(data.experiences)) {
+            for (const exp of data.experiences) {
+                await experiencesAPI.create({
+                    company: exp.company,
+                    location: exp.location,
+                    role: exp.role,
+                    period: exp.period,
+                    logo: exp.logo,
+                    tasks: exp.tasks
+                });
+            }
+        }
+
+        // Reload all data
+        await loadAllData();
+        showLoading(false);
+
+    } catch (error) {
+        showLoading(false);
+        throw error;
+    }
+}
+
 // ===== Modals =====
 function initModals() {
-    // Close modal on backdrop click or close button
     $$('.modal').forEach(modal => {
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
@@ -780,7 +1195,7 @@ function initModals() {
 
     $$('.modal-close, .modal-cancel').forEach(btn => {
         btn.addEventListener('click', () => {
-            btn.closest('.modal').classList.add('hidden');
+            btn.closest('.modal')?.classList.add('hidden');
         });
     });
 }
@@ -790,28 +1205,35 @@ let confirmCallback = null;
 
 function showConfirm(message, onConfirm) {
     const modal = $('#confirm-modal');
-    $('#confirm-message').textContent = message;
+    const messageEl = $('#confirm-message');
+    if (messageEl) messageEl.textContent = message;
     confirmCallback = onConfirm;
-    modal.classList.remove('hidden');
+    modal?.classList.remove('hidden');
 }
 
 $('#confirm-cancel')?.addEventListener('click', () => {
-    $('#confirm-modal').classList.add('hidden');
+    $('#confirm-modal')?.classList.add('hidden');
     confirmCallback = null;
 });
 
 $('#confirm-ok')?.addEventListener('click', () => {
     if (confirmCallback) confirmCallback();
-    $('#confirm-modal').classList.add('hidden');
+    $('#confirm-modal')?.classList.add('hidden');
     confirmCallback = null;
 });
 
 // ===== Save All Data =====
-function saveAllData() {
-    saveSection('general', state.general);
-    saveSection('skills', state.skills);
-    saveSection('projects', state.projects);
-    saveSection('experiences', state.experiences);
+async function saveAllData() {
+    try {
+        showLoading(true);
 
-    showToast('All changes saved!');
+        // Save general settings to API
+        await generalAPI.update(state.general);
+
+        showLoading(false);
+        showToast('All changes saved!');
+    } catch (error) {
+        showLoading(false);
+        showToast('Failed to save: ' + error.message, 'error');
+    }
 }
