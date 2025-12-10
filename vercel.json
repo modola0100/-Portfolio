@@ -1,9 +1,4 @@
 {
-    "functions": {
-        "api/*.js": {
-            "runtime": "@vercel/node@3"
-        }
-    },
     "routes": [
         {
             "src": "/api/auth/(.*)",
@@ -51,11 +46,6 @@
         },
         {
             "handle": "filesystem"
-        },
-        {
-            "src": "/(.*)",
-            "status": 404,
-            "dest": "/404.html"
         }
     ]
 }
