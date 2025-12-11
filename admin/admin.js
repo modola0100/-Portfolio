@@ -1,18 +1,9 @@
 /**
  * Admin Panel - Main JavaScript
  * Handles all admin functionality for the portfolio
- * Uses Backend API for data persistence
+ * Uses localStorage for data persistence
  */
 
-import {
-    authAPI,
-    projectsAPI,
-    skillsAPI,
-    experiencesAPI,
-    generalAPI,
-    messagesAPI,
-    uploadAPI
-} from './api-service.js';
 import { initParticles } from '../src/shared/ui/particles.js';
 
 // ===== State =====
@@ -104,6 +95,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         showLoading(false);
     }
 });
+
+// ===== Helper Functions =====
+function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+}
 
 // ===== Display User Info =====
 function displayUserInfo() {
@@ -344,18 +345,11 @@ function initGeneralSettings() {
         if (file) {
             try {
                 showLoading(true);
-                const base64 = await uploadAPI.fileToBase64(file);
-
-                // Try to upload to cloud, fallback to base64
-                try {
-                    const result = await uploadAPI.uploadImage(base64, 'profile');
-                    profilePreview.src = result.url;
-                    state.general.profilePicture = result.url;
-                } catch (uploadError) {
-                    // Fallback to base64 for local storage
-                    profilePreview.src = base64;
-                    state.general.profilePicture = base64;
-                }
+                const base64 = await fileToBase64(file);
+                
+                // Store as base64 in localStorage
+                profilePreview.src = base64;
+                state.general.profilePicture = base64;
 
                 profilePreview.classList.remove('hidden');
                 profileUpload.querySelector('.upload-placeholder').style.display = 'none';
@@ -536,8 +530,8 @@ function renderSkills() {
             showConfirm('Delete this skill?', async () => {
                 try {
                     showLoading(true);
-                    await skillsAPI.delete(id);
-                    state.skills = await skillsAPI.getAll();
+                    state.skills = state.skills.filter(s => s._id !== id);
+                    localStorage.setItem('portfolio_skills', JSON.stringify(state.skills));
                     renderSkills();
                     updateDashboardStats();
                     showLoading(false);
@@ -578,7 +572,7 @@ function initProjectsManager() {
         const file = e.target.files[0];
         if (file) {
             try {
-                const base64 = await uploadAPI.fileToBase64(file);
+                const base64 = await fileToBase64(file);
                 if (coverPreview) {
                     coverPreview.src = base64;
                     coverPreview.classList.remove('hidden');
@@ -597,7 +591,7 @@ function initProjectsManager() {
     const galleryInput = $('#project-gallery');
     galleryInput?.addEventListener('change', async (e) => {
         for (const file of e.target.files) {
-            const base64 = await uploadAPI.fileToBase64(file);
+            const base64 = await fileToBase64(file);
             projectGalleryImages.push(base64);
         }
         renderGalleryPreview();
@@ -620,31 +614,14 @@ function initProjectsManager() {
         try {
             showLoading(true);
 
-            // Upload cover image to cloud if it's base64
+            // Keep cover image as base64 if it's a data URL
             let coverUrl = cover;
-            if (cover && cover.startsWith('data:')) {
-                try {
-                    const result = await uploadAPI.uploadImage(cover, 'projects');
-                    coverUrl = result.url;
-                } catch (e) {
-                    // Keep base64 if upload fails
-                }
+            if (cover && !cover.startsWith('data:')) {
+                coverUrl = cover; // Keep existing URL
             }
 
-            // Upload gallery images
-            const galleryUrls = [];
-            for (const img of projectGalleryImages) {
-                if (img.startsWith('data:')) {
-                    try {
-                        const result = await uploadAPI.uploadImage(img, 'projects/gallery');
-                        galleryUrls.push(result.url);
-                    } catch (e) {
-                        galleryUrls.push(img);
-                    }
-                } else {
-                    galleryUrls.push(img);
-                }
-            }
+            // Keep gallery images as base64
+            const galleryUrls = projectGalleryImages.slice();
 
             const projectData = {
                 title,
@@ -786,8 +763,8 @@ function renderProjects() {
             showConfirm('Delete this project?', async () => {
                 try {
                     showLoading(true);
-                    await projectsAPI.delete(id);
-                    state.projects = await projectsAPI.getAll();
+                    state.projects = state.projects.filter(p => p._id !== id);
+                    localStorage.setItem('portfolio_projects', JSON.stringify(state.projects));
                     renderProjects();
                     showLoading(false);
                     showToast('Project deleted');
@@ -828,7 +805,7 @@ function initExperienceManager() {
     logoInput?.addEventListener('change', async (e) => {
         const file = e.target.files[0];
         if (file) {
-            const base64 = await uploadAPI.fileToBase64(file);
+            const base64 = await fileToBase64(file);
             if (logoPreview) {
                 logoPreview.src = base64;
                 logoPreview.classList.remove('hidden');
@@ -863,15 +840,10 @@ function initExperienceManager() {
         try {
             showLoading(true);
 
-            // Upload logo if base64
+            // Keep logo as base64 if it's a data URL
             let logoUrl = logo;
-            if (logo && logo.startsWith('data:')) {
-                try {
-                    const result = await uploadAPI.uploadImage(logo, 'logos');
-                    logoUrl = result.url;
-                } catch (e) {
-                    // Keep base64
-                }
+            if (logo && !logo.startsWith('data:')) {
+                logoUrl = logo; // Keep existing URL
             }
 
             const expData = {
@@ -884,14 +856,18 @@ function initExperienceManager() {
             };
 
             if (state.currentEditId) {
-                await experiencesAPI.update(state.currentEditId, expData);
+                const index = state.experiences.findIndex(e => e._id === state.currentEditId);
+                if (index !== -1) {
+                    state.experiences[index] = { ...state.experiences[index], ...expData };
+                }
                 showToast('Experience updated!');
             } else {
-                await experiencesAPI.create(expData);
+                expData._id = Date.now().toString();
+                state.experiences.push(expData);
                 showToast('Experience added!');
             }
 
-            state.experiences = await experiencesAPI.getAll();
+            localStorage.setItem('portfolio_experiences', JSON.stringify(state.experiences));
             renderExperiences();
 
             modal?.classList.add('hidden');
@@ -1002,8 +978,8 @@ function renderExperiences() {
             showConfirm('Delete this experience?', async () => {
                 try {
                     showLoading(true);
-                    await experiencesAPI.delete(id);
-                    state.experiences = await experiencesAPI.getAll();
+                    state.experiences = state.experiences.filter(e => e._id !== id);
+                    localStorage.setItem('portfolio_experiences', JSON.stringify(state.experiences));
                     renderExperiences();
                     showLoading(false);
                     showToast('Experience deleted');
@@ -1024,7 +1000,8 @@ function initMessagesSection() {
 
 async function loadMessages() {
     try {
-        state.messages = await messagesAPI.getAll();
+        const stored = localStorage.getItem('portfolio_messages');
+        state.messages = stored ? JSON.parse(stored) : [];
         renderMessages();
         updateMessagesCount();
     } catch (error) {
@@ -1114,7 +1091,8 @@ async function importData(data) {
     try {
         // Import general settings
         if (data.general) {
-            await generalAPI.update(data.general);
+            state.general = data.general;
+            localStorage.setItem('portfolio_general', JSON.stringify(data.general));
         }
 
         // Import skills
@@ -1145,16 +1123,16 @@ async function importData(data) {
 
         // Import experiences
         if (data.experiences && Array.isArray(data.experiences)) {
-            for (const exp of data.experiences) {
-                await experiencesAPI.create({
-                    company: exp.company,
-                    location: exp.location,
-                    role: exp.role,
-                    period: exp.period,
-                    logo: exp.logo,
-                    tasks: exp.tasks
-                });
-            }
+            const experiences = data.experiences.map((exp, idx) => ({
+                _id: exp._id || `exp_${Date.now()}_${idx}`,
+                company: exp.company,
+                location: exp.location,
+                role: exp.role,
+                period: exp.period,
+                logo: exp.logo,
+                tasks: exp.tasks
+            }));
+            localStorage.setItem('portfolio_experiences', JSON.stringify(experiences));
         }
 
         // Reload all data
