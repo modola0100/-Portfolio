@@ -49,20 +49,20 @@
             "dest": "/api/upload.js"
         },
         {
-            "src": "/admin",
-            "dest": "/admin/admin.html"
+            "src": "/admin/([^/]*\\.css)$",
+            "dest": "/admin/$1"
         },
         {
-            "src": "/admin/login.html",
+            "src": "/admin/([^/]*\\.js)$",
+            "dest": "/admin/$1"
+        },
+        {
+            "src": "/admin/login\\.html",
             "dest": "/admin/login.html"
         },
         {
-            "src": "/admin/register.html",
+            "src": "/admin/register\\.html",
             "dest": "/admin/register.html"
-        },
-        {
-            "src": "/admin/(.*\\.(?:css|js|html))$",
-            "dest": "/admin/$1"
         },
         {
             "src": "/admin/?$",
@@ -73,15 +73,11 @@
             "dest": "/admin/admin.html"
         },
         {
-            "src": "/src/(.*)",
+            "src": "/src/(.*)$",
             "dest": "/src/$1"
         },
         {
-            "src": "/admin/(.*)",
-            "dest": "/admin/$1"
-        },
-        {
-            "src": "/(.*\\.(?:css|js|svg|png|jpg|jpeg|gif|ico|woff|woff2))$",
+            "src": "/([^/]*\\.(?:css|js|svg|png|jpg|jpeg|gif|ico|woff|woff2))$",
             "dest": "/$1"
         },
         {
