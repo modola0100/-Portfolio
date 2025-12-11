@@ -178,7 +178,27 @@ async function loadAllData() {
         ]);
 
         state.general = generalData || getDefaultGeneral();
-        state.skills = skillsData || [];
+        
+        // If skills are empty, use default skills and save them
+        if (!skillsData || skillsData.length === 0) {
+            const { skills: defaultSkills } = await import('../src/shared/data/skills-data.js');
+            state.skills = defaultSkills || [];
+            // Save default skills to database
+            if (state.skills.length > 0) {
+                await Promise.all(state.skills.map(skill => 
+                    skillsAPI.create({
+                        name: skill.name,
+                        icon: skill.icon,
+                        type: skill.type || 'url'
+                    }).catch(err => console.warn('Failed to save skill:', skill.name, err))
+                ));
+                // Reload skills from API
+                state.skills = await skillsAPI.getAll().catch(() => state.skills);
+            }
+        } else {
+            state.skills = skillsData;
+        }
+        
         state.projects = projectsData || [];
         state.experiences = experiencesData || [];
         state.isOnline = true;
