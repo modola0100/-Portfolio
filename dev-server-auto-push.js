@@ -149,9 +149,9 @@ function serveFile(filePath, res) {
             'Cache-Control': 'no-cache'
         });
         res.end(content);
+        return true;
     } catch (error) {
-        res.writeHead(404);
-        res.end('Not Found');
+        return false;
     }
 }
 
@@ -159,6 +159,16 @@ function serveFile(filePath, res) {
  * Resolve file path
  */
 function resolvePath(pathname) {
+    // Handle /admin path -> /admin/admin.html
+    if (pathname === '/admin' || pathname === '/admin/') {
+        return join(__dirname, 'admin', 'admin.html');
+    }
+    
+    // Handle /clear-storage -> /clear-storage.html
+    if (pathname === '/clear-storage' || pathname === '/clear-storage/') {
+        return join(__dirname, 'clear-storage.html');
+    }
+    
     let filePath = join(__dirname, pathname === '/' ? 'index.html' : pathname);
 
     // Handle directory requests
@@ -221,16 +231,18 @@ const server = http.createServer(async (req, res) => {
     }
 
     if (fileExists(filePath)) {
-        serveFile(filePath, res);
-    } else {
-        // Fallback to index.html for SPA routing
-        const indexPath = join(__dirname, 'index.html');
-        if (fileExists(indexPath)) {
-            serveFile(indexPath, res);
-        } else {
-            res.writeHead(404);
-            res.end('Not Found');
+        if (serveFile(filePath, res)) {
+            return;
         }
+    }
+    
+    // Fallback to index.html for SPA routing
+    const indexPath = join(__dirname, 'index.html');
+    if (fileExists(indexPath)) {
+        serveFile(indexPath, res);
+    } else {
+        res.writeHead(404);
+        res.end('Not Found');
     }
 });
 
