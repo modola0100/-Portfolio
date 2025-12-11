@@ -204,52 +204,42 @@ function saveState() {
 /**
  * Auto-push changes to GitHub
  * Called automatically after each save
+ * Uses Vercel Serverless Function to handle git operations
  * @param {string} action - 'add', 'edit', or 'delete'
  * @param {string} itemType - 'skill', 'project', 'experience', 'general'
  * @param {string} itemName - name of the item (optional)
  */
 async function autoPushToGitHub(action, itemType, itemName = '') {
     try {
-        // Only push if we have a valid endpoint
-        // In development, this might be localhost:5000
-        // In production, this would be the server endpoint
-        
-        const endpoints = [
-            '/api/git-sync',  // Local server
-            'http://localhost:5000/api/git-sync',  // Development
-        ];
+        // Use Vercel Function endpoint
+        const endpoint = '/api/git-sync';
 
-        for (const endpoint of endpoints) {
-            try {
-                const response = await fetch(endpoint, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        action,
-                        itemType,
-                        itemName
-                    })
-                });
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                action,
+                itemType,
+                itemName
+            })
+        });
 
-                if (response.ok) {
-                    const result = await response.json();
-                    if (!result.skipped) {
-                        console.log('✅ Pushed to GitHub:', result.message);
-                        showToast('✅ Pushed to GitHub!', 'success');
-                    }
-                    return;
-                }
-            } catch (e) {
-                // Try next endpoint
-                continue;
-            }
+        const result = await response.json();
+
+        if (result.success && !result.skipped) {
+            console.log('✅ Pushed to GitHub:', result.message);
+            showToast('✅ Pushed to GitHub!', 'success');
+        } else if (result.skipped) {
+            console.log('ℹ️ No changes to commit');
+        } else {
+            console.log('⚠️ Push attempt failed, but changes saved locally:', result.message);
         }
 
-        // If we get here, server is not available (normal in static hosting)
-        console.log('ℹ️ Git push server not available - changes saved locally only');
+        return result;
         
     } catch (error) {
         console.error('Auto-push error:', error);
+        console.log('ℹ️ Changes saved locally - push will retry next time');
         // Don't show error to user - it's optional
     }
 }

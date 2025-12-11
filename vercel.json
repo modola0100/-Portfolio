@@ -5,6 +5,10 @@
     "framework": null,
     "routes": [
         {
+            "src": "/api/git-sync",
+            "dest": "/api/git-sync.js"
+        },
+        {
             "src": "/admin/?$",
             "dest": "/admin/admin.html"
         },
