@@ -1054,7 +1054,30 @@ function initSettings() {
     // Reset
     $('#reset-data-btn')?.addEventListener('click', () => {
         showConfirm('This will delete ALL your data. Are you sure?', async () => {
-            showToast('Reset not implemented for API mode', 'error');
+            try {
+                showLoading(true);
+                
+                // Clear all localStorage data
+                localStorage.removeItem('portfolio_general');
+                localStorage.removeItem('portfolio_skills');
+                localStorage.removeItem('portfolio_projects');
+                localStorage.removeItem('portfolio_experiences');
+                localStorage.removeItem('portfolio_messages');
+                
+                // Reset state to defaults
+                await loadAllData();
+                
+                showLoading(false);
+                showToast('✅ All data reset to defaults!');
+                
+                // Reload page after 1 second
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
+            } catch (error) {
+                showLoading(false);
+                showToast('Failed to reset data: ' + error.message, 'error');
+            }
         });
     });
 }
