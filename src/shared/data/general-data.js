@@ -11,7 +11,7 @@ Proficient in state management, Firebase integration, and applying clean archite
 Committed to delivering intuitive user experiences and collaborating effectively to achieve project goals.`,
     profilePicture: 'src/assets/images/100.jpg',
     stats: {
-        projects: 3,
+        projectsCount: 3,
         yearsExperience: 1,
         happyClients: 2
     },

@@ -79,7 +79,7 @@ async function loadAdminData() {
         const statYears = document.getElementById('stat-years');
         const statClients = document.getElementById('stat-clients');
 
-        if (statProjects) statProjects.textContent = general.stats.projects || 0;
+        if (statProjects) statProjects.textContent = general.stats.projectsCount || 0;
         if (statYears) statYears.textContent = general.stats.yearsExperience || 0;
         if (statClients) statClients.textContent = general.stats.happyClients || 0;
     }
