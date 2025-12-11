@@ -13,8 +13,10 @@ import { initContactForm } from '../features/4-contact/contact.js';
 
 // Import data service for localStorage management
 import { getData, STORAGE_KEYS } from './data/data-service.js';
-import { generalData } from './data/general-data.js';
-import { skills as defaultSkills } from './data/skills-data.js';
+import { generalData, getGeneralData } from './data/general-data.js';
+import { skills as defaultSkills, getSkills } from './data/skills-data.js';
+import { getProjects } from './data/projects-data.js';
+import { getExperiences } from './data/experience-data.js';
 
 function initializeApp() {
     document.addEventListener('DOMContentLoaded', () => {
@@ -38,11 +40,11 @@ function initializeApp() {
 }
 
 /**
- * Load portfolio data from localStorage (set by admin panel)
+ * Load portfolio data from API
  */
-function loadAdminData() {
-    // Get general settings
-    const general = getData(STORAGE_KEYS.GENERAL, generalData);
+async function loadAdminData() {
+    // Get general settings from API
+    const general = await getGeneralData();
 
     // Update Hero Name
     if (general.heroName) {
@@ -82,8 +84,8 @@ function loadAdminData() {
         if (statClients) statClients.textContent = general.stats.happyClients || 0;
     }
 
-    // Update Skills
-    const skills = getData(STORAGE_KEYS.SKILLS, null);
+    // Update Skills from API
+    const skills = await getSkills();
     if (skills && skills.length > 0) {
         renderSkillsFromData(skills);
     }
