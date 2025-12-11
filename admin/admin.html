@@ -16,11 +16,38 @@
     <style>
         /* Force layout fixes */
         * { box-sizing: border-box; }
-        body { margin: 0; padding: 0; }
-        .main-content { 
+        body { margin: 0; padding: 0; overflow-x: hidden; }
+        
+        main.main-content { 
             margin-left: 260px !important;
             width: calc(100% - 260px) !important;
             display: block !important;
+            opacity: 1 !important;
+            transform: none !important;
+            min-height: 100vh;
+        }
+        
+        /* Ensure all sections are visible */
+        .content-section {
+            display: none !important;
+            opacity: 0 !important;
+            transition: opacity 0.3s ease !important;
+        }
+        
+        .content-section.active {
+            display: block !important;
+            opacity: 1 !important;
+        }
+        
+        /* Ensure cards show */
+        .admin-card, .stat-card {
+            display: block !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        
+        .stats-grid, .dashboard-grid, .section-grid {
+            display: grid !important;
         }
     </style>
 </head>

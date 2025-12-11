@@ -95,18 +95,29 @@ function generateId() {
 // ===== Initialize =====
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        console.log('Starting admin initialization...');
+        console.log('🟢 Admin Initialization Started');
+        console.log('📍 Page:', window.location.href);
+        console.log('📍 DOM Elements Found:', {
+            main: !!document.querySelector('main'),
+            sidebar: !!document.querySelector('.sidebar'),
+            sections: document.querySelectorAll('.content-section').length
+        });
 
         // Check authentication first
         if (!checkAuth()) return;
 
         // Make main visible
         const mainEl = document.querySelector('main');
-        if (mainEl) mainEl.classList.add('loaded');
+        if (mainEl) {
+            mainEl.classList.add('loaded');
+            console.log('🟢 Main element made visible');
+        } else {
+            console.log('🔴 Main element not found!');
+        }
 
         // Initialize particles
         initParticles();
-        console.log('Particles initialized');
+        console.log('🟢 Particles initialized');
 
         // Show loading state
         showLoading(true);
