@@ -5,9 +5,10 @@
   "type": "module",
   "main": "api/index.js",
   "scripts": {
-    "dev": "vercel dev",
+    "dev": "node dev-server-auto-push.js",
+    "dev:vercel": "vercel dev",
     "build": "echo 'No build step required'",
-    "start": "vercel dev",
+    "start": "node dev-server-auto-push.js",
     "deploy": "vercel --prod",
     "lint": "echo 'No lint configured'"
   },
