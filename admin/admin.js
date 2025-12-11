@@ -201,6 +201,59 @@ function saveState() {
     }
 }
 
+/**
+ * Auto-push changes to GitHub
+ * Called automatically after each save
+ * @param {string} action - 'add', 'edit', or 'delete'
+ * @param {string} itemType - 'skill', 'project', 'experience', 'general'
+ * @param {string} itemName - name of the item (optional)
+ */
+async function autoPushToGitHub(action, itemType, itemName = '') {
+    try {
+        // Only push if we have a valid endpoint
+        // In development, this might be localhost:5000
+        // In production, this would be the server endpoint
+        
+        const endpoints = [
+            '/api/git-sync',  // Local server
+            'http://localhost:5000/api/git-sync',  // Development
+        ];
+
+        for (const endpoint of endpoints) {
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action,
+                        itemType,
+                        itemName
+                    })
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    if (!result.skipped) {
+                        console.log('✅ Pushed to GitHub:', result.message);
+                        showToast('✅ Pushed to GitHub!', 'success');
+                    }
+                    return;
+                }
+            } catch (e) {
+                // Try next endpoint
+                continue;
+            }
+        }
+
+        // If we get here, server is not available (normal in static hosting)
+        console.log('ℹ️ Git push server not available - changes saved locally only');
+        
+    } catch (error) {
+        console.error('Auto-push error:', error);
+        // Don't show error to user - it's optional
+    }
+}
+
 // ===== Toast Notification =====
 function showToast(message, type = 'success') {
     const toast = $('#toast');
@@ -472,9 +525,11 @@ function initSkillsManager() {
             showLoading(true);
 
             const skillData = { name, icon };
+            let action = 'add';
 
             if (state.currentEditId) {
                 // Update existing
+                action = 'edit';
                 const index = state.skills.findIndex(s => s._id === state.currentEditId);
                 if (index !== -1) {
                     state.skills[index] = { ...state.skills[index], ...skillData };
@@ -489,6 +544,10 @@ function initSkillsManager() {
 
             // Save to localStorage
             saveState();
+            
+            // Auto-push to GitHub (runs in background)
+            autoPushToGitHub(action, 'skill', name);
+            
             renderSkills();
             updateDashboardStats();
 
@@ -543,8 +602,13 @@ function renderSkills() {
             showConfirm('Delete this skill?', async () => {
                 try {
                     showLoading(true);
+                    const skillName = skill.name;
                     state.skills = state.skills.filter(s => s._id !== id);
                     saveState();
+                    
+                    // Auto-push to GitHub (runs in background)
+                    autoPushToGitHub('delete', 'skill', skillName);
+                    
                     renderSkills();
                     updateDashboardStats();
                     showLoading(false);
@@ -647,7 +711,9 @@ function initProjectsManager() {
                 gallery: galleryUrls
             };
 
+            let action = 'add';
             if (state.currentEditId) {
+                action = 'edit';
                 const index = state.projects.findIndex(p => p._id === state.currentEditId);
                 if (index !== -1) {
                     state.projects[index] = { ...state.projects[index], ...projectData };
@@ -661,6 +727,10 @@ function initProjectsManager() {
 
             // Save to localStorage
             saveState();
+            
+            // Auto-push to GitHub (runs in background)
+            autoPushToGitHub(action, 'project', title);
+            
             renderProjects();
 
             modal?.classList.add('hidden');
@@ -776,8 +846,13 @@ function renderProjects() {
             showConfirm('Delete this project?', async () => {
                 try {
                     showLoading(true);
+                    const projectName = project.title;
                     state.projects = state.projects.filter(p => p._id !== id);
                     saveState();
+                    
+                    // Auto-push to GitHub (runs in background)
+                    autoPushToGitHub('delete', 'project', projectName);
+                    
                     renderProjects();
                     showLoading(false);
                     showToast('Project deleted');
@@ -868,7 +943,9 @@ function initExperienceManager() {
                 tasks
             };
 
+            let action = 'add';
             if (state.currentEditId) {
+                action = 'edit';
                 const index = state.experiences.findIndex(e => e._id === state.currentEditId);
                 if (index !== -1) {
                     state.experiences[index] = { ...state.experiences[index], ...expData };
@@ -881,6 +958,10 @@ function initExperienceManager() {
             }
 
             saveState();
+            
+            // Auto-push to GitHub (runs in background)
+            autoPushToGitHub(action, 'experience', company);
+            
             renderExperiences();
 
             modal?.classList.add('hidden');
@@ -991,8 +1072,14 @@ function renderExperiences() {
             showConfirm('Delete this experience?', async () => {
                 try {
                     showLoading(true);
+                    const exp = state.experiences.find(e => (e._id || e.id) === id);
+                    const companyName = exp?.company || 'Experience';
                     state.experiences = state.experiences.filter(e => e._id !== id);
                     saveState();
+                    
+                    // Auto-push to GitHub (runs in background)
+                    autoPushToGitHub('delete', 'experience', companyName);
+                    
                     renderExperiences();
                     showLoading(false);
                     showToast('Experience deleted');
