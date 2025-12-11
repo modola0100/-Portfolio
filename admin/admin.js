@@ -1230,6 +1230,45 @@ async function saveAllData() {
         // Save general settings to API
         await generalAPI.update(state.general);
 
+        // Save each skill individually
+        if (state.skills && state.skills.length > 0) {
+            for (const skill of state.skills) {
+                if (skill._id) {
+                    // Update existing skill
+                    await skillsAPI.update(skill._id, skill);
+                } else {
+                    // Create new skill
+                    await skillsAPI.create(skill);
+                }
+            }
+        }
+
+        // Save each project individually
+        if (state.projects && state.projects.length > 0) {
+            for (const project of state.projects) {
+                if (project._id) {
+                    // Update existing project
+                    await projectsAPI.update(project._id, project);
+                } else {
+                    // Create new project
+                    await projectsAPI.create(project);
+                }
+            }
+        }
+
+        // Save each experience individually
+        if (state.experiences && state.experiences.length > 0) {
+            for (const experience of state.experiences) {
+                if (experience._id) {
+                    // Update existing experience
+                    await experiencesAPI.update(experience._id, experience);
+                } else {
+                    // Create new experience
+                    await experiencesAPI.create(experience);
+                }
+            }
+        }
+
         showLoading(false);
         showToast('All changes saved!');
     } catch (error) {
