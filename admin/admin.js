@@ -468,16 +468,20 @@ function initSkillsManager() {
 
             if (state.currentEditId) {
                 // Update existing
-                await skillsAPI.update(state.currentEditId, skillData);
+                const index = state.skills.findIndex(s => s._id === state.currentEditId);
+                if (index !== -1) {
+                    state.skills[index] = { ...state.skills[index], ...skillData };
+                }
                 showToast('Skill updated!');
             } else {
                 // Create new
-                await skillsAPI.create(skillData);
+                skillData._id = Date.now().toString();
+                state.skills.push(skillData);
                 showToast('Skill added!');
             }
 
-            // Reload skills
-            state.skills = await skillsAPI.getAll();
+            // Save to localStorage
+            localStorage.setItem('portfolio_skills', JSON.stringify(state.skills));
             renderSkills();
             updateDashboardStats();
 
@@ -654,15 +658,19 @@ function initProjectsManager() {
             };
 
             if (state.currentEditId) {
-                await projectsAPI.update(state.currentEditId, projectData);
+                const index = state.projects.findIndex(p => p._id === state.currentEditId);
+                if (index !== -1) {
+                    state.projects[index] = { ...state.projects[index], ...projectData };
+                }
                 showToast('Project updated!');
             } else {
-                await projectsAPI.create(projectData);
+                projectData._id = Date.now().toString();
+                state.projects.push(projectData);
                 showToast('Project created!');
             }
 
-            // Reload projects
-            state.projects = await projectsAPI.getAll();
+            // Save to localStorage
+            localStorage.setItem('portfolio_projects', JSON.stringify(state.projects));
             renderProjects();
 
             modal?.classList.add('hidden');
@@ -1111,28 +1119,28 @@ async function importData(data) {
 
         // Import skills
         if (data.skills && Array.isArray(data.skills)) {
-            for (const skill of data.skills) {
-                await skillsAPI.create({
-                    name: skill.name,
-                    icon: skill.icon
-                });
-            }
+            const skills = data.skills.map((skill, idx) => ({
+                _id: skill._id || `skill_${Date.now()}_${idx}`,
+                name: skill.name,
+                icon: skill.icon
+            }));
+            localStorage.setItem('portfolio_skills', JSON.stringify(skills));
         }
 
         // Import projects
         if (data.projects && Array.isArray(data.projects)) {
-            for (const project of data.projects) {
-                await projectsAPI.create({
-                    title: project.title,
-                    shortDesc: project.shortDesc || project.shortDescription,
-                    longDesc: project.longDesc || (project.longDescription || []).join('\n'),
-                    github: project.github || project.githubUrl,
-                    liveDemo: project.liveDemo || project.liveUrl,
-                    tags: project.tags,
-                    cover: project.cover || project.coverImage,
-                    gallery: project.gallery || project.detailImages
-                });
-            }
+            const projects = data.projects.map((project, idx) => ({
+                _id: project._id || `project_${Date.now()}_${idx}`,
+                title: project.title,
+                shortDesc: project.shortDesc || project.shortDescription,
+                longDesc: project.longDesc || (project.longDescription || []).join('\n'),
+                github: project.github || project.githubUrl,
+                liveDemo: project.liveDemo || project.liveUrl,
+                tags: project.tags,
+                cover: project.cover || project.coverImage,
+                gallery: project.gallery || project.detailImages
+            }));
+            localStorage.setItem('portfolio_projects', JSON.stringify(projects));
         }
 
         // Import experiences
