@@ -1,69 +1,9 @@
 {
     "buildCommand": "",
-    "installCommand": "npm install",
+    "installCommand": "",
     "outputDirectory": ".",
     "framework": null,
     "routes": [
-        {
-            "src": "/api/auth/(.*)",
-            "dest": "/api/auth.js?action=$1"
-        },
-        {
-            "src": "/api/projects/([^/]+)",
-            "dest": "/api/projects.js?id=$1"
-        },
-        {
-            "src": "/api/projects",
-            "dest": "/api/projects.js"
-        },
-        {
-            "src": "/api/skills/([^/]+)",
-            "dest": "/api/skills.js?id=$1"
-        },
-        {
-            "src": "/api/skills",
-            "dest": "/api/skills.js"
-        },
-        {
-            "src": "/api/experiences/([^/]+)",
-            "dest": "/api/experiences.js?id=$1"
-        },
-        {
-            "src": "/api/experiences",
-            "dest": "/api/experiences.js"
-        },
-        {
-            "src": "/api/general",
-            "dest": "/api/general.js"
-        },
-        {
-            "src": "/api/messages/([^/]+)",
-            "dest": "/api/messages.js?id=$1"
-        },
-        {
-            "src": "/api/messages",
-            "dest": "/api/messages.js"
-        },
-        {
-            "src": "/api/upload",
-            "dest": "/api/upload.js"
-        },
-        {
-            "src": "/admin/([^/]*\\.css)$",
-            "dest": "/admin/$1"
-        },
-        {
-            "src": "/admin/([^/]*\\.js)$",
-            "dest": "/admin/$1"
-        },
-        {
-            "src": "/admin/login\\.html",
-            "dest": "/admin/login.html"
-        },
-        {
-            "src": "/admin/register\\.html",
-            "dest": "/admin/register.html"
-        },
         {
             "src": "/admin/?$",
             "dest": "/admin/admin.html"
@@ -73,12 +13,20 @@
             "dest": "/admin/admin.html"
         },
         {
+            "src": "/clear-storage",
+            "dest": "/clear-storage.html"
+        },
+        {
+            "src": "/([^/]*\\.(?:css|js|svg|png|jpg|jpeg|gif|ico|woff|woff2|json))$",
+            "dest": "/$1"
+        },
+        {
             "src": "/src/(.*)$",
             "dest": "/src/$1"
         },
         {
-            "src": "/([^/]*\\.(?:css|js|svg|png|jpg|jpeg|gif|ico|woff|woff2))$",
-            "dest": "/$1"
+            "src": "/admin/(.*)$",
+            "dest": "/admin/$1"
         },
         {
             "handle": "filesystem"
