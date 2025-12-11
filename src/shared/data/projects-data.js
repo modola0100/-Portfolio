@@ -1,5 +1,8 @@
-const projects = [
- 
+/**
+ * Projects Data - Fetches from /api/projects endpoint
+ */
+
+const defaultProjects = [
    
     {
         id: 1,
@@ -51,7 +54,23 @@ const projects = [
         githubUrl: 'https://github.com/modola0100/bookiaaaaa',
         liveUrl: 'https://appetize.io/apps/android/com.example.bookiaaa',
     }
-
 ];
 
-export { projects };
+/**
+ * Fetch projects from API
+ */
+export async function getProjects() {
+    try {
+        const response = await fetch('/api/projects');
+        if (response.ok) {
+            const data = await response.json();
+            return data.data || defaultProjects;
+        }
+        return defaultProjects;
+    } catch (error) {
+        console.error('Error fetching projects:', error);
+        return defaultProjects;
+    }
+}
+
+export { defaultProjects as projects };

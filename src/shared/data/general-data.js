@@ -1,7 +1,9 @@
 /**
  * General Data - Default portfolio settings
+ * Fetches from /api/general endpoint, falls back to defaults
  */
-const generalData = {
+
+const defaultGeneralData = {
     heroName: 'Mohamed Adel',
     subtitle: 'Flutter Developer | Cross-Platform Mobile Applications',
     aboutText: `A Flutter Developer with +2 years of experience building high-performance cross-platform mobile applications. 
@@ -28,6 +30,23 @@ Committed to delivering intuitive user experiences and collaborating effectively
 };
 
 /**
+ * Fetch general data from API
+ */
+export async function getGeneralData() {
+    try {
+        const response = await fetch('/api/general');
+        if (response.ok) {
+            const data = await response.json();
+            return data.data || defaultGeneralData;
+        }
+        return defaultGeneralData;
+    } catch (error) {
+        console.error('Error fetching general data:', error);
+        return defaultGeneralData;
+    }
+}
+
+/**
  * Default navigation items
  */
 const navItems = [
@@ -39,4 +58,4 @@ const navItems = [
     { id: 6, label: 'Contact', href: '#contact', order: 6 }
 ];
 
-export { generalData, navItems };
+export { defaultGeneralData as generalData, navItems };

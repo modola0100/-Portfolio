@@ -1,4 +1,7 @@
-const experiences = [
+/**
+ * Experience Data - Fetches from /api/experiences endpoint
+ */
+const defaultExperiences = [
     
     {
         company: 'National Telecommunication Institute (NTI)',
@@ -44,5 +47,22 @@ const experiences = [
     }
 ];
 
-export { experiences };
+/**
+ * Fetch experiences from API
+ */
+export async function getExperiences() {
+    try {
+        const response = await fetch('/api/experiences');
+        if (response.ok) {
+            const data = await response.json();
+            return data.data || defaultExperiences;
+        }
+        return defaultExperiences;
+    } catch (error) {
+        console.error('Error fetching experiences:', error);
+        return defaultExperiences;
+    }
+}
+
+export { defaultExperiences as experiences };
 

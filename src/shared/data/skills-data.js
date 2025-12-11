@@ -1,7 +1,7 @@
 /**
- * Skills Data - Default skills for portfolio
+ * Skills Data - Fetches from /api/skills endpoint
  */
-const skills = [
+const defaultSkills = [
     {
         id: 1,
         name: 'Flutter & Dart',
@@ -58,4 +58,21 @@ const skills = [
     }
 ];
 
-export { skills };
+/**
+ * Fetch skills from API
+ */
+export async function getSkills() {
+    try {
+        const response = await fetch('/api/skills');
+        if (response.ok) {
+            const data = await response.json();
+            return data.data || defaultSkills;
+        }
+        return defaultSkills;
+    } catch (error) {
+        console.error('Error fetching skills:', error);
+        return defaultSkills;
+    }
+}
+
+export { defaultSkills as skills };
