@@ -69,7 +69,8 @@ export default async function handler(req, res) {
         }
     } catch (error) {
         console.error('Auth error:', error);
-        return res.status(500).json({ error: 'Server error' });
+        console.error('Error details:', error.message, error.stack);
+        return res.status(500).json({ error: error.message || 'Server error' });
     }
 }
 
