@@ -15,8 +15,7 @@ let state = {
     messages: [],
     currentEditId: null,
     currentSection: 'dashboard',
-    isLoading: false,
-    isOnline: true // Track API availability
+    isLoading: false
 };
 
 // ===== DOM Elements =====
@@ -61,7 +60,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Show loading state
         showLoading(true);
 
-        // Load data from API
+        // Load data from localStorage
         await loadAllData();
         console.log('Data loaded');
 
@@ -152,7 +151,7 @@ function showLoading(show) {
 // ===== Load Data from LocalStorage =====
 async function loadAllData() {
     try {
-        // Load all data from localStorage
+        // Load all data from localStorage with defaults
         const savedGeneral = localStorage.getItem('portfolio_general');
         const savedSkills = localStorage.getItem('portfolio_skills');
         const savedProjects = localStorage.getItem('portfolio_projects');
@@ -162,7 +161,6 @@ async function loadAllData() {
         state.skills = savedSkills ? JSON.parse(savedSkills) : [];
         state.projects = savedProjects ? JSON.parse(savedProjects) : [];
         state.experiences = savedExperiences ? JSON.parse(savedExperiences) : [];
-        state.isOnline = true;
 
         // Update all displays
         updateDashboardStats();
@@ -173,7 +171,6 @@ async function loadAllData() {
 
     } catch (error) {
         console.error('Error loading data:', error);
-        state.isOnline = false;
         showToast('Failed to load data', 'error');
     }
 }
@@ -186,6 +183,22 @@ function getDefaultGeneral() {
         contact: {},
         stats: { projectsCount: 0, yearsExperience: 0, happyClients: 0 }
     };
+}
+
+/**
+ * Save state to localStorage immediately
+ * This is called after every data change (add, edit, delete)
+ */
+function saveState() {
+    try {
+        localStorage.setItem('portfolio_general', JSON.stringify(state.general));
+        localStorage.setItem('portfolio_skills', JSON.stringify(state.skills));
+        localStorage.setItem('portfolio_projects', JSON.stringify(state.projects));
+        localStorage.setItem('portfolio_experiences', JSON.stringify(state.experiences));
+    } catch (error) {
+        console.error('Error saving state:', error);
+        showToast('Error saving changes', 'error');
+    }
 }
 
 // ===== Toast Notification =====
@@ -475,7 +488,7 @@ function initSkillsManager() {
             }
 
             // Save to localStorage
-            localStorage.setItem('portfolio_skills', JSON.stringify(state.skills));
+            saveState();
             renderSkills();
             updateDashboardStats();
 
@@ -531,7 +544,7 @@ function renderSkills() {
                 try {
                     showLoading(true);
                     state.skills = state.skills.filter(s => s._id !== id);
-                    localStorage.setItem('portfolio_skills', JSON.stringify(state.skills));
+                    saveState();
                     renderSkills();
                     updateDashboardStats();
                     showLoading(false);
@@ -647,7 +660,7 @@ function initProjectsManager() {
             }
 
             // Save to localStorage
-            localStorage.setItem('portfolio_projects', JSON.stringify(state.projects));
+            saveState();
             renderProjects();
 
             modal?.classList.add('hidden');
@@ -764,7 +777,7 @@ function renderProjects() {
                 try {
                     showLoading(true);
                     state.projects = state.projects.filter(p => p._id !== id);
-                    localStorage.setItem('portfolio_projects', JSON.stringify(state.projects));
+                    saveState();
                     renderProjects();
                     showLoading(false);
                     showToast('Project deleted');
@@ -867,7 +880,7 @@ function initExperienceManager() {
                 showToast('Experience added!');
             }
 
-            localStorage.setItem('portfolio_experiences', JSON.stringify(state.experiences));
+            saveState();
             renderExperiences();
 
             modal?.classList.add('hidden');
@@ -979,7 +992,7 @@ function renderExperiences() {
                 try {
                     showLoading(true);
                     state.experiences = state.experiences.filter(e => e._id !== id);
-                    localStorage.setItem('portfolio_experiences', JSON.stringify(state.experiences));
+                    saveState();
                     renderExperiences();
                     showLoading(false);
                     showToast('Experience deleted');
@@ -1115,22 +1128,20 @@ async function importData(data) {
         // Import general settings
         if (data.general) {
             state.general = data.general;
-            localStorage.setItem('portfolio_general', JSON.stringify(data.general));
         }
 
         // Import skills
         if (data.skills && Array.isArray(data.skills)) {
-            const skills = data.skills.map((skill, idx) => ({
+            state.skills = data.skills.map((skill, idx) => ({
                 _id: skill._id || `skill_${Date.now()}_${idx}`,
                 name: skill.name,
                 icon: skill.icon
             }));
-            localStorage.setItem('portfolio_skills', JSON.stringify(skills));
         }
 
         // Import projects
         if (data.projects && Array.isArray(data.projects)) {
-            const projects = data.projects.map((project, idx) => ({
+            state.projects = data.projects.map((project, idx) => ({
                 _id: project._id || `project_${Date.now()}_${idx}`,
                 title: project.title,
                 shortDesc: project.shortDesc || project.shortDescription,
@@ -1141,12 +1152,11 @@ async function importData(data) {
                 cover: project.cover || project.coverImage,
                 gallery: project.gallery || project.detailImages
             }));
-            localStorage.setItem('portfolio_projects', JSON.stringify(projects));
         }
 
         // Import experiences
         if (data.experiences && Array.isArray(data.experiences)) {
-            const experiences = data.experiences.map((exp, idx) => ({
+            state.experiences = data.experiences.map((exp, idx) => ({
                 _id: exp._id || `exp_${Date.now()}_${idx}`,
                 company: exp.company,
                 location: exp.location,
@@ -1155,8 +1165,10 @@ async function importData(data) {
                 logo: exp.logo,
                 tasks: exp.tasks
             }));
-            localStorage.setItem('portfolio_experiences', JSON.stringify(experiences));
         }
+
+        // Save all imported data to localStorage
+        saveState();
 
         // Reload all data
         await loadAllData();
@@ -1213,10 +1225,7 @@ async function saveAllData() {
         showLoading(true);
 
         // Save all data to localStorage
-        localStorage.setItem('portfolio_general', JSON.stringify(state.general));
-        localStorage.setItem('portfolio_skills', JSON.stringify(state.skills));
-        localStorage.setItem('portfolio_projects', JSON.stringify(state.projects));
-        localStorage.setItem('portfolio_experiences', JSON.stringify(state.experiences));
+        saveState();
 
         showLoading(false);
         showToast('✅ All changes saved locally!');
