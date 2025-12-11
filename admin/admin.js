@@ -1292,6 +1292,9 @@ async function saveAllData() {
         showLoading(false);
         showToast('All changes saved! Opening your live site...');
         
+        // Auto-push to GitHub
+        await autoCommitAndPush();
+        
         // Open the main website in a new tab after 1 second
         setTimeout(() => {
             window.open('../index.html', '_blank');
@@ -1299,5 +1302,34 @@ async function saveAllData() {
     } catch (error) {
         showLoading(false);
         showToast('Failed to save: ' + error.message, 'error');
+    }
+}
+
+/**
+ * Auto-commit and push changes to GitHub
+ */
+async function autoCommitAndPush() {
+    try {
+        const timestamp = new Date().toLocaleString();
+        const message = `Auto-update from Admin Panel: ${timestamp}`;
+        
+        // Call backend endpoint to handle git operations
+        const response = await fetch('/api/git-push', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${authAPI.getAccessToken()}`
+            },
+            body: JSON.stringify({ message })
+        });
+        
+        if (response.ok) {
+            console.log('✅ Changes pushed to GitHub automatically');
+        } else {
+            console.warn('⚠️ Auto-push failed, but data saved locally');
+        }
+    } catch (error) {
+        console.warn('Auto-push not available:', error.message);
+        // Don't throw - data is already saved
     }
 }
