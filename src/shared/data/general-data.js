@@ -37,7 +37,7 @@ export async function getGeneralData() {
         const response = await fetch('/api/general');
         if (response.ok) {
             const data = await response.json();
-            return data.data || defaultGeneralData;
+            return data || defaultGeneralData;
         }
         return defaultGeneralData;
     } catch (error) {

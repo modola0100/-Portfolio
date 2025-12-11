@@ -66,7 +66,7 @@ export async function getSkills() {
         const response = await fetch('/api/skills');
         if (response.ok) {
             const data = await response.json();
-            return data.data || defaultSkills;
+            return Array.isArray(data) ? data : (data.data || defaultSkills);
         }
         return defaultSkills;
     } catch (error) {

@@ -55,7 +55,7 @@ export async function getExperiences() {
         const response = await fetch('/api/experiences');
         if (response.ok) {
             const data = await response.json();
-            return data.data || defaultExperiences;
+            return Array.isArray(data) ? data : (data.data || defaultExperiences);
         }
         return defaultExperiences;
     } catch (error) {

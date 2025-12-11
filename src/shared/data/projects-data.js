@@ -64,7 +64,7 @@ export async function getProjects() {
         const response = await fetch('/api/projects');
         if (response.ok) {
             const data = await response.json();
-            return data.data || defaultProjects;
+            return Array.isArray(data) ? data : (data.data || defaultProjects);
         }
         return defaultProjects;
     } catch (error) {
