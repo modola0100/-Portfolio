@@ -48,10 +48,18 @@ const defaultExperiences = [
 ];
 
 /**
- * Fetch experiences from API
+ * Fetch experiences from localStorage or API
  */
 export async function getExperiences() {
     try {
+        // Try to get from localStorage first
+        const savedData = localStorage.getItem('portfolio_experiences');
+        if (savedData) {
+            const data = JSON.parse(savedData);
+            return Array.isArray(data) ? data : (data.data || defaultExperiences);
+        }
+        
+        // Fallback to API
         const response = await fetch('/api/experiences');
         if (response.ok) {
             const data = await response.json();

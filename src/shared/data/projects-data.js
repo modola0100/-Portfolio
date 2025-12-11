@@ -57,10 +57,18 @@ const defaultProjects = [
 ];
 
 /**
- * Fetch projects from API
+ * Fetch projects from localStorage or API
  */
 export async function getProjects() {
     try {
+        // Try to get from localStorage first
+        const savedData = localStorage.getItem('portfolio_projects');
+        if (savedData) {
+            const data = JSON.parse(savedData);
+            return Array.isArray(data) ? data : (data.data || defaultProjects);
+        }
+        
+        // Fallback to API
         const response = await fetch('/api/projects');
         if (response.ok) {
             const data = await response.json();

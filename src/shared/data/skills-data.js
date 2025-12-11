@@ -59,10 +59,18 @@ const defaultSkills = [
 ];
 
 /**
- * Fetch skills from API
+ * Fetch skills from localStorage or API
  */
 export async function getSkills() {
     try {
+        // Try to get from localStorage first
+        const savedData = localStorage.getItem('portfolio_skills');
+        if (savedData) {
+            const data = JSON.parse(savedData);
+            return Array.isArray(data) ? data : (data.data || defaultSkills);
+        }
+        
+        // Fallback to API
         const response = await fetch('/api/skills');
         if (response.ok) {
             const data = await response.json();

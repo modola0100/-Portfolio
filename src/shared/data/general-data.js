@@ -30,10 +30,17 @@ Committed to delivering intuitive user experiences and collaborating effectively
 };
 
 /**
- * Fetch general data from API
+ * Fetch general data from localStorage or API
  */
 export async function getGeneralData() {
     try {
+        // Try to get from localStorage first
+        const savedData = localStorage.getItem('portfolio_general');
+        if (savedData) {
+            return JSON.parse(savedData);
+        }
+        
+        // Fallback to API
         const response = await fetch('/api/general');
         if (response.ok) {
             const data = await response.json();
