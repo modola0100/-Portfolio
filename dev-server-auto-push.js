@@ -13,7 +13,7 @@
 import http from 'http';
 import { fileURLToPath } from 'url';
 import { dirname, join, extname } from 'path';
-import { readFileSync, statSync, readdirSync } from 'fs';
+import { readFileSync, statSync, readdirSync, appendFileSync } from 'fs';
 import { execSync } from 'child_process';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -78,6 +78,15 @@ async function handleGitSync(body) {
 
         try {
             // Execute git operations
+            // If audit info provided, write to audits.log in repo
+            try {
+                if (body && body.audit) {
+                    const line = JSON.stringify(body.audit) + '\n';
+                    appendFileSync(join(__dirname, 'audits.log'), line, { encoding: 'utf-8' });
+                }
+            } catch (e) {
+                console.warn('Failed writing local audit log:', e.message);
+            }
             execSync('git add -A', { 
                 cwd: __dirname,
                 stdio: 'pipe'

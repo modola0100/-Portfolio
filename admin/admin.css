@@ -108,7 +108,7 @@ main.main-content {
     position: fixed;
     top: 0;
     left: 0;
-    width: 260px;
+    width: 220px;
     height: 100vh;
     background: linear-gradient(180deg, #0d1117 0%, #161b22 100%);
     border-right: 1px solid rgba(255, 255, 255, 0.1);
@@ -274,7 +274,7 @@ main.main-content {
 
 /* Main Content */
 .main-content {
-    margin-left: 260px;
+    margin-left: 220px;
     min-height: 100vh;
     padding: 1.5rem 2rem 2rem 2rem;
     position: relative;

@@ -7,6 +7,7 @@
 
 const { execSync } = require('child_process');
 const path = require('path');
+const fs = require('fs');
 
 module.exports = async (req, res) => {
     // Only allow POST requests
@@ -48,6 +49,17 @@ module.exports = async (req, res) => {
 
         process.chdir('repo');
 
+        // If audit info provided, append to audits.log so it's tracked in repo
+        try {
+            const audit = req.body.audit;
+            if (audit) {
+                const auditLine = JSON.stringify(audit) + '\n';
+                fs.appendFileSync(path.join(process.cwd(), 'audits.log'), auditLine, { encoding: 'utf-8' });
+            }
+        } catch (e) {
+            console.warn('Could not append audit log:', e.message);
+        }
+
         // Check if there are changes
         const status = execSync('git status --porcelain', { encoding: 'utf-8' });
         
@@ -66,7 +78,7 @@ module.exports = async (req, res) => {
         // Add and commit
         execSync('git add -A', { encoding: 'utf-8' });
 
-        const commitMessage = `Admin Update: ${action} ${itemType}${itemName ? ` - ${itemName}` : ''} (${new Date().toISOString().split('T')[0]})`;
+        const commitMessage = `Admin Update: ${action} ${itemType}${itemName ? ` - ${itemName}` : ''}${req.body.audit && req.body.audit.id ? ` [audit:${req.body.audit.id}]` : ''} (${new Date().toISOString().split('T')[0]})`;
         execSync(`git commit -m "${commitMessage}"`, { encoding: 'utf-8' });
 
         // Push

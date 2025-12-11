@@ -264,6 +264,44 @@ function saveState() {
 }
 
 /**
+ * Audit logger - records admin actions to localStorage and console
+ * @param {string} action
+ * @param {string} itemType
+ * @param {string} itemName
+ * @param {object} details
+ * @returns {object} audit entry
+ */
+function writeAudit(action, itemType, itemName = '', details = {}) {
+    try {
+        const auditsKey = 'portfolio_audit';
+        const now = new Date();
+        const id = `${now.getTime()}_${Math.random().toString(36).slice(2,9)}`;
+        const entry = {
+            id,
+            action,
+            itemType,
+            itemName,
+            details,
+            timestamp: now.toISOString()
+        };
+
+        // store in localStorage (keep latest 200 entries)
+        const raw = localStorage.getItem(auditsKey);
+        const list = raw ? JSON.parse(raw) : [];
+        list.push(entry);
+        if (list.length > 200) list.splice(0, list.length - 200);
+        localStorage.setItem(auditsKey, JSON.stringify(list));
+
+        // console log
+        console.log('📋 Audit:', entry);
+        return entry;
+    } catch (e) {
+        console.error('Audit write failed:', e);
+        return null;
+    }
+}
+
+/**
  * Auto-push changes to GitHub
  * Called automatically after each save
  * Uses Vercel Serverless Function to handle git operations
@@ -271,19 +309,18 @@ function saveState() {
  * @param {string} itemType - 'skill', 'project', 'experience', 'general'
  * @param {string} itemName - name of the item (optional)
  */
-async function autoPushToGitHub(action, itemType, itemName = '') {
+async function autoPushToGitHub(action, itemType, itemName = '', audit = null) {
     try {
         // Use Vercel Function endpoint
         const endpoint = '/api/git-sync';
 
+        const payload = { action, itemType, itemName };
+        if (audit) payload.audit = audit;
+
         const response = await fetch(endpoint, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                action,
-                itemType,
-                itemName
-            })
+            body: JSON.stringify(payload)
         });
 
         const result = await response.json();
@@ -597,8 +634,9 @@ function initSkillsManager() {
             // Save to localStorage
             saveState();
             
-            // Auto-push to GitHub (runs in background)
-            autoPushToGitHub(action, 'skill', name);
+            // Audit + Auto-push to GitHub (runs in background)
+            const audit = writeAudit(action, 'skill', name, { source: 'admin', field: 'skills' });
+            autoPushToGitHub(action, 'skill', name, audit);
             
             renderSkills();
             updateDashboardStats();
@@ -658,8 +696,9 @@ function renderSkills() {
                     state.skills = state.skills.filter(s => s._id !== id);
                     saveState();
                     
-                    // Auto-push to GitHub (runs in background)
-                    autoPushToGitHub('delete', 'skill', skillName);
+                    // Audit + Auto-push to GitHub (runs in background)
+                    const audit = writeAudit('delete', 'skill', skillName, { source: 'admin', field: 'skills' });
+                    autoPushToGitHub('delete', 'skill', skillName, audit);
                     
                     renderSkills();
                     updateDashboardStats();
@@ -780,8 +819,9 @@ function initProjectsManager() {
             // Save to localStorage
             saveState();
             
-            // Auto-push to GitHub (runs in background)
-            autoPushToGitHub(action, 'project', title);
+            // Audit + Auto-push to GitHub (runs in background)
+            const audit = writeAudit(action, 'project', title, { source: 'admin', field: 'projects' });
+            autoPushToGitHub(action, 'project', title, audit);
             
             renderProjects();
 
@@ -902,8 +942,9 @@ function renderProjects() {
                     state.projects = state.projects.filter(p => p._id !== id);
                     saveState();
                     
-                    // Auto-push to GitHub (runs in background)
-                    autoPushToGitHub('delete', 'project', projectName);
+                    // Audit + Auto-push to GitHub (runs in background)
+                    const audit = writeAudit('delete', 'project', projectName, { source: 'admin', field: 'projects' });
+                    autoPushToGitHub('delete', 'project', projectName, audit);
                     
                     renderProjects();
                     showLoading(false);
@@ -1011,8 +1052,9 @@ function initExperienceManager() {
 
             saveState();
             
-            // Auto-push to GitHub (runs in background)
-            autoPushToGitHub(action, 'experience', company);
+            // Audit + Auto-push to GitHub (runs in background)
+            const audit = writeAudit(action, 'experience', company, { source: 'admin', field: 'experiences' });
+            autoPushToGitHub(action, 'experience', company, audit);
             
             renderExperiences();
 
@@ -1129,8 +1171,9 @@ function renderExperiences() {
                     state.experiences = state.experiences.filter(e => e._id !== id);
                     saveState();
                     
-                    // Auto-push to GitHub (runs in background)
-                    autoPushToGitHub('delete', 'experience', companyName);
+                    // Audit + Auto-push to GitHub (runs in background)
+                    const audit = writeAudit('delete', 'experience', companyName, { source: 'admin', field: 'experiences' });
+                    autoPushToGitHub('delete', 'experience', companyName, audit);
                     
                     renderExperiences();
                     showLoading(false);
@@ -1365,6 +1408,17 @@ async function saveAllData() {
 
         // Save all data to localStorage
         saveState();
+
+        // Audit full save + trigger push
+        const details = {
+            counts: {
+                skills: state.skills.length,
+                projects: state.projects.length,
+                experiences: state.experiences.length
+            }
+        };
+        const audit = writeAudit('save-all', 'general', 'all', details);
+        autoPushToGitHub('edit', 'general', 'all', audit);
 
         showLoading(false);
         showToast('✅ All changes saved locally!');
