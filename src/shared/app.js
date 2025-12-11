@@ -34,8 +34,11 @@ function initializeApp() {
         initExperienceFeature();
         initContactForm();
 
-        // Load data from admin panel (localStorage)
+        // Load data from admin panel (API)
         loadAdminData();
+
+        // Poll for updates every 5 seconds
+        setInterval(loadAdminData, 5000);
     });
 }
 
