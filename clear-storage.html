@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clear Storage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        .container {
+            text-align: center;
+            background: #2a2a2a;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        button {
+            padding: 10px 30px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+        .btn-danger {
+            background: #ff4444;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #cc0000;
+        }
+        .btn-success {
+            background: #44ff44;
+            color: #000;
+        }
+        .btn-success:hover {
+            background: #00cc00;
+        }
+        .message {
+            margin: 20px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .success {
+            background: #00cc00;
+            color: #000;
+        }
+        .info {
+            background: #4444ff;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Clear Portfolio Storage</h1>
+        <p>This will delete all saved portfolio data from your browser</p>
+        
+        <button class="btn-danger" onclick="clearStorage()">🗑️ Clear All Storage</button>
+        <button class="btn-success" onclick="goHome()">✅ Go to Portfolio</button>
+        
+        <div id="message"></div>
+    </div>
+
+    <script>
+        function clearStorage() {
+            localStorage.removeItem('portfolio_general');
+            localStorage.removeItem('portfolio_skills');
+            localStorage.removeItem('portfolio_projects');
+            localStorage.removeItem('portfolio_experiences');
+            localStorage.removeItem('portfolio_messages');
+            
+            const msg = document.getElementById('message');
+            msg.className = 'message success';
+            msg.textContent = '✅ Storage cleared! Portfolio will load default data.';
+            
+            setTimeout(() => {
+                window.location.href = './index.html';
+            }, 2000);
+        }
+        
+        function goHome() {
+            window.location.href = './index.html';
+        }
+    </script>
+</body>
+</html>
