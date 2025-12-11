@@ -100,6 +100,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Check authentication first
         if (!checkAuth()) return;
 
+        // Make main visible
+        const mainEl = document.querySelector('main');
+        if (mainEl) mainEl.classList.add('loaded');
+
         // Initialize particles
         initParticles();
         console.log('Particles initialized');
