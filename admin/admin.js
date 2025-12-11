@@ -34,10 +34,7 @@ const $$ = (sel) => document.querySelectorAll(sel);
 
 // ===== Check Authentication =====
 function checkAuth() {
-    if (!authAPI.isLoggedIn()) {
-        window.location.href = 'login.html';
-        return false;
-    }
+    // Skip authentication check - allow direct access
     return true;
 }
 
@@ -110,11 +107,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // ===== Display User Info =====
 function displayUserInfo() {
-    const user = authAPI.getUser();
-    if (user) {
-        // You can add user info display in the sidebar or top bar
-        console.log('Logged in as:', user.name, '(' + user.email + ')');
-    }
+    // No authentication needed
+    console.log('Admin panel loaded');
 }
 
 // ===== Loading Indicator =====
@@ -260,14 +254,10 @@ function initNavigation() {
         });
     });
 
-    // Add logout button functionality
+    // Remove logout button or hide it
     const logoutBtn = $('#logout-btn');
     if (logoutBtn) {
-        logoutBtn.addEventListener('click', () => {
-            showConfirm('Are you sure you want to logout?', () => {
-                authAPI.logout();
-            });
-        });
+        logoutBtn.style.display = 'none';
     }
 }
 
