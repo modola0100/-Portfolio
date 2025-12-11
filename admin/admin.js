@@ -1290,7 +1290,12 @@ async function saveAllData() {
         }
 
         showLoading(false);
-        showToast('All changes saved!');
+        showToast('All changes saved! Opening your live site...');
+        
+        // Open the main website in a new tab after 1 second
+        setTimeout(() => {
+            window.open('../index.html', '_blank');
+        }, 1000);
     } catch (error) {
         showLoading(false);
         showToast('Failed to save: ' + error.message, 'error');
