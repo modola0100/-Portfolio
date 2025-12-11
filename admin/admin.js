@@ -154,53 +154,19 @@ function showLoading(show) {
     }
 }
 
-// ===== Load Data from API =====
+// ===== Load Data from LocalStorage =====
 async function loadAllData() {
     try {
-        // Load all data in parallel
-        const [generalData, skillsData, projectsData, experiencesData] = await Promise.all([
-            generalAPI.get().catch(err => {
-                console.warn('Failed to load general settings:', err);
-                return getDefaultGeneral();
-            }),
-            skillsAPI.getAll().catch(err => {
-                console.warn('Failed to load skills:', err);
-                return [];
-            }),
-            projectsAPI.getAll().catch(err => {
-                console.warn('Failed to load projects:', err);
-                return [];
-            }),
-            experiencesAPI.getAll().catch(err => {
-                console.warn('Failed to load experiences:', err);
-                return [];
-            })
-        ]);
+        // Load all data from localStorage
+        const savedGeneral = localStorage.getItem('portfolio_general');
+        const savedSkills = localStorage.getItem('portfolio_skills');
+        const savedProjects = localStorage.getItem('portfolio_projects');
+        const savedExperiences = localStorage.getItem('portfolio_experiences');
 
-        state.general = generalData || getDefaultGeneral();
-        
-        // If skills are empty, use default skills and save them
-        if (!skillsData || skillsData.length === 0) {
-            const { skills: defaultSkills } = await import('../src/shared/data/skills-data.js');
-            state.skills = defaultSkills || [];
-            // Save default skills to database
-            if (state.skills.length > 0) {
-                await Promise.all(state.skills.map(skill => 
-                    skillsAPI.create({
-                        name: skill.name,
-                        icon: skill.icon,
-                        type: skill.type || 'url'
-                    }).catch(err => console.warn('Failed to save skill:', skill.name, err))
-                ));
-                // Reload skills from API
-                state.skills = await skillsAPI.getAll().catch(() => state.skills);
-            }
-        } else {
-            state.skills = skillsData;
-        }
-        
-        state.projects = projectsData || [];
-        state.experiences = experiencesData || [];
+        state.general = savedGeneral ? JSON.parse(savedGeneral) : getDefaultGeneral();
+        state.skills = savedSkills ? JSON.parse(savedSkills) : [];
+        state.projects = savedProjects ? JSON.parse(savedProjects) : [];
+        state.experiences = savedExperiences ? JSON.parse(savedExperiences) : [];
         state.isOnline = true;
 
         // Update all displays
@@ -213,7 +179,7 @@ async function loadAllData() {
     } catch (error) {
         console.error('Error loading data:', error);
         state.isOnline = false;
-        showToast('Failed to load data from server', 'error');
+        showToast('Failed to load data', 'error');
     }
 }
 
@@ -1247,50 +1213,14 @@ async function saveAllData() {
     try {
         showLoading(true);
 
-        // Save general settings to API
-        await generalAPI.update(state.general);
-
-        // Save each skill individually
-        if (state.skills && state.skills.length > 0) {
-            for (const skill of state.skills) {
-                if (skill._id) {
-                    // Update existing skill
-                    await skillsAPI.update(skill._id, skill);
-                } else {
-                    // Create new skill
-                    await skillsAPI.create(skill);
-                }
-            }
-        }
-
-        // Save each project individually
-        if (state.projects && state.projects.length > 0) {
-            for (const project of state.projects) {
-                if (project._id) {
-                    // Update existing project
-                    await projectsAPI.update(project._id, project);
-                } else {
-                    // Create new project
-                    await projectsAPI.create(project);
-                }
-            }
-        }
-
-        // Save each experience individually
-        if (state.experiences && state.experiences.length > 0) {
-            for (const experience of state.experiences) {
-                if (experience._id) {
-                    // Update existing experience
-                    await experiencesAPI.update(experience._id, experience);
-                } else {
-                    // Create new experience
-                    await experiencesAPI.create(experience);
-                }
-            }
-        }
+        // Save all data to localStorage
+        localStorage.setItem('portfolio_general', JSON.stringify(state.general));
+        localStorage.setItem('portfolio_skills', JSON.stringify(state.skills));
+        localStorage.setItem('portfolio_projects', JSON.stringify(state.projects));
+        localStorage.setItem('portfolio_experiences', JSON.stringify(state.experiences));
 
         showLoading(false);
-        showToast('✅ All changes saved and synced with database!');
+        showToast('✅ All changes saved locally!');
         
         // Open the main website in a new tab after 1 second
         setTimeout(() => {
