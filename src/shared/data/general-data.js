@@ -1,7 +1,9 @@
 /**
  * General Data - Default portfolio settings
- * Fetches from /api/general endpoint, falls back to defaults
+ * Now loads from portfolio-config.json for easy editing
  */
+
+import { getGeneralDataFromConfig } from './config-loader.js';
 
 const defaultGeneralData = {
     heroName: 'Mohamed Adel',
@@ -30,11 +32,17 @@ Committed to delivering intuitive user experiences and collaborating effectively
 };
 
 /**
- * Fetch general data from localStorage or API
+ * Fetch general data from portfolio config JSON
  */
 export async function getGeneralData() {
     try {
-        // Try to get from localStorage first
+        // Try to load from portfolio config
+        const configData = await getGeneralDataFromConfig();
+        if (configData) {
+            return configData;
+        }
+        
+        // Try to get from localStorage
         const savedData = localStorage.getItem('portfolio_general');
         if (savedData) {
             return JSON.parse(savedData);

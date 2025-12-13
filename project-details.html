@@ -263,16 +263,17 @@
     </div>
 
     <script type="module">
-        import { projects } from './src/shared/data/projects-data.js';
+        import { getProjects } from './src/shared/data/projects-data.js';
 
         window.goBackHome = (e) => { e.preventDefault(); sessionStorage.setItem('skipPreloader', 'true'); window.location.href = 'index.html'; };
 
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             const preloader = document.getElementById('preloader');
             setTimeout(() => { preloader.style.opacity = '0'; setTimeout(() => preloader.style.display = 'none', 300); }, 300);
 
             const urlParams = new URLSearchParams(window.location.search);
             const projectId = parseInt(urlParams.get('id'));
+            const projects = await getProjects();
             const project = projects.find(p => p.id === projectId);
 
             if (project) {

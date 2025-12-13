@@ -1,5 +1,5 @@
 /* src/features/2-work/work.js */
-import { projects } from '../../shared/data/projects-data.js';
+import { getProjects } from '../../shared/data/projects-data.js';
 import { $ } from '../../shared/utils/dom.js';
 
 const ICONS = {
@@ -8,12 +8,11 @@ const ICONS = {
     sparkles: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l2.4 7.2h7.6l-6 4.8 2.4 7.2-6-4.8-6 4.8 2.4-7.2-6-4.8h7.6z"/></svg>` // نجمة بسيطة
 };
 
-export function initWorkFeature() {
+export async function initWorkFeature() {
     const projectsGrid = $('#projects-grid');
     if (!projectsGrid) return;
 
-    const storedProjects = localStorage.getItem('portfolio-projects');
-    const projectsToRender = storedProjects ? JSON.parse(storedProjects) : projects;
+    const projectsToRender = await getProjects();
 
     projectsGrid.innerHTML = ''; 
     projectsGrid.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6';

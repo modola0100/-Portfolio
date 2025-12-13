@@ -1,69 +1,24 @@
 /**
- * Skills Data - Fetches from /api/skills endpoint
+ * Skills Data - Fetches from portfolio-config.json
+ * Edit skills easily in the portfolio-config.json file without touching code
  */
-const defaultSkills = [
-    {
-        id: 1,
-        name: 'Flutter & Dart',
-        icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg',
-        type: 'url'
-    },
-    {
-        id: 2,
-        name: 'Firebase',
-        icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg',
-        type: 'url'
-    },
-    {
-        id: 3,
-        name: 'State Management',
-        icon: 'src/assets/images/icons/icons8-library-50.png',
-        type: 'local'
-    },
-    {
-        id: 4,
-        name: 'REST APIs',
-        icon: 'src/assets/images/icons/api.png',
-        type: 'local'
-    },
-    {
-        id: 5,
-        name: 'Clean Architecture',
-        icon: 'src/assets/images/icons/clean-code.png',
-        type: 'local'
-    },
-    {
-        id: 6,
-        name: 'Git & GitHub',
-        icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg',
-        type: 'url'
-    },
-    {
-        id: 7,
-        name: 'Responsive Design',
-        icon: 'src/assets/images/icons/responsive-app.png',
-        type: 'local'
-    },
-    {
-        id: 8,
-        name: 'Localization (i18n)',
-        icon: 'src/assets/images/icons/translate_5739218.png',
-        type: 'local'
-    },
-    {
-        id: 9,
-        name: 'Testing',
-        icon: 'src/assets/images/icons/testing.png',
-        type: 'local'
-    }
-];
+
+import { getSkillsFromConfig } from './config-loader.js';
+
+const defaultSkills = [];
 
 /**
- * Fetch skills from localStorage or API
+ * Fetch skills from portfolio config JSON
  */
 export async function getSkills() {
     try {
-        // Try to get from localStorage first
+        // Try to load from portfolio config JSON
+        const configSkills = await getSkillsFromConfig();
+        if (configSkills && configSkills.length > 0) {
+            return configSkills;
+        }
+        
+        // Try to get from localStorage
         const savedData = localStorage.getItem('portfolio_skills');
         if (savedData) {
             const data = JSON.parse(savedData);

@@ -19,7 +19,7 @@ import { getProjects } from './data/projects-data.js';
 import { getExperiences } from './data/experience-data.js';
 
 function initializeApp() {
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
         initPreloader();
         initHeader();
         initMobileMenu();
@@ -30,8 +30,8 @@ function initializeApp() {
 
         // initHeroAnimation(); // Disabled - requires .cube element
 
-        initWorkFeature();
-        initExperienceFeature();
+        await initWorkFeature();
+        await initExperienceFeature();
         initContactForm();
 
         // Load data from admin panel (API)

@@ -1,5 +1,5 @@
 // 1. استيراد البيانات من الملف بتاعك
-import { experiences } from '../../shared/data/experience-data.js';
+import { getExperiences } from '../../shared/data/experience-data.js';
 // 2. استيراد الأداة المساعدة (selector)
 import { $ } from '../../shared/utils/dom.js';
 
@@ -35,15 +35,14 @@ function createExperienceHTML(exp) {
 }
 
 // 6. الدالة الرئيسية لتشغيل القسم
-export function initExperienceFeature() {
+export async function initExperienceFeature() {
     const timelineContainer = $('#experience-timeline');
     if (!timelineContainer) {
         console.error('Experience timeline container not found!');
         return;
     }
 
-    const storedExperiences = localStorage.getItem('portfolio-experiences');
-    const experiencesToRender = storedExperiences ? JSON.parse(storedExperiences) : experiences;
+    const experiencesToRender = await getExperiences();
 
     // 7. تفريغ الحاوية (احتياطي)
     timelineContainer.innerHTML = '';
