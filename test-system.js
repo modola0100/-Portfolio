@@ -44,3 +44,4 @@ async function testPortfolioSystem() {
 
 // استدعِ الاختبار
 testPortfolioSystem();
+"Auto-push test at $(date)"  
