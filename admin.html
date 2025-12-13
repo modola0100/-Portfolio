@@ -797,6 +797,7 @@
                 <div class="logo-text">Control Panel</div>
             </div>
             <div class="btn-group">
+                <button onclick="syncToJSON()" class="btn btn-success btn-small" title="Sync data to portfolio-config.json">🔄 SYNC</button>
                 <button onclick="exportData()" class="btn btn-secondary btn-small" title="Export your data">📥</button>
                 <button onclick="importData()" class="btn btn-secondary btn-small" title="Import data">📤</button>
                 <a href="index.html" class="btn btn-secondary btn-small" title="Back to portfolio">←</a>
@@ -1705,6 +1706,36 @@
                 reader.readAsText(file);
             };
             input.click();
+        };
+
+        // Sync to JSON file
+        window.syncToJSON = async () => {
+            try {
+                await loadAllData();
+                const data = { 
+                    general: currentData.general, 
+                    projects: currentData.projects, 
+                    skills: currentData.skills, 
+                    experiences: currentData.experiences 
+                };
+                const jsonStr = JSON.stringify(data, null, 2);
+                
+                // Copy to clipboard
+                await navigator.clipboard.writeText(jsonStr);
+                
+                showNotification('✅ Data copied to clipboard! Run: node sync-admin-to-json.js', 'success');
+                
+                // Also download it
+                const blob = new Blob([jsonStr], { type: 'application/json;charset=utf-8' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = `sync-data-${new Date().getTime()}.json`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } catch (error) {
+                showNotification('❌ Error: ' + error.message, 'error');
+            }
         };
 
         window.saveToStorage = saveToStorage;
