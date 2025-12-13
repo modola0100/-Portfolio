@@ -1,0 +1,177 @@
+{
+  "general": {
+    "heroName": "Mohamed Adel",
+    "subtitle": "Flutter Developer | Cross-Platform Mobile Applications",
+    "aboutText": "A Flutter Developer with +2 years of experience building high-performance cross-platform mobile applications. Proficient in state management, Firebase integration, and applying clean architecture principles. Committed to delivering intuitive user experiences and collaborating effectively to achieve project goals.",
+    "profilePicture": "src/assets/images/100.jpg",
+    "stats": {
+      "projectsCount": 3,
+      "yearsExperience": 1,
+      "happyClients": 2
+    },
+    "contact": {
+      "location": "Qaliobia, Benha, Egypt",
+      "phone": "+20 106 412 0753",
+      "email": "mahmedadel973@gmail.com",
+      "linkedin": "https://www.linkedin.com/in/mohamed-adel-051ba4256"
+    },
+    "socialLinks": {
+      "github": "https://github.com/MohamedAdel743",
+      "linkedin": "https://www.linkedin.com/in/mohamed-adel-051ba4256",
+      "facebook": "https://web.facebook.com/modola123",
+      "whatsapp": "https://wa.me/qr/LY6KWYEYKHNPF1"
+    }
+  },
+  "projects": [
+    {
+      "id": 1,
+      "title": "Tasketi",
+      "shortDescription": "A clean and modern Flutter notes app with offline storage, image support, and elegant UI design.",
+      "longDescription": [
+        "A beautifully crafted Flutter application for effortless note-taking.",
+        "Built with Clean Architecture principles for scalability.",
+        "Leverages Hive database for fast, secure offline storage.",
+        "Features both Light and Dark themes for user comfort.",
+        "Integrates Lottie animations for a smooth, engaging experience."
+      ],
+      "coverImage": "src/assets/images/3.png",
+      "detailImages": ["src/assets/images/2.png"],
+      "tags": ["Flutter", "Hive", "Clean Architecture", "Lottie", "Image Picker", "Intl", "Dark Mode"],
+      "githubUrl": "https://github.com/modola0100/taskati",
+      "liveUrl": "https://appetize.io/app/b_ymghlex5c44ec3haxusngxr5t4"
+    },
+    {
+      "id": 2,
+      "title": "BMI Calculator",
+      "shortDescription": "A simple and intuitive Flutter app to calculate your Body Mass Index (BMI) and track your health.",
+      "longDescription": [
+        "A user-friendly application built with Flutter to monitor your Body Mass Index.",
+        "Instantly computes BMI and categorizes the result (e.g., Underweight, Normal, Overweight).",
+        "Provides essential insights into your health with a clean interface.",
+        "Features smooth performance, making health tracking simple and accessible."
+      ],
+      "coverImage": "src/assets/images/bmi.jpg",
+      "detailImages": ["src/assets/images/bm2.webp"],
+      "tags": ["Flutter", "Dart", "Material Design", "Responsive UI", "BMI Calculator", "Health & Fitness"],
+      "githubUrl": "https://github.com/modola0100/bmi_app",
+      "liveUrl": "https://appetize.io/app/b_l2hd46lgyp2oysxidsubrb2wtu"
+    },
+    {
+      "id": 3,
+      "title": "Bookia App",
+      "shortDescription": "A complete Flutter bookstore app with live APIs, Cubit state management, and a clean, modern UI.",
+      "longDescription": [
+        "A comprehensive bookstore application built from scratch using Flutter.",
+        "Connects to real-world APIs to explore, buy, and save favorite books.",
+        "Features a secure login/signup system, shopping cart, and wishlist functionality.",
+        "State management is handled efficiently using Cubit.",
+        "Uses SharedPreferences for local data persistence in a clean, user-friendly interface."
+      ],
+      "coverImage": "src/assets/images/welcome.png",
+      "detailImages": ["src/assets/images/welcome.png"],
+      "tags": ["Flutter", "Cubit", "REST API", "State Management", "SharedPreferences", "Authentication", "E-commerce"],
+      "githubUrl": "https://github.com/modola0100/bookiaaaaa",
+      "liveUrl": "https://appetize.io/apps/android/com.example.bookiaaa"
+    }
+  ],
+  "skills": [
+    {
+      "id": 1,
+      "name": "Flutter & Dart",
+      "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg",
+      "type": "url"
+    },
+    {
+      "id": 2,
+      "name": "Firebase",
+      "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg",
+      "type": "url"
+    },
+    {
+      "id": 3,
+      "name": "State Management",
+      "icon": "src/assets/images/icons/icons8-library-50.png",
+      "type": "local"
+    },
+    {
+      "id": 4,
+      "name": "REST APIs",
+      "icon": "src/assets/images/icons/api.png",
+      "type": "local"
+    },
+    {
+      "id": 5,
+      "name": "Clean Architecture",
+      "icon": "src/assets/images/icons/clean-code.png",
+      "type": "local"
+    },
+    {
+      "id": 6,
+      "name": "Git & GitHub",
+      "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg",
+      "type": "url"
+    },
+    {
+      "id": 7,
+      "name": "Responsive Design",
+      "icon": "src/assets/images/icons/responsive-app.png",
+      "type": "local"
+    },
+    {
+      "id": 8,
+      "name": "Localization (i18n)",
+      "icon": "src/assets/images/icons/translate_5739218.png",
+      "type": "local"
+    },
+    {
+      "id": 9,
+      "name": "Testing",
+      "icon": "src/assets/images/icons/testing.png",
+      "type": "local"
+    }
+  ],
+  "experiences": [
+    {
+      "company": "National Telecommunication Institute (NTI)",
+      "logo": "src/assets/images/logos/nti.jpg",
+      "location": "Cairo, Egypt",
+      "role": "Flutter Trainee / Scholarship Program",
+      "period": "Jul 2025 - Aug 2025",
+      "tasks": [
+        "Completed an intensive one-month Flutter training program focused on mobile app development.",
+        "Learned Dart programming language and mastered Flutter framework fundamentals.",
+        "Built practical apps integrating RESTful APIs and managing state with BLoC and Cubit.",
+        "Gained experience in UI/UX design, responsive layouts, and clean project structure.",
+        "Applied best practices for app architecture and performance optimization"
+      ]
+    },
+    {
+      "company": "Google Developer Student Clubs (GDSC)",
+      "logo": "src/assets/images/logos/jdg.jpg",
+      "location": "Benha University",
+      "role": "Flutter Trainee (Bootcamp)",
+      "period": "Jan 2024 - Feb 2024",
+      "tasks": [
+        "Completed an intensive 36-hour training bootcamp focused on Flutter mobile app development fundamentals.",
+        "Developed interactive and engaging User Interfaces (UI) using various Flutter Widgets.",
+        "Applied Object-Oriented Programming (OOP) principles for effective code structure and organization.",
+        "Built a complete practical project (Calculator App) to solidify core concepts.",
+        "Gained practical skills in problem-solving and effective teamwork."
+      ]
+    },
+    {
+      "company": "D.Pear",
+      "logo": "src/assets/images/logos/pear.jpg",
+      "location": "Remote",
+      "role": "Flutter Summer Trainee",
+      "period": "Summer 2024 (6 Weeks)",
+      "tasks": [
+        "Gained extensive hands-on experience with core and advanced Flutter widgets.",
+        "Developed and delivered multiple projects, including a BMI Calculator and a Food App UI and bookly app with api integration.",
+        "Integrated RESTful APIs for fetching live data and Firebase for backend services.",
+        "Implemented local data persistence using the Hive database.",
+        "Learned and applied the foundational principles of Clean Architecture for scalable project structure."
+      ]
+    }
+  ]
+}
