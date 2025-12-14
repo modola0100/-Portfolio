@@ -1,0 +1,1761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary: #01b5f8;
+            --secondary: #02569B;
+            --dark: #0a0f18;
+            --darker: #050a12;
+            --accent: #00d4ff;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        * { 
+            margin: 0;
+            padding: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            background: #0a0f18;
+            color: #c9d1d9;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Particle Canvas Background */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: linear-gradient(135deg, #0a0f18 0%, #050a12 50%, #0d1117 100%);
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(1, 181, 248, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(2, 86, 155, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(0, 212, 255, 0.03) 0%, transparent 50%);
+            animation: bgShift 25s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        main {
+            position: relative;
+            z-index: 10;
+        }
+
+        @keyframes bgShift {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-50px, 50px) scale(1.05); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes bounce-in {
+            0% { transform: scale(0.8) translateY(20px); opacity: 0; }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        @keyframes glow-pulse {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(1, 181, 248, 0.3), inset 0 0 10px rgba(1, 181, 248, 0.05);
+            }
+            50% { 
+                box-shadow: 0 0 40px rgba(1, 181, 248, 0.5), 0 0 60px rgba(2, 86, 155, 0.3), inset 0 0 20px rgba(1, 181, 248, 0.1);
+            }
+        }
+
+        @keyframes hover-lift {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-6px); }
+        }
+
+        @keyframes spin-slow {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        @keyframes neon-glow {
+            0%, 100% { text-shadow: 0 0 10px rgba(1, 181, 248, 0.5), 0 0 20px rgba(1, 181, 248, 0.3); }
+            50% { text-shadow: 0 0 20px rgba(1, 181, 248, 0.8), 0 0 30px rgba(0, 212, 255, 0.6), 0 0 40px rgba(2, 86, 155, 0.3); }
+        }
+
+        @keyframes slide-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes notification-slide {
+            from { transform: translateX(400px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes notification-slide-out {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(400px); opacity: 0; }
+        }
+
+        /* Navbar */
+        .navbar {
+            background: linear-gradient(135deg, rgba(13, 17, 23, 0.98) 0%, rgba(5, 10, 18, 0.98) 100%);
+            border-bottom: 1px solid rgba(1, 181, 248, 0.15);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(1, 181, 248, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            animation: slideInRight 0.6s ease-out;
+            padding: 16px 0;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #01b5f8 0%, #02569B 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            box-shadow: 0 4px 16px rgba(1, 181, 248, 0.3);
+            animation: glow-pulse 4s ease-in-out infinite;
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 700;
+            background: linear-gradient(120deg, #e0f2fe, #01b5f8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.3px;
+        }
+
+        /* Buttons - Refined & Luxury */
+        .btn {
+            padding: 6px 10px;
+            border-radius: 7px;
+            font-weight: 600;
+            font-size: 11px;
+            cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            white-space: nowrap;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.15);
+            transition: left 0.4s ease;
+        }
+
+        .btn:hover::before { left: 100%; }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #01b5f8 0%, #02569B 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(1, 181, 248, 0.25);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(1, 181, 248, 0.4), inset 0 0 8px rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(1, 181, 248, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(1, 181, 248, 0.1);
+            color: #00d4ff;
+            border: 1px solid rgba(1, 181, 248, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(1, 181, 248, 0.2);
+            border-color: rgba(1, 181, 248, 0.6);
+            box-shadow: 0 0 12px rgba(1, 181, 248, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.12);
+            color: #ff6b6b;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.2);
+            box-shadow: 0 0 12px rgba(239, 68, 68, 0.25);
+            border-color: rgba(239, 68, 68, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: rgba(16, 185, 129, 0.12);
+            color: #4ade80;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-success:hover {
+            background: rgba(16, 185, 129, 0.2);
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.25);
+            border-color: rgba(16, 185, 129, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-small {
+            padding: 6px 10px;
+            font-size: 12px;
+        }
+
+        /* Cards - Premium Design */
+        .card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.25) 100%);
+            border: 1px solid rgba(1, 181, 248, 0.12);
+            border-radius: 10px;
+            padding: 12px;
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(1, 181, 248, 0.1) 0%, rgba(2, 86, 155, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(1, 181, 248, 0.3);
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.4) 100%);
+            box-shadow: 0 8px 32px rgba(1, 181, 248, 0.15), inset 0 0 15px rgba(1, 181, 248, 0.03);
+            transform: translateY(-4px);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Inputs */
+        input, textarea, select {
+            width: 100%;
+            padding: 7px 9px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            border: 1px solid rgba(1, 181, 248, 0.15);
+            background: rgba(15, 23, 42, 0.7);
+            color: #c9d1d9;
+            font-size: 12px;
+            font-family: inherit;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            animation: slide-up 0.4s ease-out backwards;
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: #475569;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: rgba(1, 181, 248, 0.4);
+            background: rgba(15, 23, 42, 0.9);
+            box-shadow: 0 0 14px rgba(1, 181, 248, 0.15), inset 0 0 6px rgba(1, 181, 248, 0.02);
+        }
+
+        label {
+            display: block;
+            font-size: 10px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #00d4ff;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            animation: slideInLeft 0.4s ease-out;
+        }
+
+        /* File Pickers */
+        .file-input-hidden {
+            display: none;
+        }
+
+        .file-input-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            padding: 10px;
+            border: 1.5px dashed rgba(1, 181, 248, 0.35);
+            border-radius: 7px;
+            background: linear-gradient(135deg, rgba(1, 181, 248, 0.02) 0%, rgba(2, 86, 155, 0.02) 100%);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            font-weight: 600;
+            font-size: 11px;
+            color: #00d4ff;
+            margin-bottom: 8px;
+            animation: slide-up 0.4s ease-out backwards;
+        }
+
+        .file-input-label:hover {
+            border-color: rgba(1, 181, 248, 0.6);
+            background: linear-gradient(135deg, rgba(1, 181, 248, 0.1) 0%, rgba(2, 86, 155, 0.08) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(1, 181, 248, 0.15);
+        }
+
+        .file-input-label:active {
+            transform: translateY(0);
+            border-color: #00d4ff;
+            box-shadow: 0 0 16px rgba(1, 181, 248, 0.3) inset;
+        }
+
+        .image-preview {
+            width: 100%;
+            max-width: 250px;
+            height: auto;
+            border-radius: 7px;
+            border: 1px solid rgba(1, 181, 248, 0.2);
+            margin-top: 6px;
+            animation: fadeInUp 0.4s ease-out;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .image-preview:hover {
+            border-color: rgba(1, 181, 248, 0.5);
+            box-shadow: 0 0 12px rgba(1, 181, 248, 0.15);
+            transform: scale(1.02);
+        }
+
+        .file-name-display {
+            display: inline-block;
+            margin-top: 6px;
+            padding: 4px 8px;
+            background: rgba(1, 181, 248, 0.06);
+            border-left: 2px solid #01b5f8;
+            border-radius: 3px;
+            font-size: 10px;
+            color: #8b949e;
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        /* Tabs */
+        .tab-navigation {
+            display: none;
+        }
+
+        .tab-btn {
+            padding: 12px 20px;
+            border: none;
+            background: none;
+            color: #64748b;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            position: relative;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--accent);
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            animation: fadeInUp 0.3s ease-out;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, rgba(13, 17, 23, 0.98) 0%, rgba(5, 10, 18, 0.98) 100%);
+            border: 1px solid rgba(1, 181, 248, 0.2);
+            border-radius: 14px;
+            padding: 28px;
+            max-width: 550px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 16px 48px rgba(1, 181, 248, 0.15), inset 0 0 20px rgba(1, 181, 248, 0.03);
+            animation: slideInRight 0.4s ease-out;
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .modal-title {
+            font-size: 22px;
+            font-weight: 700;
+            background: linear-gradient(120deg, #e0f2fe, #01b5f8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.3px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: #64748b;
+            font-size: 28px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            color: var(--primary);
+            transform: rotate(90deg);
+        }
+
+        /* Grid */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 14px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 72px;
+            width: 240px;
+            height: calc(100vh - 72px);
+            background: linear-gradient(180deg, rgba(13, 17, 23, 0.95) 0%, rgba(5, 10, 18, 0.95) 100%);
+            border-right: 1px solid rgba(1, 181, 248, 0.12);
+            backdrop-filter: blur(10px);
+            overflow-y: auto;
+            padding: 20px 0;
+            z-index: 40;
+            animation: slideInLeft 0.6s ease-out;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+        }
+
+        .sidebar-item {
+            margin: 0;
+            padding: 0;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: #8b949e;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .sidebar-link:hover {
+            color: #00d4ff;
+            background: rgba(1, 181, 248, 0.08);
+            padding-left: 24px;
+        }
+
+        .sidebar-link.active {
+            color: #01b5f8;
+            background: rgba(1, 181, 248, 0.15);
+            border-right: 3px solid #01b5f8;
+            box-shadow: inset 0 0 10px rgba(1, 181, 248, 0.1);
+        }
+
+        /* Main Content */
+        .main-container {
+            margin-left: 240px;
+            margin-top: 72px;
+            padding: 20px;
+            min-height: calc(100vh - 72px);
+        }
+
+        /* Section */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(1, 181, 248, 0.1);
+            animation: slideInRight 0.5s ease-out;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            background: linear-gradient(120deg, #e0f2fe, #01b5f8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+
+        /* Project Card */
+        .project-card {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-card img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 7px;
+            margin-bottom: 8px;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .project-card:hover img {
+            transform: scale(1.08) brightness(1.15);
+            box-shadow: 0 8px 20px rgba(1, 181, 248, 0.2);
+        }
+
+        .project-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #e0f2fe;
+            margin-bottom: 3px;
+            letter-spacing: -0.3px;
+        }
+
+        .project-desc {
+            font-size: 10px;
+            color: #8b949e;
+            line-height: 1.3;
+            margin-bottom: 7px;
+            flex-grow: 1;
+        }
+
+        /* Skill Card */
+        .skill-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            min-height: 100px;
+            animation: bounce-in 0.5s ease-out;
+        }
+
+        .skill-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 7px;
+            object-fit: contain;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .card:hover .skill-icon {
+            transform: scale(1.15);
+            filter: drop-shadow(0 0 10px rgba(1, 181, 248, 0.35));
+        }
+
+        /* Notification System */
+        .notification {
+            position: fixed;
+            right: 20px;
+            top: 80px;
+            min-width: 300px;
+            max-width: 400px;
+            padding: 16px 20px;
+            border-radius: 10px;
+            border-left: 4px solid;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: notification-slide 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .notification.success {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: #10b981;
+            color: #4ade80;
+        }
+
+        .notification.error {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: #ef4444;
+            color: #ff6b6b;
+        }
+
+        .notification.info {
+            background: rgba(1, 181, 248, 0.1);
+            border-color: #01b5f8;
+            color: #00d4ff;
+        }
+
+        .notification.warning {
+            background: rgba(251, 191, 36, 0.1);
+            border-color: #f59e0b;
+            color: #fbbf24;
+        }
+
+        .notification.hide {
+            animation: notification-slide-out 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .notification-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .notification-text {
+            font-size: 14px;
+            font-weight: 500;
+            flex: 1;
+        }
+
+        .notification-close {
+            cursor: pointer;
+            font-size: 18px;
+            opacity: 0.7;
+            transition: all 0.3s;
+        }
+
+        .notification-close:hover {
+            opacity: 1;
+            transform: rotate(90deg);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(1, 181, 248, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(1, 181, 248, 0.3);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(1, 181, 248, 0.5);
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 200px;
+            }
+
+            .main-container {
+                margin-left: 200px;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: absolute;
+                left: -200px;
+                width: 200px;
+            }
+
+            .main-container {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .navbar {
+                padding: 12px 16px;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .modal-content {
+                padding: 20px;
+                width: 95%;
+            }
+
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .grid-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Particle Canvas -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="logo-icon">⚙️</div>
+                <div class="logo-text">Control Panel</div>
+            </div>
+            <div class="btn-group">
+                <button onclick="syncToJSON()" class="btn btn-success btn-small" title="Sync data to portfolio-config.json">🔄 SYNC</button>
+                <button onclick="exportData()" class="btn btn-secondary btn-small" title="Export your data">📥</button>
+                <button onclick="importData()" class="btn btn-secondary btn-small" title="Import data">📤</button>
+                <a href="index.html" class="btn btn-secondary btn-small" title="Back to portfolio">←</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <ul class="sidebar-nav">
+            <li class="sidebar-item">
+                <a onclick="switchToTab('projects')" class="sidebar-link active" data-tab="projects">
+                    <span>🏗️</span>
+                    <span>Projects</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a onclick="switchToTab('skills')" class="sidebar-link" data-tab="skills">
+                    <span>💪</span>
+                    <span>Skills</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a onclick="switchToTab('experiences')" class="sidebar-link" data-tab="experiences">
+                    <span>📖</span>
+                    <span>Experiences</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a onclick="switchToTab('general')" class="sidebar-link" data-tab="general">
+                    <span>ℹ️</span>
+                    <span>General Info</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Tabs -->
+        <div class="tab-navigation">
+            <button onclick="switchTab('projects')" class="tab-btn active">🏗️ Projects</button>
+            <button onclick="switchTab('skills')" class="tab-btn">💪 Skills</button>
+            <button onclick="switchTab('experiences')" class="tab-btn">📖 Experiences</button>
+            <button onclick="switchTab('general')" class="tab-btn">⚙️ General Info</button>
+        </div>
+
+        <!-- Projects Tab -->
+        <div id="projects-tab" class="tab-content">
+            <div class="section-header">
+                <h2 class="section-title">🏗️ Projects</h2>
+                <button onclick="openAddProjectModal()" class="btn btn-primary">✨ New Project</button>
+            </div>
+            <div id="projects-list" class="grid-2"></div>
+        </div>
+
+        <!-- Skills Tab -->
+        <div id="skills-tab" class="tab-content hidden">
+            <div class="section-header">
+                <h2 class="section-title">💪 Skills</h2>
+                <button onclick="openAddSkillModal()" class="btn btn-primary">✨ New Skill</button>
+            </div>
+            <div id="skills-list" class="grid-4"></div>
+        </div>
+
+        <!-- Experiences Tab -->
+        <div id="experiences-tab" class="tab-content hidden">
+            <div class="section-header">
+                <h2 class="section-title">📖 Experiences</h2>
+                <button onclick="openAddExperienceModal()" class="btn btn-primary">✨ New Experience</button>
+            </div>
+            <div id="experiences-list"></div>
+        </div>
+
+        <!-- General Tab -->
+        <div id="general-tab" class="tab-content hidden">
+            <div class="section-header">
+                <h2 class="section-title">⚙️ General Information</h2>
+            </div>
+            <div class="grid-2">
+                <div class="card">
+                    <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 20px; color: var(--accent);">👤 Personal Info</h3>
+                    <label>Full Name</label>
+                    <input type="text" id="general-name" placeholder="Your name">
+                    <label>Job Title</label>
+                    <input type="text" id="general-subtitle" placeholder="Flutter Developer">
+                    <label>About You</label>
+                    <textarea id="general-about" rows="4" placeholder="Write about yourself..."></textarea>
+                    <label>Profile Picture</label>
+                    <input type="text" id="general-picture" placeholder="src/assets/images/profile.jpg">
+                </div>
+
+                <div class="card">
+                    <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 20px; color: var(--accent);">📊 Statistics</h3>
+                    <label>Projects Count</label>
+                    <input type="number" id="general-projects" min="0">
+                    <label>Years Experience</label>
+                    <input type="number" id="general-years" min="0">
+                    <label>Happy Clients</label>
+                    <input type="number" id="general-clients" min="0">
+                </div>
+
+                <div class="card">
+                    <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 20px; color: var(--accent);">📞 Contact Information</h3>
+                    <label>Location</label>
+                    <input type="text" id="general-location" placeholder="Cairo, Egypt">
+                    <label>Phone</label>
+                    <input type="text" id="general-phone" placeholder="+20 ...">
+                    <label>Email</label>
+                    <input type="email" id="general-email" placeholder="your@email.com">
+                </div>
+
+                <div class="card">
+                    <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 20px; color: var(--accent);">🔗 Social Links</h3>
+                    <label>LinkedIn</label>
+                    <input type="text" id="general-linkedin" placeholder="https://linkedin.com/...">
+                    <label>GitHub</label>
+                    <input type="text" id="general-github" placeholder="https://github.com/...">
+                    <label>Twitter</label>
+                    <input type="text" id="general-twitter" placeholder="https://twitter.com/...">
+                </div>
+            </div>
+            <button onclick="saveGeneral()" class="btn btn-success" style="width: 100%; margin-top: 24px; padding: 12px;">💾 Save All Changes</button>
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div id="modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title"></h3>
+                <button onclick="closeModal()" class="modal-close">✕</button>
+            </div>
+            <div id="modal-content"></div>
+        </div>
+    </div>
+
+    <!-- Notifications Container -->
+    <div id="notifications-container"></div>
+
+    <script type="module">
+        import { getProjectsFromConfig, getSkillsFromConfig, getExperiencesFromConfig, getGeneralDataFromConfig, refreshConfig } from './src/shared/data/config-loader.js';
+
+        let currentData = { projects: [], skills: [], experiences: [], general: {} };
+        let editingId = null;
+        let editingIndex = null;
+
+        // Initialize Particles Background
+        function initParticles() {
+            const canvas = document.getElementById('particle-canvas');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            let particlesArray = [];
+
+            let mouse = { x: null, y: null, radius: 150 };
+
+            window.addEventListener('mousemove', (e) => {
+                mouse.x = e.x;
+                mouse.y = e.y;
+            });
+
+            const colors = [
+                'rgba(1, 181, 248, 0.6)',
+                'rgba(2, 86, 155, 0.4)',
+                'rgba(201, 209, 217, 0.2)'
+            ];
+
+            class Particle {
+                constructor(x, y, directionX, directionY, size, color) {
+                    this.x = x;
+                    this.y = y;
+                    this.directionX = directionX;
+                    this.directionY = directionY;
+                    this.size = size;
+                    this.color = color;
+                    this.baseDirX = directionX;
+                    this.baseDirY = directionY;
+                    this.density = (Math.random() * 30) + 1;
+                }
+
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                    if (this.color.includes('248')) {
+                        ctx.shadowBlur = 15;
+                        ctx.shadowColor = 'rgba(1, 181, 248, 0.5)';
+                    } else {
+                        ctx.shadowBlur = 0;
+                    }
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                }
+
+                update() {
+                    if (this.x > canvas.width || this.x < 0) {
+                        this.directionX = -this.directionX;
+                        this.baseDirX = -this.baseDirX;
+                    }
+                    if (this.y > canvas.height || this.y < 0) {
+                        this.directionY = -this.directionY;
+                        this.baseDirY = -this.baseDirY;
+                    }
+
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < mouse.radius) {
+                        const forceDirectionX = dx / distance;
+                        const forceDirectionY = dy / distance;
+                        const force = (mouse.radius - distance) / mouse.radius;
+                        const directionX = forceDirectionX * force * this.density * 0.8;
+                        const directionY = forceDirectionY * force * this.density * 0.8;
+                        this.directionX -= directionX;
+                        this.directionY -= directionY;
+                    } else {
+                        if (this.directionX !== this.baseDirX) {
+                            this.directionX -= (this.directionX - this.baseDirX) * 0.05;
+                        }
+                        if (this.directionY !== this.baseDirY) {
+                            this.directionY -= (this.directionY - this.baseDirY) * 0.05;
+                        }
+                    }
+
+                    this.x += this.directionX;
+                    this.y += this.directionY;
+                }
+            }
+
+            function init() {
+                particlesArray = [];
+                const numberOfParticles = (canvas.width * canvas.height) / 9000;
+                for (let i = 0; i < numberOfParticles; i++) {
+                    const size = (Math.random() * 5) + 1;
+                    const x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                    const y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                    const directionX = (Math.random() - 0.5) * 2;
+                    const directionY = (Math.random() - 0.5) * 2;
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+
+                    particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+                }
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let i = 0; i < particlesArray.length; i++) {
+                    particlesArray[i].draw();
+                    particlesArray[i].update();
+                }
+                requestAnimationFrame(animate);
+            }
+
+            window.addEventListener('resize', () => {
+                canvas.width = innerWidth;
+                canvas.height = innerHeight;
+                init();
+            });
+
+            init();
+            animate();
+        }
+
+        window.addEventListener('DOMContentLoaded', initParticles);
+
+        // Notification System
+        function showNotification(message, type = 'info', duration = 3000) {
+            const container = document.getElementById('notifications-container');
+            const notification = document.createElement('div');
+            const icons = {
+                success: '✅',
+                error: '❌',
+                info: 'ℹ️',
+                warning: '⚠️'
+            };
+
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <span class="notification-icon">${icons[type]}</span>
+                <span class="notification-text">${message}</span>
+                <span class="notification-close" onclick="this.parentElement.click()">×</span>
+            `;
+
+            notification.onclick = () => {
+                notification.classList.add('hide');
+                setTimeout(() => notification.remove(), 400);
+            };
+
+            container.appendChild(notification);
+
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.classList.add('hide');
+                    setTimeout(() => notification.remove(), 400);
+                }
+            }, duration);
+        }
+
+        window.showNotification = showNotification;
+
+        // Load Data
+        window.addEventListener('DOMContentLoaded', async () => {
+            await loadAllData();
+            renderProjects();
+            renderSkills();
+            renderExperiences();
+            renderGeneral();
+            showNotification('Welcome to Admin Dashboard! 🚀', 'info', 2000);
+        });
+
+        async function loadAllData() {
+            try {
+                currentData.projects = await getProjectsFromConfig() || [];
+                currentData.skills = await getSkillsFromConfig() || [];
+                currentData.experiences = await getExperiencesFromConfig() || [];
+                currentData.general = await getGeneralDataFromConfig() || {};
+                console.log('✅ All data loaded successfully');
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showNotification('Error loading data', 'error');
+            }
+        }
+
+        function notifyPortfolioUpdates() {
+            refreshConfig();
+            localStorage.setItem('portfolio_last_update', new Date().toISOString());
+            window.dispatchEvent(new Event('portfolio-data-changed'));
+        }
+
+        window.switchTab = (tabName) => {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabName + '-tab').classList.remove('hidden');
+            event.target.classList.add('active');
+        };
+
+        window.switchToTab = (tabName) => {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+            document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
+            document.getElementById(tabName + '-tab').classList.remove('hidden');
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+        };
+
+        // Handle Image Selection
+        window.handleImageSelect = (event, inputId) => {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (!file.type.startsWith('image/')) {
+                showNotification('❌ Please select an image file', 'error');
+                return;
+            }
+
+            if (file.size > 5 * 1024 * 1024) {
+                showNotification('❌ Image size must be less than 5MB', 'error');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const base64 = e.target.result;
+                document.getElementById(inputId).value = base64;
+
+                const previewId = inputId.replace('input-', '') + '-preview';
+                const previewContainer = document.getElementById(previewId);
+                if (previewContainer) {
+                    previewContainer.innerHTML = `
+                        <img src="${base64}" class="image-preview" alt="Preview">
+                        <div class="file-name-display">📦 ${file.name} (${(file.size / 1024).toFixed(2)} KB)</div>
+                    `;
+                }
+
+                showNotification(`✅ Image loaded: ${file.name}`, 'success', 2000);
+            };
+            reader.readAsDataURL(file);
+        };
+
+        window.handleImageSelect = handleImageSelect;
+
+        // Render Projects
+        function renderProjects() {
+            const list = document.getElementById('projects-list');
+            list.innerHTML = currentData.projects.map((p, idx) => `
+                <div class="card project-card" style="animation: bounce-in 0.6s ease-out; animation-delay: ${idx * 0.1}s;">
+                    <img src="${p.coverImage}" alt="${p.title}" onerror="this.src='https://via.placeholder.com/400x200'">
+                    <h3 class="project-title">${p.title}</h3>
+                    <p class="project-desc">${p.shortDescription}</p>
+                    <div class="btn-group">
+                        <button onclick="editProject(${p.id})" class="btn btn-secondary" style="flex: 1;">✏️</button>
+                        <button onclick="deleteProject(${p.id})" class="btn btn-danger" style="flex: 1;">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render Skills
+        function renderSkills() {
+            const list = document.getElementById('skills-list');
+            list.innerHTML = currentData.skills.map((s, idx) => `
+                <div class="card skill-card" style="animation: bounce-in 0.6s ease-out; animation-delay: ${idx * 0.08}s;">
+                    <img src="${s.icon}" alt="${s.name}" class="skill-icon" style="animation: spin-slow 8s linear infinite;" onerror="this.src='https://via.placeholder.com/60'">
+                    <h3 style="font-weight: 700; text-align: center;">${s.name}</h3>
+                    <div class="btn-group" style="width: 100%;">
+                        <button onclick="editSkill(${s.id})" class="btn btn-secondary" style="flex: 1; font-size: 12px;">Edit</button>
+                        <button onclick="deleteSkill(${s.id})" class="btn btn-danger" style="flex: 1; font-size: 12px;">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render Experiences
+        function renderExperiences() {
+            const list = document.getElementById('experiences-list');
+            list.innerHTML = currentData.experiences.map((e, idx) => `
+                <div class="card" style="margin-bottom: 16px; animation: slideInRight 0.6s ease-out; animation-delay: ${idx * 0.12}s;">
+                    <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+                        <img src="${e.logo}" alt="${e.company}" style="width: 56px; height: 56px; border-radius: 8px; object-fit: contain; animation: spin-slow 8s linear infinite;" onerror="this.src='https://via.placeholder.com/56'">
+                        <div style="flex: 1;">
+                            <h3 style="font-size: 16px; font-weight: 700; color: #e2e8f0; animation: neon-glow 3s ease-in-out infinite;">${e.role}</h3>
+                            <p style="color: var(--accent); font-weight: 600; font-size: 14px;">${e.company}</p>
+                            <p style="color: #64748b; font-size: 13px;">${e.location} • ${e.period}</p>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button onclick="editExperience(${idx})" class="btn btn-secondary" style="flex: 1;">✏️</button>
+                        <button onclick="deleteExperience(${idx})" class="btn btn-danger" style="flex: 1;">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render General
+        function renderGeneral() {
+            document.getElementById('general-name').value = currentData.general.heroName || '';
+            document.getElementById('general-subtitle').value = currentData.general.subtitle || '';
+            document.getElementById('general-about').value = currentData.general.aboutText || '';
+            document.getElementById('general-picture').value = currentData.general.profilePicture || '';
+            document.getElementById('general-projects').value = currentData.general.stats?.projectsCount || 0;
+            document.getElementById('general-years').value = currentData.general.stats?.yearsExperience || 0;
+            document.getElementById('general-clients').value = currentData.general.stats?.happyClients || 0;
+            document.getElementById('general-location').value = currentData.general.contact?.location || '';
+            document.getElementById('general-phone').value = currentData.general.contact?.phone || '';
+            document.getElementById('general-email').value = currentData.general.contact?.email || '';
+            document.getElementById('general-linkedin').value = currentData.general.contact?.linkedin || '';
+            document.getElementById('general-github').value = currentData.general.contact?.github || '';
+            document.getElementById('general-twitter').value = currentData.general.contact?.twitter || '';
+        }
+
+        // Modal Functions
+        window.closeModal = () => {
+            document.getElementById('modal').classList.remove('active');
+        };
+
+        // Add Project Modal
+        window.openAddProjectModal = () => {
+            editingId = null;
+            document.getElementById('modal-title').textContent = '➕ Add New Project';
+            document.getElementById('modal-content').innerHTML = `
+                <label>📌 Project Title *</label>
+                <input type="text" id="input-title" placeholder="Enter project title">
+                
+                <label>📝 Short Description *</label>
+                <input type="text" id="input-shortDesc" placeholder="Brief description">
+                
+                <label>📄 Long Description</label>
+                <textarea id="input-longDesc" rows="4" placeholder="Each line is a point"></textarea>
+                
+                <label>🖼️ Cover Image</label>
+                <input type="text" id="input-cover" placeholder="https://...">
+                <label for="cover-file" class="file-input-label animate-bounce-in">📁 Choose Cover Image</label>
+                <input type="file" id="cover-file" class="file-input-hidden" accept="image/*" onchange="handleImageSelect(event, 'input-cover')">
+                <div id="input-cover-preview"></div>
+                
+                <label>🖼️ Additional Images</label>
+                <input type="text" id="input-images" placeholder="https://image1.jpg, https://image2.jpg">
+                <label for="additional-files" class="file-input-label animate-bounce-in">📁 Choose Additional Images</label>
+                <input type="file" id="additional-files" class="file-input-hidden" accept="image/*" multiple onchange="handleMultipleImages(event, 'input-images')">
+                <div id="input-images-preview"></div>
+                
+                <label>🛠️ Technologies</label>
+                <input type="text" id="input-tags" placeholder="React, Node.js, MongoDB">
+                
+                <label>💻 GitHub URL</label>
+                <input type="text" id="input-github" placeholder="https://github.com/...">
+                
+                <label>🌐 Live Demo URL</label>
+                <input type="text" id="input-live" placeholder="https://...">
+                
+                <button onclick="saveProject()" class="btn btn-success" style="width: 100%; margin-top: 24px; padding: 14px;">💾 Save Project</button>
+            `;
+            document.getElementById('modal').classList.add('active');
+        };
+
+        // Handle Multiple Images
+        window.handleMultipleImages = (event, inputId) => {
+            const files = event.target.files;
+            if (files.length === 0) return;
+
+            const currentValue = document.getElementById(inputId).value;
+            const urls = [];
+
+            Array.from(files).forEach((file, idx) => {
+                if (!file.type.startsWith('image/')) {
+                    showNotification('❌ Please select only image files', 'error');
+                    return;
+                }
+
+                if (file.size > 5 * 1024 * 1024) {
+                    showNotification('❌ Image size must be less than 5MB', 'error');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    urls.push(e.target.result);
+
+                    if (urls.length === Array.from(files).length) {
+                        const existingUrls = currentValue ? currentValue.split(',').map(u => u.trim()) : [];
+                        const allUrls = [...existingUrls, ...urls].filter(u => u);
+                        document.getElementById(inputId).value = allUrls.join(', ');
+                        
+                        const previewId = inputId.replace('input-', '') + '-preview';
+                        const previewContainer = document.getElementById(previewId);
+                        if (previewContainer) {
+                            previewContainer.innerHTML = urls.map(url => 
+                                `<img src="${url}" class="image-preview" alt="Preview" style="margin-right: 8px; display: inline-block;">`
+                            ).join('');
+                        }
+
+                        showNotification(`✅ ${files.length} images loaded`, 'success', 2000);
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        };
+
+        // Save Project
+        window.saveProject = () => {
+            const title = document.getElementById('input-title').value;
+            if (!title) {
+                showNotification('❌ Please enter project title', 'error');
+                return;
+            }
+
+            const project = {
+                id: editingId || (Math.max(...currentData.projects.map(p => p.id), 0) + 1),
+                title,
+                shortDescription: document.getElementById('input-shortDesc').value,
+                longDescription: document.getElementById('input-longDesc').value.split('\n').filter(l => l.trim()),
+                coverImage: document.getElementById('input-cover').value,
+                detailImages: document.getElementById('input-images').value.split(',').map(u => u.trim()).filter(u => u),
+                tags: document.getElementById('input-tags').value.split(',').map(t => t.trim()).filter(t => t),
+                githubUrl: document.getElementById('input-github').value,
+                liveUrl: document.getElementById('input-live').value
+            };
+
+            if (editingId) {
+                currentData.projects = currentData.projects.map(p => p.id === editingId ? project : p);
+                showNotification('✅ Project updated!', 'success');
+            } else {
+                currentData.projects.push(project);
+                showNotification('✅ Project added!', 'success');
+            }
+
+            saveToStorage();
+            notifyPortfolioUpdates();
+            renderProjects();
+            closeModal();
+        };
+
+        // Add Skill Modal
+        window.openAddSkillModal = () => {
+            editingId = null;
+            document.getElementById('modal-title').textContent = '➕ Add New Skill';
+            document.getElementById('modal-content').innerHTML = `
+                <label>💡 Skill Name *</label>
+                <input type="text" id="input-name" placeholder="e.g., JavaScript">
+                
+                <label>🎨 Skill Icon</label>
+                <input type="text" id="input-icon" placeholder="https://...">
+                <label for="skill-file" class="file-input-label animate-bounce-in">📁 Choose Icon</label>
+                <input type="file" id="skill-file" class="file-input-hidden" accept="image/*" onchange="handleImageSelect(event, 'input-icon')">
+                <div id="input-icon-preview"></div>
+                
+                <label>🏷️ Icon Type</label>
+                <select id="input-type">
+                    <option value="url">External URL</option>
+                    <option value="local">Local Path</option>
+                </select>
+                
+                <button onclick="saveSkill()" class="btn btn-success" style="width: 100%; margin-top: 24px; padding: 14px;">💾 Save Skill</button>
+            `;
+            document.getElementById('modal').classList.add('active');
+        };
+
+        // Save Skill
+        window.saveSkill = () => {
+            const name = document.getElementById('input-name').value;
+            if (!name) {
+                showNotification('❌ Please enter skill name', 'error');
+                return;
+            }
+
+            const skill = {
+                id: editingId || (Math.max(...currentData.skills.map(s => s.id), 0) + 1),
+                name,
+                icon: document.getElementById('input-icon').value,
+                type: document.getElementById('input-type').value
+            };
+
+            if (editingId) {
+                currentData.skills = currentData.skills.map(s => s.id === editingId ? skill : s);
+                showNotification('✅ Skill updated!', 'success');
+            } else {
+                currentData.skills.push(skill);
+                showNotification('✅ Skill added!', 'success');
+            }
+
+            saveToStorage();
+            notifyPortfolioUpdates();
+            renderSkills();
+            closeModal();
+        };
+
+        // Add Experience Modal
+        window.openAddExperienceModal = () => {
+            editingIndex = null;
+            document.getElementById('modal-title').textContent = '➕ Add New Experience';
+            document.getElementById('modal-content').innerHTML = `
+                <label>🏢 Company Name *</label>
+                <input type="text" id="input-company" placeholder="Company name">
+                
+                <label>👔 Job Title *</label>
+                <input type="text" id="input-role" placeholder="Your role">
+                
+                <label>📍 Location</label>
+                <input type="text" id="input-location" placeholder="City, Country">
+                
+                <label>📅 Period *</label>
+                <input type="text" id="input-period" placeholder="Jan 2024 - Present">
+                
+                <label>🏷️ Company Logo</label>
+                <input type="text" id="input-logo" placeholder="https://...">
+                <label for="logo-file" class="file-input-label animate-bounce-in">📁 Choose Logo</label>
+                <input type="file" id="logo-file" class="file-input-hidden" accept="image/*" onchange="handleImageSelect(event, 'input-logo')">
+                <div id="input-logo-preview"></div>
+                
+                <label>✅ Tasks & Responsibilities</label>
+                <textarea id="input-tasks" rows="4" placeholder="Each line is a task"></textarea>
+                
+                <button onclick="saveExperience()" class="btn btn-success" style="width: 100%; margin-top: 24px; padding: 14px;">💾 Save Experience</button>
+            `;
+            document.getElementById('modal').classList.add('active');
+        };
+
+        // Save Experience
+        window.saveExperience = () => {
+            const company = document.getElementById('input-company').value;
+            if (!company) {
+                showNotification('❌ Please enter company name', 'error');
+                return;
+            }
+
+            const experience = {
+                company,
+                role: document.getElementById('input-role').value,
+                location: document.getElementById('input-location').value,
+                period: document.getElementById('input-period').value,
+                logo: document.getElementById('input-logo').value,
+                tasks: document.getElementById('input-tasks').value.split('\n').filter(t => t.trim())
+            };
+
+            if (editingIndex !== null) {
+                currentData.experiences[editingIndex] = experience;
+                showNotification('✅ Experience updated!', 'success');
+            } else {
+                currentData.experiences.push(experience);
+                showNotification('✅ Experience added!', 'success');
+            }
+
+            saveToStorage();
+            notifyPortfolioUpdates();
+            renderExperiences();
+            closeModal();
+        };
+
+        // Save General
+        window.saveGeneral = () => {
+            currentData.general = {
+                ...currentData.general,
+                heroName: document.getElementById('general-name').value,
+                subtitle: document.getElementById('general-subtitle').value,
+                aboutText: document.getElementById('general-about').value,
+                profilePicture: document.getElementById('general-picture').value,
+                stats: {
+                    projectsCount: parseInt(document.getElementById('general-projects').value) || 0,
+                    yearsExperience: parseInt(document.getElementById('general-years').value) || 0,
+                    happyClients: parseInt(document.getElementById('general-clients').value) || 0
+                },
+                contact: {
+                    location: document.getElementById('general-location').value,
+                    phone: document.getElementById('general-phone').value,
+                    email: document.getElementById('general-email').value,
+                    linkedin: document.getElementById('general-linkedin').value,
+                    github: document.getElementById('general-github').value,
+                    twitter: document.getElementById('general-twitter').value
+                }
+            };
+
+            saveToStorage();
+            notifyPortfolioUpdates();
+            showNotification('✅ General info saved!', 'success');
+            setTimeout(() => location.reload(), 500);
+        };
+
+        // Edit Functions
+        window.editProject = (id) => {
+            const project = currentData.projects.find(p => p.id === id);
+            if (!project) return;
+
+            editingId = id;
+            document.getElementById('modal-title').textContent = '✏️ Edit Project';
+            document.getElementById('modal-content').innerHTML = `
+                <label>📌 Project Title *</label>
+                <input type="text" id="input-title" placeholder="Project title" value="${project.title}">
+                
+                <label>📝 Short Description *</label>
+                <input type="text" id="input-shortDesc" placeholder="Brief description" value="${project.shortDescription}">
+                
+                <label>📄 Long Description</label>
+                <textarea id="input-longDesc" rows="4" placeholder="Each line is a point">${project.longDescription.join('\n')}</textarea>
+                
+                <label>🖼️ Cover Image</label>
+                <input type="text" id="input-cover" placeholder="https://..." value="${project.coverImage}">
+                <label for="cover-file" class="file-input-label animate-bounce-in">📁 Choose Cover Image</label>
+                <input type="file" id="cover-file" class="file-input-hidden" accept="image/*" onchange="handleImageSelect(event, 'input-cover')">
+                <div id="input-cover-preview"></div>
+                
+                <label>🖼️ Additional Images</label>
+                <input type="text" id="input-images" placeholder="https://..." value="${project.detailImages.join(', ')}">
+                
+                <label>🛠️ Technologies</label>
+                <input type="text" id="input-tags" placeholder="React, Node.js, MongoDB" value="${project.tags.join(', ')}">
+                
+                <label>💻 GitHub URL</label>
+                <input type="text" id="input-github" placeholder="https://github.com/..." value="${project.githubUrl}">
+                
+                <label>🌐 Live Demo URL</label>
+                <input type="text" id="input-live" placeholder="https://..." value="${project.liveUrl}">
+                
+                <button onclick="saveProject()" class="btn btn-success" style="width: 100%; margin-top: 24px; padding: 14px;">💾 Update Project</button>
+            `;
+            document.getElementById('modal').classList.add('active');
+        };
+
+        // Delete Functions
+        window.deleteProject = (id) => {
+            if (confirm('Are you sure? This cannot be undone.')) {
+                currentData.projects = currentData.projects.filter(p => p.id !== id);
+                saveToStorage();
+                notifyPortfolioUpdates();
+                renderProjects();
+                showNotification('✅ Project deleted!', 'success');
+            }
+        };
+
+        window.deleteSkill = (id) => {
+            if (confirm('Delete this skill?')) {
+                currentData.skills = currentData.skills.filter(s => s.id !== id);
+                saveToStorage();
+                notifyPortfolioUpdates();
+                renderSkills();
+                showNotification('✅ Skill deleted!', 'success');
+            }
+        };
+
+        window.deleteExperience = (idx) => {
+            if (confirm('Delete this experience?')) {
+                currentData.experiences.splice(idx, 1);
+                saveToStorage();
+                notifyPortfolioUpdates();
+                renderExperiences();
+                showNotification('✅ Experience deleted!', 'success');
+            }
+        };
+
+        window.editSkill = (id) => {
+            const skill = currentData.skills.find(s => s.id === id);
+            if (!skill) return;
+
+            editingId = id;
+            document.getElementById('modal-title').textContent = '✏️ Edit Skill';
+            document.getElementById('modal-content').innerHTML = `
+                <label>💡 Skill Name *</label>
+                <input type="text" id="input-name" placeholder="Skill name" value="${skill.name}">
+                
+                <label>🎨 Skill Icon</label>
+                <input type="text" id="input-icon" placeholder="https://..." value="${skill.icon}">
+                <label for="skill-file" class="file-input-label animate-bounce-in">📁 Choose Icon</label>
+                <input type="file" id="skill-file" class="file-input-hidden" accept="image/*" onchange="handleImageSelect(event, 'input-icon')">
+                <div id="input-icon-preview"></div>
+                
+                <label>🏷️ Icon Type</label>
+                <select id="input-type">
+                    <option value="url" ${skill.type === 'url' ? 'selected' : ''}>External URL</option>
+                    <option value="local" ${skill.type === 'local' ? 'selected' : ''}>Local Path</option>
+                </select>
+                
+                <button onclick="saveSkill()" class="btn btn-success" style="width: 100%; margin-top: 24px; padding: 14px;">💾 Update Skill</button>
+            `;
+            document.getElementById('modal').classList.add('active');
+        };
+
+        window.editExperience = (idx) => {
+            const experience = currentData.experiences[idx];
+            if (!experience) return;
+
+            editingIndex = idx;
+            document.getElementById('modal-title').textContent = '✏️ Edit Experience';
+            document.getElementById('modal-content').innerHTML = `
+                <label>🏢 Company Name *</label>
+                <input type="text" id="input-company" placeholder="Company name" value="${experience.company}">
+                
+                <label>👔 Job Title *</label>
+                <input type="text" id="input-role" placeholder="Your role" value="${experience.role}">
+                
+                <label>📍 Location</label>
+                <input type="text" id="input-location" placeholder="City, Country" value="${experience.location}">
+                
+                <label>📅 Period *</label>
+                <input type="text" id="input-period" placeholder="Jan 2024 - Present" value="${experience.period}">
+                
+                <label>🏷️ Company Logo</label>
+                <input type="text" id="input-logo" placeholder="https://..." value="${experience.logo}">
+                <label for="logo-file" class="file-input-label animate-bounce-in">📁 Choose Logo</label>
+                <input type="file" id="logo-file" class="file-input-hidden" accept="image/*" onchange="handleImageSelect(event, 'input-logo')">
+                <div id="input-logo-preview"></div>
+                
+                <label>✅ Tasks & Responsibilities</label>
+                <textarea id="input-tasks" rows="4" placeholder="Each line is a task">${experience.tasks.join('\n')}</textarea>
+                
+                <button onclick="saveExperience()" class="btn btn-success" style="width: 100%; margin-top: 24px; padding: 14px;">💾 Update Experience</button>
+            `;
+            document.getElementById('modal').classList.add('active');
+        };
+
+        // Storage Functions
+        function saveToStorage() {
+            try {
+                localStorage.setItem('portfolio_projects', JSON.stringify(currentData.projects));
+                localStorage.setItem('portfolio_skills', JSON.stringify(currentData.skills));
+                localStorage.setItem('portfolio_experiences', JSON.stringify(currentData.experiences));
+                localStorage.setItem('portfolio_general', JSON.stringify(currentData.general));
+                console.log('✅ Data saved to localStorage');
+            } catch (error) {
+                console.error('Error saving to localStorage:', error);
+                showNotification('⚠️ Error saving data', 'error');
+            }
+        }
+
+        // Export/Import
+        window.exportData = async () => {
+            await loadAllData();
+            const data = { 
+                general: currentData.general, 
+                projects: currentData.projects, 
+                skills: currentData.skills, 
+                experiences: currentData.experiences 
+            };
+            const jsonStr = JSON.stringify(data, null, 2);
+            const blob = new Blob([jsonStr], { type: 'application/json;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `portfolio-config-${new Date().getTime()}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showNotification('✅ Export successful!', 'success');
+        };
+
+        window.importData = () => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const data = JSON.parse(event.target.result);
+                        if (!data.general || !data.projects || !data.skills || !data.experiences) {
+                            throw new Error('Invalid portfolio config structure');
+                        }
+                        currentData = data;
+                        saveToStorage();
+                        showNotification('✅ Import successful! Reloading...', 'success');
+                        setTimeout(() => location.reload(), 500);
+                    } catch (error) {
+                        showNotification('❌ Invalid file: ' + error.message, 'error');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        };
+
+        // Sync to JSON file via Local Server
+        window.syncToJSON = async () => {
+            try {
+                await loadAllData();
+                const data = { 
+                    general: currentData.general, 
+                    projects: currentData.projects, 
+                    skills: currentData.skills, 
+                    experiences: currentData.experiences 
+                };
+
+                // Try to sync via local server (auto mode)
+                try {
+                    const response = await fetch('http://localhost:5000/api/sync', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        showNotification('🚀 Data synced automatically! Check Vercel in 30 seconds...', 'success');
+                        console.log('✅ Auto-sync result:', result);
+                        return;
+                    }
+                } catch (serverError) {
+                    console.log('ℹ️ Auto-sync server not running, using manual mode...');
+                }
+
+                // Fallback: Manual download
+                const jsonStr = JSON.stringify(data, null, 2);
+                await navigator.clipboard.writeText(jsonStr);
+                showNotification('✅ Data copied! Run: node sync-admin-to-json.js', 'success');
+
+                const blob = new Blob([jsonStr], { type: 'application/json;charset=utf-8' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = `sync-data-${new Date().getTime()}.json`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } catch (error) {
+                showNotification('❌ Error: ' + error.message, 'error');
+            }
+        };
+
+        window.saveToStorage = saveToStorage;
+        window.notifyPortfolioUpdates = notifyPortfolioUpdates;
+    </script>
+</body>
+</html>

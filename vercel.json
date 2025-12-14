@@ -1,0 +1,10 @@
+{
+  "buildCommand": "",
+  "outputDirectory": ".",
+  "rewrites": [
+    {
+      "source": "/project-details/:id",
+      "destination": "/project-details.html"
+    }
+  ]
+}

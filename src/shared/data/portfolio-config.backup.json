@@ -1,0 +1,214 @@
+{
+  "general": {
+    "heroName": "Mohamed Adel",
+    "subtitle": "Flutter Developer | Cross-Platform Mobile Applications",
+    "aboutText": "A Flutter Developer with +2 years of experience building high-performance cross-platform mobile applications. Proficient in state management, Firebase integration, and applying clean architecture principles. Committed to delivering intuitive user experiences and collaborating effectively to achieve project goals.",
+    "profilePicture": "src/assets/images/100.jpg",
+    "stats": {
+      "projectsCount": 12,
+      "yearsExperience": 5,
+      "happyClients": 5
+    },
+    "contact": {
+      "location": "Qaliobia, Benha, Egypt",
+      "phone": "+20 106 412 0753",
+      "email": "mahmedadel973@gmail.com",
+      "linkedin": "https://www.linkedin.com/in/mohamed-adel-051ba4256",
+      "github": "",
+      "twitter": ""
+    },
+    "socialLinks": {
+      "github": "https://github.com/MohamedAdel743",
+      "linkedin": "https://www.linkedin.com/in/mohamed-adel-051ba4256",
+      "facebook": "https://web.facebook.com/modola123",
+      "whatsapp": "https://wa.me/qr/LY6KWYEYKHNPF1"
+    }
+  },
+  "projects": [
+    {
+      "id": 1,
+      "title": "Tasketi",
+      "shortDescription": "A clean and modern Flutter notes app with offline storage, image support, and elegant UI design.",
+      "longDescription": [
+        "A beautifully crafted Flutter application for effortless note-taking.",
+        "Built with Clean Architecture principles for scalability.",
+        "Leverages Hive database for fast, secure offline storage.",
+        "Features both Light and Dark themes for user comfort.",
+        "Integrates Lottie animations for a smooth, engaging experience."
+      ],
+      "coverImage": "src/assets/images/3.png",
+      "detailImages": [
+        "src/assets/images/2.png"
+      ],
+      "tags": [
+        "Flutter",
+        "Hive",
+        "Clean Architecture",
+        "Lottie",
+        "Image Picker",
+        "Intl",
+        "Dark Mode"
+      ],
+      "githubUrl": "https://github.com/modola0100/taskati",
+      "liveUrl": "https://appetize.io/app/b_ymghlex5c44ec3haxusngxr5t4"
+    },
+    {
+      "id": 2,
+      "title": "BMI Calculator",
+      "shortDescription": "A simple and intuitive Flutter app to calculate your Body Mass Index (BMI) and track your health.",
+      "longDescription": [
+        "A user-friendly application built with Flutter to monitor your Body Mass Index.",
+        "Instantly computes BMI and categorizes the result (e.g., Underweight, Normal, Overweight).",
+        "Provides essential insights into your health with a clean interface.",
+        "Features smooth performance, making health tracking simple and accessible."
+      ],
+      "coverImage": "src/assets/images/bmi.jpg",
+      "detailImages": [
+        "src/assets/images/bm2.webp"
+      ],
+      "tags": [
+        "Flutter",
+        "Dart",
+        "Material Design",
+        "Responsive UI",
+        "BMI Calculator",
+        "Health & Fitness"
+      ],
+      "githubUrl": "https://github.com/modola0100/bmi_app",
+      "liveUrl": "https://appetize.io/app/b_l2hd46lgyp2oysxidsubrb2wtu"
+    },
+    {
+      "id": 3,
+      "title": "Bookia App",
+      "shortDescription": "A complete Flutter bookstore app with live APIs, Cubit state management, and a clean, modern UI.",
+      "longDescription": [
+        "A comprehensive bookstore application built from scratch using Flutter.",
+        "Connects to real-world APIs to explore, buy, and save favorite books.",
+        "Features a secure login/signup system, shopping cart, and wishlist functionality.",
+        "State management is handled efficiently using Cubit.",
+        "Uses SharedPreferences for local data persistence in a clean, user-friendly interface."
+      ],
+      "coverImage": "src/assets/images/welcome.png",
+      "detailImages": [
+        "src/assets/images/welcome.png"
+      ],
+      "tags": [
+        "Flutter",
+        "Cubit",
+        "REST API",
+        "State Management",
+        "SharedPreferences",
+        "Authentication",
+        "E-commerce"
+      ],
+      "githubUrl": "https://github.com/modola0100/bookiaaaaa",
+      "liveUrl": "https://appetize.io/apps/android/com.example.bookiaaa"
+    }
+  ],
+  "skills": [
+    {
+      "id": 1,
+      "name": "Flutter & Dart",
+      "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg",
+      "type": "url"
+    },
+    {
+      "id": 2,
+      "name": "Firebase",
+      "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg",
+      "type": "url"
+    },
+    {
+      "id": 3,
+      "name": "State Management",
+      "icon": "src/assets/images/icons/icons8-library-50.png",
+      "type": "local"
+    },
+    {
+      "id": 4,
+      "name": "REST APIs",
+      "icon": "src/assets/images/icons/api.png",
+      "type": "local"
+    },
+    {
+      "id": 5,
+      "name": "Clean Architecture",
+      "icon": "src/assets/images/icons/clean-code.png",
+      "type": "local"
+    },
+    {
+      "id": 6,
+      "name": "Git & GitHub",
+      "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg",
+      "type": "url"
+    },
+    {
+      "id": 7,
+      "name": "Responsive Design",
+      "icon": "src/assets/images/icons/responsive-app.png",
+      "type": "local"
+    },
+    {
+      "id": 8,
+      "name": "Localization (i18n)",
+      "icon": "src/assets/images/icons/translate_5739218.png",
+      "type": "local"
+    },
+    {
+      "id": 9,
+      "name": "Testing",
+      "icon": "src/assets/images/icons/testing.png",
+      "type": "local"
+    },
+    {
+      "id": 10,
+      "name": "ui",
+      "icon": "data:image/png;base64,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",
+      "type": "local"
+    }
+  ],
+  "experiences": [
+    {
+      "company": "National Telecommunication Institute (NTI)",
+      "logo": "src/assets/images/logos/nti.jpg",
+      "location": "Cairo, Egypt",
+      "role": "Flutter Trainee / Scholarship Program",
+      "period": "Jul 2025 - Aug 2025",
+      "tasks": [
+        "Completed an intensive one-month Flutter training program focused on mobile app development.",
+        "Learned Dart programming language and mastered Flutter framework fundamentals.",
+        "Built practical apps integrating RESTful APIs and managing state with BLoC and Cubit.",
+        "Gained experience in UI/UX design, responsive layouts, and clean project structure.",
+        "Applied best practices for app architecture and performance optimization"
+      ]
+    },
+    {
+      "company": "Google Developer Student Clubs (GDSC)",
+      "logo": "src/assets/images/logos/jdg.jpg",
+      "location": "Benha University",
+      "role": "Flutter Trainee (Bootcamp)",
+      "period": "Jan 2024 - Feb 2024",
+      "tasks": [
+        "Completed an intensive 36-hour training bootcamp focused on Flutter mobile app development fundamentals.",
+        "Developed interactive and engaging User Interfaces (UI) using various Flutter Widgets.",
+        "Applied Object-Oriented Programming (OOP) principles for effective code structure and organization.",
+        "Built a complete practical project (Calculator App) to solidify core concepts.",
+        "Gained practical skills in problem-solving and effective teamwork."
+      ]
+    },
+    {
+      "company": "D.Pear",
+      "logo": "src/assets/images/logos/pear.jpg",
+      "location": "Remote",
+      "role": "Flutter Summer Trainee",
+      "period": "Summer 2024 (6 Weeks)",
+      "tasks": [
+        "Gained extensive hands-on experience with core and advanced Flutter widgets.",
+        "Developed and delivered multiple projects, including a BMI Calculator and a Food App UI and bookly app with api integration.",
+        "Integrated RESTful APIs for fetching live data and Firebase for backend services.",
+        "Implemented local data persistence using the Hive database.",
+        "Learned and applied the foundational principles of Clean Architecture for scalable project structure."
+      ]
+    }
+  ]
+}

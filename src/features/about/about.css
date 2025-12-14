@@ -1,0 +1,175 @@
+/* === About Me Title Gradient === */
+.text-gradient-blue {
+    /* لون متدرج زي أيقونة فلاتر */
+    background: linear-gradient(90deg, #01b5f8, #2972f5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+
+
+/* === About Me Card (Top) === */
+.about-me-card {
+    /* === تم إلغاء هذا السطر ليأخذ العرض الكامل === */
+    /* max-width: 768px; */ 
+    width: 100%;
+    
+    background-color: rgba(23, 30, 46, 0.7);
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    border-radius: 0.75rem; /* 12px (rounded-xl) */
+    
+    padding: 2.5rem; /* 40px (مساحة داخلية مريحة) */
+    text-align: left; /* النص دائماً على اليسار لسهولة القراءة */
+    color: #e2e8f0;
+    
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* أنيميشن بسيط عند الـ hover */
+    &:hover {
+        border-color: rgba(56, 189, 248, 0.7);
+        box-shadow: 0 0 25px rgba(1, 181, 248, 0.2);
+    }
+}
+
+
+/* === About Section Skills Cards (Bottom) === */
+.skill-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem; /* 12px */
+    
+    background-color: rgba(23, 30, 46, 0.7); /* لون الخلفية */
+    border: 1px solid rgba(56, 189, 248, 0.2); /* بوردر بلون الفلاتر الخفيف */
+    border-radius: 0.75rem; /* 12px (rounded-xl) */
+    
+    padding: 1.25rem; /* 20px */
+    text-align: center;
+    color: #e2e8f0; /* text-slate-200 */
+    
+    /* الأنيميشن */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.skill-card:hover {
+    transform: translateY(-8px); /* حركة بسيطة للأعلى */
+    background-color: rgba(23, 30, 46, 1);
+    border-color: rgba(56, 189, 248, 0.7);
+    /* ظل "عالمي" بلون الفلاتر */
+    box-shadow: 0 0 25px rgba(1, 181, 248, 0.25);
+}
+
+/* حاوية أيقونة الـ SVG */
+.skill-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;  /* 48px */
+    height: 3rem; /* 48px */
+    transition: all 0.3s ease;
+}
+
+/* الـ SVG نفسها */
+.skill-svg {
+    width: 2.5rem; /* 40px */
+    height: 2.5rem; /* 40px */
+    /* لون الأيقونات المخططة (stroke) */
+    color: #01b5f8; 
+}
+
+/* تكبير الأيقونة عند الـ hover */
+.skill-card:hover .skill-icon {
+    transform: scale(1.1);
+}
+
+.skill-name {
+    font-weight: 600; /* font-semibold */
+    font-size: 0.875rem; /* 14px (text-sm) */
+    color: #cbd5e1; /* text-slate-300 */
+}
+/* تنسيق صور المهارات */
+.skill-img {
+    width: 45px;       /* عرض الصورة */
+    height: 45px;      /* ارتفاع الصورة */
+    object-fit: contain; /* يحافظ على أبعاد الصورة ولا يجعلها تبدو ممطوطة */
+    display: block;
+}
+
+/* في حالة الشاشات الصغيرة جداً يمكن تصغيرها قليلاً */
+@media (max-width: 640px) {
+    .skill-img {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+/* تعديل بسيط لأسماء المهارات على الشاشات الأكبر */
+@media (min-width: 768px) {
+    .skill-name {
+        font-size: 1rem; /* 16px (text-base) */
+    }
+}
+
+
+/* === Animated Horizontal Divider Under Skills === */
+.animated-skills-divider {
+    height: 3px; /* سمك الخط */
+    background: linear-gradient(90deg, #2972f5, #01b5f8); /* نفس لون تدرج فلاتر */
+    border-radius: 1.5px; /* نصف سمك الخط ليكون دائرياً من الأطراف */
+    opacity: 0; /* يبدأ مخفياً */
+    transform: scaleX(0); /* يبدأ بصفر عرض */
+    transform-origin: center; /* الأنيميشن من المنتصف */
+    animation: growX 1s forwards ease-out; /* أنيميشن قوي */
+    animation-delay: 1s; /* يتأخر ليظهر بعد الكروت */
+}
+
+/* Keyframe for growX animation */
+@keyframes growX {
+    to {
+        opacity: 1;
+        transform: scaleX(1); /* يكبر حتى يأخذ عرضه الكامل */
+    }
+}
+/* كلاس للأيقونات المخصصة الملونة */
+.custom-colored-icon {
+    width: 40px;
+    height: 40px;
+    
+    /* هذا هو الجزء السحري: نستخدم الصورة كقناع (Mask) */
+    -webkit-mask-image: var(--img-url);
+    mask-image: var(--img-url);
+    
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    
+    -webkit-mask-position: center;
+    mask-position: center;
+    
+    /* هنا نحدد اللون اللي إنت عايزه للأيقونة */
+    /* يمكنك جعله لون واحد مثل background-color: #01b5f8; */
+    /* أو تدرج لوني مثل القديم كما يلي: */
+    background: linear-gradient(135deg, #01b5f8 0%, #02569B 100%);
+}
+  .skill-svg {
+    font-size: 2.4rem;
+    display: inline-block;
+    background: linear-gradient(135deg, #01b5f8, #02569B);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .skill-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+ .skill-img {
+    width: 42px;
+    filter: brightness(0) saturate(100%) invert(57%) sepia(93%) saturate(3100%) hue-rotate(178deg) brightness(97%) contrast(102%);
+  }

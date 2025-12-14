@@ -1,0 +1,43 @@
+{
+  "name": "portfolio-backend",
+  "version": "1.0.0",
+  "description": "Portfolio website with Node.js backend and MongoDB",
+  "type": "module",
+  "main": "api/index.js",
+  "scripts": {
+    "dev": "node dev-server-auto-push.js",
+    "dev:vercel": "vercel dev",
+    "build": "echo 'No build step required'",
+    "start": "node dev-server-auto-push.js",
+    "deploy": "vercel --prod",
+    "lint": "echo 'No lint configured'"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cloudinary": "^1.41.0",
+    "dotenv": "^17.2.3",
+    "express": "^4.22.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.0.3",
+    "nodemailer": "^6.9.7"
+  },
+  "devDependencies": {
+    "vercel": "^33.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MohamedAdel743/-Portfolio"
+  },
+  "keywords": [
+    "portfolio",
+    "node.js",
+    "mongodb",
+    "vercel",
+    "serverless"
+  ],
+  "author": "Mohamed Adel",
+  "license": "MIT"
+}

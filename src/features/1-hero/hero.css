@@ -1,0 +1,201 @@
+/* === كود الـ CSS القديم للصور (كما هو) === */
+.hero-image-container-new {
+    position: relative;
+    width: min(80vw, 350px);
+    height: min(80vw, 350px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.hero-main-image-new {
+    position: relative;
+    width: 90%;
+    height: 90%;
+    object-fit: cover;
+    border-radius: 50%;
+    z-index: 2;
+    box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.1);
+}
+
+.hero-blob {
+    position: absolute;
+    background-color: #01b5f8;
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    animation: blob-animate-hero 10s infinite alternate;
+    z-index: 1;
+    opacity: 0.7;
+}
+
+.hero-blob-1 {
+    width: 100%;
+    height: 100%;
+    animation-delay: 0s;
+}
+
+.hero-blob-2 {
+    width: 120%;
+    height: 120%;
+    animation-delay: 3s;
+    background-color: rgba(1, 181, 248, 0.5);
+}
+
+@keyframes blob-animate-hero {
+    0% { transform: scale(0.9) rotate(0deg); border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+    50% { transform: scale(1.1) rotate(180deg); border-radius: 70% 30% 40% 60% / 60% 40% 50% 50%; }
+    100% { transform: scale(0.9) rotate(360deg); border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+}
+
+.hero-line {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.3);
+    height: 2px;
+    border-radius: 2px;
+    animation: line-draw 8s infinite ease-in-out;
+    z-index: 1;
+}
+
+.hero-line-1 {
+    width: 80px;
+    top: 20%;
+    left: -20%;
+    transform: rotate(30deg);
+    animation-delay: 0s;
+}
+
+.hero-line-2 {
+    width: 120px;
+    bottom: 15%;
+    right: -30%;
+    transform: rotate(-45deg);
+    animation-delay: 2s;
+}
+
+.hero-line-3 {
+    width: 100px;
+    top: 60%;
+    left: -10%;
+    transform: rotate(60deg);
+    animation-delay: 4s;
+}
+
+@keyframes line-draw {
+    0% { transform: scaleX(0); opacity: 0; }
+    50% { transform: scaleX(1); opacity: 1; }
+    100% { transform: scaleX(0); opacity: 0; }
+}
+
+/* === أنيميشن الاسم الرئيسي === */
+.hero-name {
+    animation: name-float 3s ease-in-out infinite;
+}
+
+@keyframes name-float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+
+/* === ✨ كود الأنيميشن الجديد (الضغط والـ Hover) ✨ === */
+
+/* 1. إضافة حركة transition للكارت عشان الـ Hover يبقى ناعم */
+.stat-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 2. أنيميشن الـ Hover (الجديد) */
+.stat-card:hover {
+    transform: translateY(-8px); /* حركة بسيطة للأعلى */
+    border-color: rgba(56, 189, 248, 0.7);
+    /* ظل "عالمي" بلون الفلاتر */
+    box-shadow: 0 0 25px rgba(1, 181, 248, 0.25);
+}
+
+/* 3. أنيميشن الضغط (القديم) */
+@keyframes click-pop-effect {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        /* لو ضغطت وانت عامل hover، هيعمل scale من الوضع المرتفع */
+        transform: scale(1.08) translateY(-8px); 
+        box-shadow: 0 0 25px rgba(1, 181, 248, 0.5);
+    }
+    100% {
+        transform: scale(1) translateY(-8px);
+    }
+}
+
+/* 4. كلاس أنيميشن الضغط (القديم) */
+.stat-card-clicked {
+    animation: click-pop-effect 0.4s ease-out;
+}
+/* === أنيميشن حروف الاسم (موجود من global.css) === */
+.hero-name span {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(20px) rotate(5deg) scale(0.9);
+    animation: reveal-char 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    color: #ffffff;
+}
+@keyframes reveal-char { to { opacity: 1; transform: translateY(0) rotate(0) scale(1); } }
+
+
+/* === ✨ كود المؤشر الجديد ✨ === */
+
+/* 1. تصميم المؤشر (الخط) */
+.hero-cursor {
+    display: inline-block;
+    width: 4px; /* عرض الخط */
+    height: 1.1em; /* ارتفاع الخط (بحجم الخط الحالي) */
+    background-color: #01b5f8; /* لون فلاتر الأزرق */
+    margin-left: 8px; /* مسافة بسيطة من الاسم */
+    border-radius: 2px;
+    
+    /* 2. إخفاؤه في البداية */
+    opacity: 0; 
+    
+    /* 3. تأثير انتقالي ناعم */
+    transition: opacity 0.2s ease-in;
+    
+    /* 4. الأنيميشن (الوميض) سيضاف بالجافاسكريبت */
+}
+
+/* 3. أنيميشن الوميض (Blink) */
+@keyframes blink { 
+    from, to { opacity: 1 } 
+    50% { opacity: 0 } 
+}
+
+
+/* === أنيميشن كروت الإحصائيات (كما هو) === */
+.stat-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stat-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(56, 189, 248, 0.7);
+    box-shadow: 0 0 25px rgba(1, 181, 248, 0.25);
+}
+
+@keyframes click-pop-effect {
+    0% { transform: scale(1); }
+    50% {
+        transform: scale(1.08) translateY(-8px); 
+        box-shadow: 0 0 25px rgba(1, 181, 248, 0.5);
+    }
+    100% { transform: scale(1) translateY(-8px); }
+}
+
+.stat-card-clicked {
+    animation: click-pop-effect 0.4s ease-out;
+}
+
+/* === (باقي أكواد hero.css القديمة ... ) === */
+/* ... .hero-image-container-new ... etc ... */
