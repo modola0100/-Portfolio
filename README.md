@@ -1,6 +1,6 @@
 # 🎨 Mohamed Adel - Professional Portfolio
 
-> A modern, feature-rich portfolio website with a powerful data-driven admin panel and automatic Git synchronization.
+> A modern, feature-rich portfolio website with a powerful data---driven admin panel and automatic Git synchronization.
 
 ---
 
