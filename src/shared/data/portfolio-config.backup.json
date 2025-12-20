@@ -5,7 +5,7 @@
     "aboutText": "A Flutter Developer with 1 year of experience in building cross-platform mobile apps using Flutter. Proficient in RESTful API integration, Firebase (Authentication, Firestore, and Cloud Functions), state management with Bloc and Cubit, local storage using Hive, and designing clean, intuitive UIs. Committed to applying clean architecture for maintainable and scalable code, with a passion for learning and delivering high-quality applications.",
     "profilePicture": "src/assets/images/100.jpg",
     "stats": {
-      "projectsCount": 7,
+      "projectsCount": 3,
       "yearsExperience": 1,
       "happyClients": 2
     },
@@ -38,7 +38,11 @@
       ],
       "coverImage": "src/assets/images/3.png",
       "detailImages": [
-        "src/assets/images/2.png"
+        "src/assets/images/taskati/dark_screen.png",
+        "src/assets/images/taskati/first_screen.png",
+        "src/assets/images/taskati/home_screen.png",
+        "src/assets/images/taskati/screen_edit_name_image.png",
+        "src/assets/images/taskati/screen_task_edit_profile.png"
       ],
       "tags": [
         "Flutter",
@@ -64,7 +68,9 @@
       ],
       "coverImage": "src/assets/images/bmi.jpg",
       "detailImages": [
-        "src/assets/images/bm2.webp"
+        "src/assets/images/bmi/FirstScreen.png",
+        "src/assets/images/bmi/Screen.jpg",
+        "src/assets/images/bmi/SecondScreen.png"
       ],
       "tags": [
         "Flutter",
@@ -90,7 +96,23 @@
       ],
       "coverImage": "src/assets/images/welcome.png",
       "detailImages": [
-        "src/assets/images/welcome.png"
+        "src/assets/images/bookia app/cart.png",
+        "src/assets/images/bookia app/creat_password.png",
+        "src/assets/images/bookia app/details.png",
+        "src/assets/images/bookia app/edit_profile.png",
+        "H:\\New folder\\-Portfolio\\src\\assets\\images\\bookia app\\forget_password.png",
+        "src/assets/images/bookia app/home.png",
+        "src/assets/images/bookia app/login.png",
+        "src/assets/images/bookia app/my_order.png",
+        "src/assets/images/bookia app/otp.png",
+        "src/assets/images/bookia app/password_changed.png",
+        "src/assets/images/bookia app/profile.png",
+        "src/assets/images/bookia app/register.png",
+        "src/assets/images/bookia app/reset_password.png",
+        "src/assets/images/bookia app/search.png",
+        "src/assets/images/bookia app/splash.png",
+        "src/assets/images/bookia app/welcome.png",
+        "src/assets/images/bookia app/wishlist.png"
       ],
       "tags": [
         "Flutter",
