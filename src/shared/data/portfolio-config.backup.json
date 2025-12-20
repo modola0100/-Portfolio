@@ -5,7 +5,7 @@
     "aboutText": "A Flutter Developer with 1 year of experience in building cross-platform mobile apps using Flutter. Proficient in RESTful API integration, Firebase (Authentication, Firestore, and Cloud Functions), state management with Bloc and Cubit, local storage using Hive, and designing clean, intuitive UIs. Committed to applying clean architecture for maintainable and scalable code, with a passion for learning and delivering high-quality applications.",
     "profilePicture": "src/assets/images/100.jpg",
     "stats": {
-      "projectsCount": 3,
+      "projectsCount": 7,
       "yearsExperience": 1,
       "happyClients": 2
     },
